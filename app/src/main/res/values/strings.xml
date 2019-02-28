@@ -1,0 +1,89 @@
+<resources>
+    <string name="app_name">e-PANJEEYAN</string>
+
+    <string-array name="applicantType">
+        <item>Select Applicant Type *</item>
+        <item>Individual</item>
+        <item>Government</item>
+    </string-array>
+
+    <string-array name="selectOffice">
+        <item>Select Office for Registration * </item>
+        <item>Kamrup Metro</item>
+    </string-array>
+
+    <string-array name="selectDeed">
+        <item>Select Deed Category *</item>
+        <item>AFFIDAVIT</item>
+        <item>AGREEMENT</item>
+        <item>ADOPTION</item>
+        <item>RECTIFICATION</item>
+        <item>CANCELLATION</item>
+        <item>POWER OF ATTORNEY(GEN)</item>
+        <item>POWER OF ATTORNEY(SPL)</item>
+        <item>SALE</item>
+        <item>GIFT</item>
+    </string-array>
+
+    <string-array name="selectSubDeed">
+        <item>Select Deed Sub Category *</item>
+        <item>...</item>
+    </string-array>
+
+    <string-array name="doc_type">
+        <item>Select Image Document Type *</item>
+        <item>Address Proof</item>
+        <item>Age Proof</item>
+        <item>Identity Proof</item>
+    </string-array>
+
+    <string-array name="desiredDate">
+        <item>Select Desired Appointment Date *</item>
+        <item>...</item>
+    </string-array>
+
+    <string-array name="marriageType">
+        <item>Select Marriage Type *</item>
+        <item>Intended Marriage</item>
+        <item>Marriage</item>
+    </string-array>
+
+    <string-array name="officeRegistration">
+        <item>Select Office for Registration *</item>
+        <item>Kamrup Metro</item>
+    </string-array>
+
+    <string-array name="maritalStatus">
+        <item>Select Marital Status *</item>
+        <item>Unmarried</item>
+        <item>Widower</item>
+        <item>Widow</item>
+        <item>Divorcee</item>
+        <item>Married</item>
+    </string-array>
+
+    <string name="nameerror">Enter a valid Name</string>
+    <string name="emailerror">Enter a valid Email</string>
+    <string name="mobileerror">Enter a valid Mobile no.</string>
+    <string name="addresserror">Enter a valid Address</string>
+    <string name="cityerror">Enter a valid City/Town/Village</string>
+    <string name="poerror">Enter a valid Post Office</string>
+    <string name="districterror">Enter a valid District</string>
+    <string name="pinerror">Enter a 6-digit valid PIN</string>
+
+    <string name="ageerror">Enter age between 18-60</string>
+    <string name="occerror">Enter a valid  Occupation</string>
+    <string name="fNameerror">Enter a valid Father\'s Name</string>
+
+    <string name="ageGroomerr">Enter age between 21-60</string>
+
+    <string name="policeerror">Enter a valid Police Station</string>
+    <string name="stateerror">Enter a valid State</string>
+    <string name="lengtherror">Enter a valid Length of residence</string>
+
+    <!--view_status -->
+
+    <string name="refNumber">Enter a valid reference no.</string>
+
+
+</resources>
