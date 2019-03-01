@@ -57,4 +57,9 @@ public class MainActivity extends AppCompatActivity {
         // destroy
         name = "";
     }
+
+    public void combineForm(View view) {
+        Intent intent4 = new Intent(this,StateProgressBar.class);
+        startActivity(intent4);
+    }
 }

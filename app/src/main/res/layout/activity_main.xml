@@ -80,7 +80,8 @@
                         android:background="#fff"
                         android:drawableTop="@drawable/money"
                         android:text="Instant assessment &amp; deed registration fee"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:onClick="combineForm"/>
 
                     <Button
                         android:id="@+id/button2"
