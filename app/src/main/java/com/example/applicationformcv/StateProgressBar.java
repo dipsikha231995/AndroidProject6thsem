@@ -35,5 +35,6 @@ public class StateProgressBar extends AppCompatActivity {
     public void doNext3(View view) {
         linearLayout3.setVisibility(View.GONE);
         linearLayout4.setVisibility(View.VISIBLE);
+        // hello bob
     }
 }
