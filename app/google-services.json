@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "210009025252",
+    "firebase_url": "https://e-panjeeyan.firebaseio.com",
+    "project_id": "e-panjeeyan",
+    "storage_bucket": "e-panjeeyan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:210009025252:android:8241f27aaf87cf3a",
+        "android_client_info": {
+          "package_name": "com.example.applicationformcv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "210009025252-0hq7cr3qjbknfkk8pcktlgmj9g25abnr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.applicationformcv",
+            "certificate_hash": "7b05420a1ca65f43c8b9bba153289003e637e5f2"
+          }
+        },
+        {
+          "client_id": "210009025252-ahiob52pt3jafgpcehuh5opi5jctrv9l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpgnGcPfHQbkFkLprTL6fT-R5WXEPRPRg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "210009025252-ahiob52pt3jafgpcehuh5opi5jctrv9l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

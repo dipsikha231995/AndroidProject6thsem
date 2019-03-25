@@ -306,7 +306,7 @@
                             android:textSize="18sp" />
 
                         <CheckBox
-                            android:id="@+id/groom-checkbox"
+                            android:id="@+id/groomcheckbox"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:buttonTint="@android:color/white" />

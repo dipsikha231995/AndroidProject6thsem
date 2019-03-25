@@ -1,24 +1,24 @@
 package com.example.applicationformcv;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -34,18 +34,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.awt.font.NumericShaper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
-import com.basgeekball.awesomevalidation.ValidationHolder;
 import com.basgeekball.awesomevalidation.ValidationStyle;
-import com.basgeekball.awesomevalidation.utility.RegexTemplate;
-import com.google.common.collect.Range;
+import com.kofigyan.stateprogressbar.StateProgressBar;
+import com.kofigyan.stateprogressbar.components.StateItem;
+import com.kofigyan.stateprogressbar.listeners.OnStateItemClickListener;
 
-public class DeedRegistration extends AppCompatActivity implements View.OnClickListener {
+public class DeedRegistration extends AppCompatActivity {
+
+    public static final String TAG = "MY-APP";
 
     public static final String Date_array = "Date";
     public static final String JSON_ARRAY = "result";
@@ -53,16 +54,17 @@ public class DeedRegistration extends AppCompatActivity implements View.OnClickL
     Spinner mySpinnerDate;
     private ArrayList<String> arrayList;
 
-    private final int IMG_REQUEST = 1;
+    private final int ADDRESS_PROOF_REQUEST = 1;
+    private final int AGE_PROOF_REQUEST = 10;
+    private final int IDENTITY_PROOF_REQUEST = 100;
 
     //choose image
-    ImageView imgView;
-    Button chooseBtn;
+    ImageView addressimageView, ageImageView, idImageView;
+    TextView addressimgError, ageimgError, idimgError;
 
-    TextView imgError;
-
-    //
-    private boolean imageSelected = false;
+    private boolean ageProofSelected = false;
+    private boolean addressProofSelected = false;
+    private boolean identityProofSelected = false;
 
 
     //defining AwesomeValidation object
@@ -83,10 +85,25 @@ public class DeedRegistration extends AppCompatActivity implements View.OnClickL
     ArrayAdapter<String> myAdapter5;
     private Bitmap bitmap;
 
-
     private List<String> list;
     ArrayAdapter<String> myAdapter4;
 
+    StateProgressBar stateProgressBar;
+
+    // all the three form layouts
+    ViewGroup appointmentForm;
+    ViewGroup uploadDocumentsForm;
+    ViewGroup confirmForm;
+
+    // header textView
+    TextView header;
+
+    CardView cardView;
+
+    LinearLayout appointment_confirm;
+
+    private boolean appointmentFormCompleted = false;
+    private boolean uploadDocumentsCompleted = false;
 
 
     @Override
@@ -94,23 +111,65 @@ public class DeedRegistration extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deed_registration);
         initializeValidation();
+
+        appointmentForm = findViewById(R.id.appoint_form);
+        uploadDocumentsForm = findViewById(R.id.document_upload_form);
+        confirmForm = findViewById(R.id.confirm_form);
+        header = findViewById(R.id.header_text2);
+
         mySpinner1 = findViewById(R.id.spinner1);
         mySpinner2 = findViewById(R.id.spinner2);
         mySpinner3 = findViewById(R.id.spinner3);
         mySpinner4 = findViewById(R.id.spinner4);
+
+        cardView = findViewById(R.id.card1);
+
+        appointment_confirm = findViewById(R.id.confirm_appointment);
+
+        // select document spinner
         mySpinner5 = findViewById(R.id.spinner5);
+        mySpinner5.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                Log.d(TAG, "" + position);
+
+                switch (position) {
+                    case 1:
+                        // select address proof
+                        chooseImage(ADDRESS_PROOF_REQUEST);
+                        break;
+
+                    case 2:
+                        // select age proof
+                        chooseImage(AGE_PROOF_REQUEST);
+                        break;
+
+                    case 3:
+                        // select id proof
+                        chooseImage(IDENTITY_PROOF_REQUEST);
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
 
         mySpinnerDate = findViewById(R.id.spinnerDate);
         arrayList = new ArrayList<>();
         getdata();
 
-        //choose image
-        imgView = findViewById(R.id.imageView);
-        chooseBtn = findViewById(R.id.buttonChoose);
-        chooseBtn.setOnClickListener(this);
+        // imagesViews and error textViews
+        addressimageView = findViewById(R.id.address_proof_imageView);
+        ageImageView = findViewById(R.id.age_proof_imageView);
+        idImageView = findViewById(R.id.id_proof_imageView);
 
-        imgError = findViewById(R.id.imageError);
+        addressimgError = findViewById(R.id.address_proof_error);
+        ageimgError = findViewById(R.id.age_proof_error);
+        idimgError = findViewById(R.id.id_proof_error);
 
         forSale = findViewById(R.id.extraForSale);
         amount = findViewById(R.id.considerationAmt);
@@ -118,6 +177,7 @@ public class DeedRegistration extends AppCompatActivity implements View.OnClickL
         radioGroupMaleFemale = findViewById(R.id.radioGroup1);
         forLandFlat = findViewById(R.id.landFlat);
         radioUrbanRural = findViewById(R.id.radioGroup2);
+
 
         //create array adapter
         ArrayAdapter<String> myAdapter1 = new ArrayAdapter<String>(this, R.layout.spinner_item_text_colour,
@@ -158,8 +218,7 @@ public class DeedRegistration extends AppCompatActivity implements View.OnClickL
                     radioGroupMaleFemale.setVisibility(View.VISIBLE);
                     forLandFlat.setVisibility(View.VISIBLE);
                     radioUrbanRural.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     forSale.setVisibility(View.GONE);
                     //amount.setVisibility(View.GONE);
 
@@ -226,12 +285,25 @@ public class DeedRegistration extends AppCompatActivity implements View.OnClickL
 
         //awesomeValidation.addValidation(this, R.id.considerationAmt, Range.closed(0,10000), R.string.considerationAmterror);
 
+
+        stateProgressBar = findViewById(R.id.state_progress_bar);
+        String[] descriptionData = {"Appointment\nForm", "Documents\nUploads", "Confirm\nSubmission"};
+        stateProgressBar.setStateDescriptionData(descriptionData);
+        stateProgressBar.setOnStateItemClickListener(new OnStateItemClickListener() {
+            @Override
+            public void onStateItemClick(StateProgressBar stateProgressBar, StateItem stateItem,
+                                         int stateNumber, boolean isCurrentState) {
+
+                if (!isCurrentState) {
+                    showFrom(stateProgressBar.getCurrentStateNumber(), stateNumber);
+                }
+            }
+        });
+
     }
 
 
-
     private void initializeValidation() {
-
         name = findViewById(R.id.applicantName);
         email = findViewById(R.id.username);
         mobile = findViewById(R.id.number);
@@ -244,63 +316,72 @@ public class DeedRegistration extends AppCompatActivity implements View.OnClickL
         submit = findViewById(R.id.btnSubmit);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-
-            case R.id.buttonChoose:
-                selectImage();
-                break;
-
-//            case R.id.buttonUpload:
-//                uploadImage();
-//                break;
-
-        }
-    }
 
     //choose image
-
-    private void selectImage() {
-
+    private void chooseImage(int requestCode) {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, IMG_REQUEST);
-
+        startActivityForResult(intent, requestCode);
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == IMG_REQUEST && resultCode == RESULT_OK && data != null) {
+        if (requestCode == ADDRESS_PROOF_REQUEST && resultCode == RESULT_OK && data != null) {
             Uri path = data.getData();
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), path);
-                imgView.setImageBitmap(bitmap);
-                imgView.setVisibility(View.VISIBLE);
+                addressimageView.setImageBitmap(bitmap);
+
+                //imgView.setVisibility(View.VISIBLE);
 
                 //
-                imageSelected = true;
-                imgError.setVisibility(View.GONE);
-
-
-                mySpinner5.setAdapter(null);
-                mySpinner5.setAdapter(myAdapter5);
-
-                mySpinner5.setVisibility(View.VISIBLE);
-
+                addressProofSelected = true;
+                addressimgError.setVisibility(View.GONE);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else if (requestCode == AGE_PROOF_REQUEST && resultCode == RESULT_OK && data != null) {
+            Uri path = data.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), path);
+                ageImageView.setImageBitmap(bitmap);
 
+                //imgView.setVisibility(View.VISIBLE);
+
+                //
+                ageProofSelected = true;
+                ageimgError.setVisibility(View.GONE);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (requestCode == IDENTITY_PROOF_REQUEST && resultCode == RESULT_OK && data != null) {
+            Uri path = data.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), path);
+                idImageView.setImageBitmap(bitmap);
+
+                //imgView.setVisibility(View.VISIBLE);
+
+                //
+                identityProofSelected = true;
+                idimgError.setVisibility(View.GONE);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
+        //
+        mySpinner5.setAdapter(null);
+        mySpinner5.setAdapter(myAdapter5);
+        mySpinner5.setVisibility(View.VISIBLE);
     }
 
 
     private void getdata() {
-
         StringRequest stringRequest = new StringRequest("http://192.168.43.210/trial/getAppointmentDate.php",
                 new Response.Listener<String>() {
                     @Override
@@ -322,8 +403,8 @@ public class DeedRegistration extends AppCompatActivity implements View.OnClickL
                 });
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
-
     }
+
 
     private void availabe_dates(JSONArray j) {
         for (int i = 0; i < j.length(); i++) {
@@ -341,7 +422,6 @@ public class DeedRegistration extends AppCompatActivity implements View.OnClickL
     }
 
 
-
     private boolean validateSpinners() {
 
         boolean result = true;
@@ -350,7 +430,8 @@ public class DeedRegistration extends AppCompatActivity implements View.OnClickL
         View selectedView2 = mySpinner2.getSelectedView();
         View selectedView3 = mySpinner3.getSelectedView();
         View selectedView4 = mySpinner4.getSelectedView();
-        View selectedView5 = mySpinner5.getSelectedView();
+
+//        View selectedView5 = mySpinner5.getSelectedView();
 
 
         if (selectedView instanceof TextView) {
@@ -412,23 +493,6 @@ public class DeedRegistration extends AppCompatActivity implements View.OnClickL
             }
         }
 
-
-        if (selectedView5 instanceof TextView) {
-
-            TextView selectedTextView5 = (TextView) selectedView5;
-
-            if (selectedTextView5.getText().toString().equalsIgnoreCase("Select Image Document Type *")) {
-                selectedTextView5.setFocusable(true);
-                selectedTextView5.setClickable(true);
-                selectedTextView5.setFocusableInTouchMode(true);
-                selectedTextView5.setError("Choose an item");
-
-                //
-                result = false;
-            }
-        }
-
-
         return result;
     }
 
@@ -446,32 +510,136 @@ public class DeedRegistration extends AppCompatActivity implements View.OnClickL
     }
 
 
+    // go to the next form
+    public void submitIt(View view) {
+        // get the current state number
+        int curState = stateProgressBar.getCurrentStateNumber();
 
-    public void doSubmit(View view) {
-
-       //
-        boolean a = awesomeValidation.validate();
-
-
-        //
-       boolean b = validateSpinners();
+        showFrom(curState, curState + 1);
+    }
 
 
-       boolean c = validateConsiderationAmount();
+    private void showFrom(int curState, int nextState) {
+        Log.d(TAG, "" + curState + " : " + nextState);
 
+        // hide the form associates with "curState"
+        switch (curState) {
+            case 1:
 
-        //
-        if (!imageSelected) {
-            imgError.setVisibility(View.VISIBLE);
-           // imgError.setText("X Image not selected, Please select one!");
-            imgError.setError("Image not selected, Please select one!");
+                if (!validateAppointmentForm()) {
+                    return;
+                } else if (nextState == 3 && !completeAllStages()) {
+                    return;
+                }
+
+                appointmentForm.setVisibility(View.GONE);
+                break;
+
+            case 2:
+
+                if (curState > nextState) {
+                    uploadDocumentsForm.setVisibility(View.GONE);
+                } else if (!validateUploadDocumentsForm()) {
+                    return;
+                } else if (nextState == 3 && !completeAllStages()) {
+                    return;
+                } else {
+                    uploadDocumentsForm.setVisibility(View.GONE);
+                }
+
+                break;
+
+            case 3:
+                confirmForm.setVisibility(View.GONE);
+                break;
         }
 
+        // show the from associates with "nextState"
+        // Change the heading
+        // Change the current state number
+        switch (nextState) {
+            case 1:
+                appointmentForm.setVisibility(View.VISIBLE);
+                stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.ONE);
+                header.setText("Appointment Form");
+                break;
 
-        if (a && b && imageSelected && c) {
-            Intent intentSubmit = new Intent(this, AppointmentConfirmed.class);
-            startActivity(intentSubmit);
+            case 2:
+                uploadDocumentsForm.setVisibility(View.VISIBLE);
+                stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.TWO);
+                header.setText("Upload Documents");
+                break;
+
+            case 3:
+                confirmForm.setVisibility(View.VISIBLE);
+                stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.THREE);
+                header.setText("Confirm Submission");
+                break;
         }
     }
 
+
+    private boolean validateUploadDocumentsForm() {
+        if (addressProofSelected && ageProofSelected && identityProofSelected) {
+            uploadDocumentsCompleted = true;
+            return true;
+        }
+
+        if (!addressProofSelected) {
+            addressimgError.setError("Address Proof not selected, Please select one!");
+        }
+        if (!ageProofSelected) {
+            ageimgError.setError("Age Proof not selected, Please select one!");
+        }
+        if (identityProofSelected == false) {
+            idimgError.setError("Identity Proof not selected, Please select one!");
+        }
+
+        return false;
+    }
+
+
+    private boolean completeAllStages() {
+        // if all the previous stages are completed, then only
+        if (!appointmentFormCompleted || !uploadDocumentsCompleted) {
+            Toast.makeText(this, "Complete all the previous stages first", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+    private boolean validateAppointmentForm() {
+        boolean a = awesomeValidation.validate();
+        boolean b = validateSpinners();
+        boolean c = validateConsiderationAmount();
+
+        if (a && b && c) {
+            appointmentFormCompleted = true;            // mark appointment form complete
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public void submitData(View view) {
+        Toast.makeText(this, "data submitted", Toast.LENGTH_SHORT).show();
+
+        confirmForm.setVisibility(View.GONE);
+
+        header.setVisibility(View.GONE);
+
+        cardView.setVisibility(View.GONE);
+
+        // mark all the states "done"
+        stateProgressBar.setAllStatesCompleted(true);
+
+        // make them unclickable
+        stateProgressBar.setOnStateItemClickListener(null);
+
+        appointment_confirm.setVisibility(View.VISIBLE);
+
+    }
 }

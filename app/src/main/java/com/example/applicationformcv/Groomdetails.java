@@ -31,6 +31,7 @@ public class Groomdetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groomdetails);
+
         mySpinner1 = findViewById(R.id.spinner1);
 
         eCity = findViewById(R.id.city);
@@ -40,7 +41,7 @@ public class Groomdetails extends AppCompatActivity {
         eState = findViewById(R.id.stateName);
         ePin = findViewById(R.id.pin);
 
-        cBox2 = findViewById(R.id.groom_checkbox);
+        cBox2 = findViewById(R.id.groomcheckbox);
 
         sameCity = findViewById(R.id.per_city);
         samePolice = findViewById(R.id.per_policeStation);
