@@ -24,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -51,8 +52,8 @@ public class DeedRegistration extends AppCompatActivity {
     public static final String Date_array = "Date";
     public static final String JSON_ARRAY = "result";
     private JSONArray result;
+
     Spinner mySpinnerDate;
-    private ArrayList<String> arrayList;
 
     private final int ADDRESS_PROOF_REQUEST = 1;
     private final int AGE_PROOF_REQUEST = 10;
@@ -159,7 +160,6 @@ public class DeedRegistration extends AppCompatActivity {
 
 
         mySpinnerDate = findViewById(R.id.spinnerDate);
-        arrayList = new ArrayList<>();
         getdata();
 
         // imagesViews and error textViews
@@ -382,17 +382,33 @@ public class DeedRegistration extends AppCompatActivity {
 
 
     private void getdata() {
-        StringRequest stringRequest = new StringRequest("http://192.168.43.210/trial/getAppointmentDate.php",
+
+        final String url = "http://192.168.43.210:8080/mvcbook/getdates";
+
+        final ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("Select Appointment Date *");
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        JSONObject j = null;
+
                         try {
-                            j = new JSONObject(response);
-                            result = j.getJSONArray(JSON_ARRAY);
-                            availabe_dates(result);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            //response from servlet is kept in the JSONArray array
+                            JSONArray array = new JSONArray(response);
+
+                            //empty list is declared which will hold the json array items
+                            //List<String> arrayList = new ArrayList<>();
+
+                            //array list is populated from JSON array
+                            for (int i = 0; i < array.length(); i++) {
+                                arrayList.add(array.getString(i));
+                            }
+
+                            setUpAppointmentDateSpinner(arrayList);
+
+                        } catch (Exception e) {
                         }
                     }
                 },
@@ -401,25 +417,21 @@ public class DeedRegistration extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                     }
                 });
+
+
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
 
 
-    private void availabe_dates(JSONArray j) {
-        for (int i = 0; i < j.length(); i++) {
-            try {
-                JSONObject json = j.getJSONObject(i);
-                arrayList.add(json.getString(Date_array));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+    private void setUpAppointmentDateSpinner(ArrayList<String> dataSource) {
 
-        arrayList.add(0, "Select Appointment Date *");
-
-        mySpinnerDate.setAdapter(new ArrayAdapter<String>(this, R.layout.spinner_item_text_colour, arrayList));
+        ArrayAdapter myDateAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item_text_colour, dataSource);
+        myDateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mySpinnerDate.setAdapter(myDateAdapter);
     }
+
+
 
 
     private boolean validateSpinners() {
@@ -430,8 +442,7 @@ public class DeedRegistration extends AppCompatActivity {
         View selectedView2 = mySpinner2.getSelectedView();
         View selectedView3 = mySpinner3.getSelectedView();
         View selectedView4 = mySpinner4.getSelectedView();
-
-//        View selectedView5 = mySpinner5.getSelectedView();
+        View selectedView5 = mySpinnerDate.getSelectedView();
 
 
         if (selectedView instanceof TextView) {
@@ -489,6 +500,20 @@ public class DeedRegistration extends AppCompatActivity {
                 selectedTextView4.setError("Choose an item");
 
                 //
+                result = false;
+            }
+        }
+
+        if (selectedView5 instanceof TextView) {
+
+            TextView selectedTextView = (TextView) selectedView5;
+
+            if (selectedTextView.getText().toString().equalsIgnoreCase("Select Appointment Date *")) {
+                selectedTextView.setFocusable(true);
+                selectedTextView.setClickable(true);
+                selectedTextView.setFocusableInTouchMode(true);
+                selectedTextView.setError("Choose an item");
+
                 result = false;
             }
         }

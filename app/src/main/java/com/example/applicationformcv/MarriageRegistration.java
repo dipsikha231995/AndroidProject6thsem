@@ -14,12 +14,22 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.google.common.collect.Range;
 import com.kofigyan.stateprogressbar.StateProgressBar;
 import com.kofigyan.stateprogressbar.components.StateItem;
 import com.kofigyan.stateprogressbar.listeners.OnStateItemClickListener;
+
+import org.json.JSONArray;
+
+import java.util.ArrayList;
 
 public class MarriageRegistration extends AppCompatActivity {
 
@@ -28,6 +38,8 @@ public class MarriageRegistration extends AppCompatActivity {
     // Marriage details form fields
     EditText editText, email, mobile;
     Spinner mySpinner1, mySpinner2, mySpinner3;
+
+//    Spinner mySpinnerDate;
 
     // Bride details form fields
     EditText eCity, ePolice, ePost, eDistrict, eState, ePin, sameCity, samePolice, samePost, sameDistrict, sameState, samePin;
@@ -104,12 +116,6 @@ public class MarriageRegistration extends AppCompatActivity {
         mobile = findViewById(R.id.number);
 
         cardView = findViewById(R.id.card2);
-
-        //create array adapter
-        ArrayAdapter<String> myAdapter1 = new ArrayAdapter<String>(this, R.layout.spinner_item_text_colour,
-                getResources().getStringArray(R.array.desiredDate));
-        myAdapter1.setDropDownViewResource(R.layout.spinner_item_text_colour);
-        mySpinner1.setAdapter(myAdapter1);
 
         ArrayAdapter<String> myAdapter2 = new ArrayAdapter<String>(this, R.layout.spinner_item_text_colour,
                 getResources().getStringArray(R.array.marriageType));
@@ -254,11 +260,7 @@ public class MarriageRegistration extends AppCompatActivity {
         occupation2 = findViewById(R.id.Occupation2);
         fName2 = findViewById(R.id.FName2);
 
-        //create array adapter
-        ArrayAdapter<String> myAdapter5 = new ArrayAdapter<>(this, R.layout.spinner_item_text_colour,
-                getResources().getStringArray(R.array.maritalStatus));
-        myAdapter5.setDropDownViewResource(R.layout.spinner_item_text_colour);
-        mySpinner5.setAdapter(myAdapter1);
+        mySpinner5.setAdapter(myAdapter4);
 
         //same as above checkbox
         cBox2.setOnClickListener(new View.OnClickListener() {
@@ -333,6 +335,56 @@ public class MarriageRegistration extends AppCompatActivity {
         awesomeValidation3.addValidation(this, R.id.per_stateName2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.stateerror);
         awesomeValidation3.addValidation(this, R.id.per_pin2, "(\\d{6})", R.string.pinerror);
 
+        //populate date spinner
+        getDates();
+
+    }
+
+    private void getDates() {
+
+        final String url = "http://192.168.43.210:8080/mvcbook/getdates";
+
+        final ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("Select Appointment Date *");
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            //response from servlet is kept in the JSONArray array
+                            JSONArray array = new JSONArray(response);
+
+                            //array list is populated from JSON array
+                            for (int i = 0; i < array.length(); i++) {
+                                arrayList.add(array.getString(i));
+                            }
+
+                            setUpAppointmentDateSpinner(arrayList);
+
+                        } catch (Exception e) {
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
+    }
+
+
+    private void setUpAppointmentDateSpinner(ArrayList<String> dataSource) {
+
+        ArrayAdapter myDateAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item_text_colour, dataSource);
+        myDateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mySpinner1.setAdapter(myDateAdapter);
     }
 
 
@@ -437,9 +489,6 @@ public class MarriageRegistration extends AppCompatActivity {
     }
 
 
-
-
-
     private boolean validateSpinners() {
 
         boolean result = true;
@@ -452,7 +501,7 @@ public class MarriageRegistration extends AppCompatActivity {
 
             TextView selectedTextView = (TextView) selectedView;
 
-            if (selectedTextView.getText().toString().equalsIgnoreCase("Select Desired Appointment Date *")) {
+            if (selectedTextView.getText().toString().equalsIgnoreCase("Select Appointment Date *")) {
                 selectedTextView.setFocusable(true);
                 selectedTextView.setClickable(true);
                 selectedTextView.setFocusableInTouchMode(true);
