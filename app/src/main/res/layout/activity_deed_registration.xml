@@ -465,64 +465,115 @@
                         android:id="@+id/address_proof_error"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/edittext_border"
                         android:clickable="true"
+                        android:drawableLeft="@drawable/ic_image_black_24dp"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
-                        android:text="Choose Address Proof"
-                        android:textColor="@color/colorAccent"
-                        android:textStyle="italic" />
+                        android:text="Address Proof"
+                        android:textSize="16sp" />
 
                     <ImageView
                         android:id="@+id/address_proof_imageView"
-                        android:layout_width="300dp"
+                        android:layout_width="match_parent"
                         android:layout_height="200dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_gravity="center"
-                        android:src="@drawable/noimage"
-                        android:layout_marginBottom="8dp"/>
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/edittext_border"
+                        android:src="@drawable/noimage" />
+
+
+                    <!--NAME-->
+                    <TextView
+                        android:id="@+id/address_proof_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:alpha="0.5"
+                        android:background="#1E90FF"/>
+
 
                     <TextView
                         android:id="@+id/age_proof_error"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/edittext_border"
                         android:clickable="true"
+                        android:drawableLeft="@drawable/ic_image_black_24dp"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
-                        android:text="Choose Age Proof"
-                        android:textColor="@color/colorAccent"
-                        android:textStyle="italic" />
+                        android:text="Age Proof"
+                        android:textSize="16sp" />
 
                     <ImageView
                         android:id="@+id/age_proof_imageView"
-                        android:layout_width="300dp"
+                        android:layout_width="match_parent"
                         android:layout_height="200dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_gravity="center"
-                        android:src="@drawable/noimage"
-                        android:layout_marginBottom="8dp"/>
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/edittext_border"
+                        android:src="@drawable/noimage" />
+
+
+                    <!--NAME-->
+                    <TextView
+                        android:id="@+id/age_proof_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:alpha="0.5"
+                        android:background="#1E90FF"/>
 
 
                     <TextView
                         android:id="@+id/id_proof_error"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/edittext_border"
                         android:clickable="true"
+                        android:drawableLeft="@drawable/ic_image_black_24dp"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
-                        android:text="Choose Identity Proof"
-                        android:textColor="@color/colorAccent"
-                        android:textStyle="italic" />
+                        android:text="Identity Proof"
+                        android:textSize="16sp" />
 
                     <ImageView
                         android:id="@+id/id_proof_imageView"
-                        android:layout_width="300dp"
+                        android:layout_width="match_parent"
                         android:layout_height="200dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/edittext_border"
                         android:src="@drawable/noimage" />
+
+
+                    <!--NAME-->
+                    <TextView
+                        android:id="@+id/id_proof_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:alpha="0.5"
+                        android:background="#1E90FF"/>
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
