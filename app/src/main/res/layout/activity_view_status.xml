@@ -66,25 +66,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="48dp"
+
             android:layout_marginTop="80dp">
 
             <Button
                 android:id="@+id/btnSubmit"
-                android:layout_width="125dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#228B22"
                 android:onClick="checkStatus"
                 android:text="Check Status"
-                android:textColor="#fff" />
-
-            <Button
-                android:id="@+id/btnReset"
-                android:layout_width="125dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#4169E1"
-                android:text="Reset"
-                android:onClick="doReset"
                 android:textColor="#fff" />
 
         </LinearLayout>

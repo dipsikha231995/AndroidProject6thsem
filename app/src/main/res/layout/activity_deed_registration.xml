@@ -406,18 +406,8 @@
                         android:gravity="center">
 
                         <Button
-                            android:id="@+id/btnReset"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="20dp"
-                            android:backgroundTint="#4169E1"
-                            android:text="Reset"
-                            android:textColor="#fff" />
-
-                        <Button
                             android:id="@+id/btnSubmit"
-                            android:layout_width="100dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
                             android:layout_marginBottom="20dp"
@@ -491,12 +481,12 @@
                         android:id="@+id/address_proof_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAlignment="center"
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
                         android:alpha="0.5"
-                        android:background="#1E90FF"/>
+                        android:background="#1E90FF"
+                        android:textAlignment="center" />
 
 
                     <TextView
@@ -529,12 +519,12 @@
                         android:id="@+id/age_proof_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAlignment="center"
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
                         android:alpha="0.5"
-                        android:background="#1E90FF"/>
+                        android:background="#1E90FF"
+                        android:textAlignment="center" />
 
 
                     <TextView
@@ -567,12 +557,12 @@
                         android:id="@+id/id_proof_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAlignment="center"
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
                         android:alpha="0.5"
-                        android:background="#1E90FF"/>
+                        android:background="#1E90FF"
+                        android:textAlignment="center" />
 
 
                     <LinearLayout
@@ -581,18 +571,8 @@
                         android:gravity="center">
 
                         <Button
-                            android:id="@+id/btnReset2"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="20dp"
-                            android:backgroundTint="#4169E1"
-                            android:text="Reset"
-                            android:textColor="#fff" />
-
-                        <Button
                             android:id="@+id/btnSubmit2"
-                            android:layout_width="100dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
                             android:layout_marginBottom="20dp"
@@ -644,7 +624,7 @@
 
                     <Button
                         android:id="@+id/btnPrint"
-                        android:layout_width="120dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
                         android:layout_marginBottom="15dp"

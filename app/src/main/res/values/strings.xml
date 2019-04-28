@@ -1,33 +1,9 @@
 <resources>
     <string name="app_name">e-PANJEEYAN</string>
 
-    <string-array name="applicantType">
-        <item>Select Applicant Type *</item>
-        <item>Individual</item>
-        <item>Government</item>
-    </string-array>
-
     <string-array name="selectOffice">
         <item>Select Office for Registration * </item>
         <item>Kamrup Metro</item>
-    </string-array>
-
-    <string-array name="selectDeed">
-        <item>Select Deed Category *</item>
-        <item>AFFIDAVIT</item>
-        <item>AGREEMENT</item>
-        <item>ADOPTION</item>
-        <item>RECTIFICATION</item>
-        <item>CANCELLATION</item>
-        <item>POWER OF ATTORNEY(GEN)</item>
-        <item>POWER OF ATTORNEY(SPL)</item>
-        <item>SALE</item>
-        <item>GIFT</item>
-    </string-array>
-
-    <string-array name="selectSubDeed">
-        <item>Select Deed Sub Category *</item>
-        <item>...</item>
     </string-array>
 
     <string-array name="doc_type">

@@ -169,17 +169,8 @@
                     android:gravity="center">
 
                     <Button
-                        android:id="@+id/btnReset1"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="#4169E1"
-                        android:text="Reset"
-                        android:textColor="#fff" />
-
-
-                    <Button
                         android:id="@+id/btnSubmit1"
-                        android:layout_width="100dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#228B22"
                         android:onClick="showNextForm"
@@ -587,18 +578,10 @@
                     android:layout_marginBottom="10dp"
                     android:gravity="center">
 
-                    <Button
-                        android:id="@+id/btnReset"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="#4169E1"
-                        android:text="Reset"
-                        android:textColor="#fff" />
-
 
                     <Button
                         android:id="@+id/btnSubmit"
-                        android:layout_width="100dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#228B22"
                         android:onClick="showNextForm"
@@ -1008,17 +991,8 @@
                     android:gravity="center">
 
                     <Button
-                        android:id="@+id/btnReset2"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="#4169E1"
-                        android:text="Reset"
-                        android:textColor="#fff" />
-
-
-                    <Button
                         android:id="@+id/btnSubmit2"
-                        android:layout_width="100dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#228B22"
                         android:onClick="showNextForm"
@@ -1067,7 +1041,7 @@
 
                 <Button
                     android:id="@+id/btnPrint"
-                    android:layout_width="120dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="15dp"

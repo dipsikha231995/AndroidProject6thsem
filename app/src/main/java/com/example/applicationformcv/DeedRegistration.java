@@ -3,8 +3,8 @@ package com.example.applicationformcv;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.support.annotation.Nullable;
@@ -26,22 +26,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import com.kofigyan.stateprogressbar.StateProgressBar;
 import com.kofigyan.stateprogressbar.components.StateItem;
 import com.kofigyan.stateprogressbar.listeners.OnStateItemClickListener;
@@ -85,10 +92,12 @@ public class DeedRegistration extends AppCompatActivity {
     RadioGroup radioGroupMaleFemale;
     RadioGroup radioUrbanRural;
 
-    private Spinner mySpinner1;
+    Spinner mySpinner1;
     Spinner mySpinner2, mySpinner3, mySpinner4;
     Spinner mySpinner5;
     ArrayAdapter<String> myAdapter5;
+    ArrayAdapter<String> subDeedAdapter;
+
     private Bitmap bitmap;
 
     private List<String> list;
@@ -113,6 +122,7 @@ public class DeedRegistration extends AppCompatActivity {
 
     TextView address_name, age_name, id_name;
 
+    List<DeedCategoryModel> deedlist = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,10 +135,29 @@ public class DeedRegistration extends AppCompatActivity {
         confirmForm = findViewById(R.id.confirm_form);
         header = findViewById(R.id.header_text2);
 
-        mySpinner1 = findViewById(R.id.spinner1);
-        mySpinner2 = findViewById(R.id.spinner2);
-        mySpinner3 = findViewById(R.id.spinner3);
-        mySpinner4 = findViewById(R.id.spinner4);
+        mySpinner1 = findViewById(R.id.spinner1);               // applicant type spinner
+        mySpinner2 = findViewById(R.id.spinner2);               // office registration spinner
+        mySpinner3 = findViewById(R.id.spinner3);               // deed category spinner
+
+        mySpinner4 = findViewById(R.id.spinner4);               // sub deed category spinner
+
+        List<String> temp = new ArrayList<>();
+        temp.add("Select Sub Deed Category *");
+
+        subDeedAdapter = new ArrayAdapter<String>(this,
+                R.layout.spinner_item_text_colour, temp);
+        subDeedAdapter.setDropDownViewResource(R.layout.spinner_item_text_colour);
+
+        mySpinner4.setAdapter(subDeedAdapter);
+
+
+
+        mySpinnerDate = findViewById(R.id.spinnerDate);         // date spinner
+
+        setUpApplicantSpinner();
+        setUpDeedCategorySpinner();
+        getHolidays();
+
 
         cardView = findViewById(R.id.card1);
 
@@ -166,9 +195,6 @@ public class DeedRegistration extends AppCompatActivity {
         });
 
 
-        mySpinnerDate = findViewById(R.id.spinnerDate);
-        getdata();
-
         // imagesViews and error textViews
         addressimageView = findViewById(R.id.address_proof_imageView);
         ageImageView = findViewById(R.id.age_proof_imageView);
@@ -190,34 +216,66 @@ public class DeedRegistration extends AppCompatActivity {
         radioUrbanRural = findViewById(R.id.radioGroup2);
 
 
-        //create array adapter
-        ArrayAdapter<String> myAdapter1 = new ArrayAdapter<String>(this, R.layout.spinner_item_text_colour,
-                getResources().getStringArray(R.array.applicantType));
-        myAdapter1.setDropDownViewResource(R.layout.spinner_item_text_colour);
-        mySpinner1.setAdapter(myAdapter1);
-
         ArrayAdapter<String> myAdapter2 = new ArrayAdapter<String>(this, R.layout.spinner_item_text_colour,
                 getResources().getStringArray(R.array.selectOffice));
         myAdapter2.setDropDownViewResource(R.layout.spinner_item_text_colour);
         mySpinner2.setAdapter(myAdapter2);
-
-        ArrayAdapter<String> myAdapter3 = new ArrayAdapter<String>(this, R.layout.spinner_item_text_colour,
-                getResources().getStringArray(R.array.selectDeed));
-        myAdapter3.setDropDownViewResource(R.layout.spinner_item_text_colour);
-        mySpinner3.setAdapter(myAdapter3);
-
-
-        //
-        list = new ArrayList<>();
-        myAdapter4 = new ArrayAdapter<>(this, R.layout.spinner_item_text_colour, list);
-        myAdapter4.setDropDownViewResource(R.layout.spinner_item_text_colour);
-        mySpinner4.setAdapter(myAdapter4);
 
 
         mySpinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String category = parent.getItemAtPosition(position).toString();
+
+                if (position > 0) {
+                    Log.d(TAG, deedlist.get(position - 1).toString()); //model list and category list are not in same order
+
+                    DeedCategoryModel obj = deedlist.get(position-1); //getting the model from the deedlist & storing in obj
+                    int code = obj.getCode(); //storing the code in variable code
+
+
+                    final String url =  "http://192.168.43.210:8080/e-Panjeeyan/getsubdeed?codeVal=" + code;
+
+
+
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+
+                                    try {
+                                        //response from servlet is kept in the JSONArray array
+                                        JSONArray array = new JSONArray(response);
+
+                                        List<String> subDeed= new ArrayList<>();
+                                        subDeed.add("Select Sub Deed Category *");
+
+                                        //array list is populated from JSON array
+                                        for (int i = 0; i < array.length(); i++) {
+                                            subDeed.add(array.getString(i));
+                                        }
+
+                                        subDeedAdapter.clear();
+                                        subDeedAdapter.addAll(subDeed);
+                                        subDeedAdapter.notifyDataSetChanged();
+
+
+                                    } catch (Exception e) {
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                }
+                            });
+
+                    // Add request to the Request queue
+                    MySingleton.getInstance(getApplicationContext())
+                            .addToRequestQueue(stringRequest);
+
+                }
+
 
                 if (category.equalsIgnoreCase("SALE") || category.equalsIgnoreCase("GIFT")) {
                     forSale.setVisibility(View.VISIBLE);
@@ -229,8 +287,7 @@ public class DeedRegistration extends AppCompatActivity {
                     radioGroupMaleFemale.setVisibility(View.VISIBLE);
                     forLandFlat.setVisibility(View.VISIBLE);
                     radioUrbanRural.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     forSale.setVisibility(View.GONE);
                     //amount.setVisibility(View.GONE);
 
@@ -311,7 +368,6 @@ public class DeedRegistration extends AppCompatActivity {
                 }
             }
         });
-
     }
 
 
@@ -352,13 +408,11 @@ public class DeedRegistration extends AppCompatActivity {
         if (requestCode == ADDRESS_PROOF_REQUEST && resultCode == RESULT_OK && data != null) {
 
             decideFileType(path, ADDRESS_PROOF_REQUEST);
-        }
-        else if (requestCode == AGE_PROOF_REQUEST && resultCode == RESULT_OK && data != null) {
+        } else if (requestCode == AGE_PROOF_REQUEST && resultCode == RESULT_OK && data != null) {
 
             decideFileType(path, AGE_PROOF_REQUEST);
 
-        }
-        else if (requestCode == IDENTITY_PROOF_REQUEST && resultCode == RESULT_OK && data != null) {
+        } else if (requestCode == IDENTITY_PROOF_REQUEST && resultCode == RESULT_OK && data != null) {
 
             decideFileType(path, IDENTITY_PROOF_REQUEST);
 
@@ -379,15 +433,15 @@ public class DeedRegistration extends AppCompatActivity {
 
             switch (docType) {
                 case ADDRESS_PROOF_REQUEST:
-                    loadImage(path, ADDRESS_PROOF_REQUEST);
+                    executeAsyncTask(path, ADDRESS_PROOF_REQUEST);
                     break;
 
                 case AGE_PROOF_REQUEST:
-                    loadImage(path, AGE_PROOF_REQUEST);
+                    executeAsyncTask(path, AGE_PROOF_REQUEST);
                     break;
 
                 case IDENTITY_PROOF_REQUEST:
-                    loadImage(path, IDENTITY_PROOF_REQUEST);
+                    executeAsyncTask(path, IDENTITY_PROOF_REQUEST);
                     break;
             }
         }
@@ -408,40 +462,69 @@ public class DeedRegistration extends AppCompatActivity {
         }
     }
 
-    private void loadImage(Uri uri, int docType) {
-        try {
-
-            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
 
-//            switch (docType) {
-//                case ADDRESS_PROOF_REQUEST:
-//                    addressimageView.setImageBitmap(bitmap);
-//                    addressProofSelected = true;
-//                    //addressimgError.setVisibility(View.GONE);
-//                    addressimgError.setError(null);
-//
-//                    break;
-//
-//                case AGE_PROOF_REQUEST:
-//                    ageImageView.setImageBitmap(bitmap);
-//                    ageProofSelected = true;
-//                    //ageimgError.setVisibility(View.GONE);
-//                    ageimgError.setError(null);
-//
-//                    break;
-//
-//                case IDENTITY_PROOF_REQUEST:
-//                    idImageView.setImageBitmap(bitmap);
-//                    identityProofSelected = true;
-//                    //idimgError.setVisibility(View.GONE);
-//                    idimgError.setError(null);
-//
-//                    break;
-//            }
+    private void executeAsyncTask(Uri uri, final int requestCode) {
+        // run the async task to generate the temp file
 
-        } catch (IOException e) {
-            Log.d(TAG, e.getMessage());
+        new AsyncTask<Uri, Void, File>() {
+            @Override
+            protected File doInBackground(Uri... uris) {
+                String mimeType = getContentResolver().getType(uris[0]);
+
+                Log.d(TAG, "uri: " + uris[0]);
+                Log.d(TAG, "mime type: " + mimeType);
+
+                // get the temp file
+                // and compress it
+                File tempFile = null;
+
+                try {
+                    tempFile = new Compressor(getApplicationContext())
+                            .compressToFile(
+                                    MyFileUtil.createTempFile(getApplicationContext(), uris[0])
+                            );
+                }
+                catch (Exception ex) { }
+
+                return tempFile;            // return the compressed file
+            }
+
+            @Override
+            protected void onPostExecute(File file) {
+                super.onPostExecute(file);
+
+                displayImage(file, requestCode);
+            }
+
+        }.execute(uri);
+    }
+
+
+    private void displayImage(File imageFile, int requestCode) {
+
+        Log.d(TAG, "compressed: " + (imageFile.length() / 1024) + "KB");
+
+        if (imageFile != null) {
+            // choose the imageView
+            ImageView imageView = null;
+
+            if (requestCode == ADDRESS_PROOF_REQUEST) {
+                imageView = addressimageView;
+            }
+            else if (requestCode == AGE_PROOF_REQUEST) {
+                imageView = ageImageView;
+            }
+            else if (requestCode == IDENTITY_PROOF_REQUEST) {
+                imageView = idImageView;
+            }
+
+
+            //Loading image from file location into imageView
+            Glide.with(DeedRegistration.this)
+                    .load(imageFile)
+                    .centerCrop()
+                    .into(imageView);
         }
     }
 
@@ -480,35 +563,31 @@ public class DeedRegistration extends AppCompatActivity {
                         address_name.setText(displayName);
 
                         addressimgError.setError(null);
-                    }
-                    else if (doc_type == AGE_PROOF_REQUEST) {
+                    } else if (doc_type == AGE_PROOF_REQUEST) {
 
                         ageImageView.setImageResource(R.drawable.pdf);
                         ageProofSelected = true;
                         //ageimgError.setText(displayName);
-                       //ageimgError.setVisibility(View.VISIBLE);
+                        //ageimgError.setVisibility(View.VISIBLE);
                         age_name.setText(displayName);
 
                         ageimgError.setError(null);
-                    }
-                    else if (doc_type == IDENTITY_PROOF_REQUEST) {
+                    } else if (doc_type == IDENTITY_PROOF_REQUEST) {
 
                         idImageView.setImageResource(R.drawable.pdf);
                         identityProofSelected = true;
                         //idimgError.setText(displayName);
-                       // idimgError.setVisibility(View.VISIBLE);
+                        // idimgError.setVisibility(View.VISIBLE);
                         id_name.setText(displayName);
 
                         idimgError.setError(null);
                     }
                 }
 
-            }
-            finally {
+            } finally {
                 cursor.close();
             }
-        }
-        else if (uriString.startsWith("file://")) {
+        } else if (uriString.startsWith("file://")) {
             displayName = myFile.getName();
 
             Toast.makeText(this, displayName, Toast.LENGTH_SHORT).show();
@@ -516,15 +595,13 @@ public class DeedRegistration extends AppCompatActivity {
     }
 
 
-    private void getdata() {
+    private void getHolidays() {
 
-        final String url = "http://192.168.43.210:8080/mvcbook/getdates";
+        final String url = "http://192.168.43.210:8080/e-Panjeeyan/getholiday";
+        final ArrayList<String> dateList = new ArrayList<>();
 
-        final ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("Select Appointment Date *");
-
+        // get the holidays from the database
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -534,14 +611,14 @@ public class DeedRegistration extends AppCompatActivity {
                             JSONArray array = new JSONArray(response);
 
                             //empty list is declared which will hold the json array items
-                            //List<String> arrayList = new ArrayList<>();
+                            //List<String> dateList = new ArrayList<>();
 
                             //array list is populated from JSON array
                             for (int i = 0; i < array.length(); i++) {
-                                arrayList.add(array.getString(i));
+                                dateList.add(array.getString(i));
                             }
 
-                            setUpAppointmentDateSpinner(arrayList);
+                            setUpAppointmentDateSpinner(dateList);
 
                         } catch (Exception e) {
                         }
@@ -554,16 +631,137 @@ public class DeedRegistration extends AppCompatActivity {
                 });
 
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+        // Add request to the Request queue
+        MySingleton.getInstance(getApplicationContext())
+                .addToRequestQueue(stringRequest);
+
     }
 
 
-    private void setUpAppointmentDateSpinner(ArrayList<String> dataSource) {
 
-        ArrayAdapter myDateAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item_text_colour, dataSource);
-        myDateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mySpinnerDate.setAdapter(myDateAdapter);
+    private void setUpAppointmentDateSpinner(List<String> holidays) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+        List<String> dates = new ArrayList<>();
+        dates.add("Select Appointment Date *");
+
+
+        // generate 15 days from today
+        for (int i = 0; dates.size() <= 15; i++) {
+            Calendar cal = Calendar.getInstance();          // today's date and time
+            cal.add(Calendar.DATE, i);
+
+            String newDate = formatter.format(cal.getTime());
+
+            // check if the new date is a holiday
+            if (!holidays.contains(newDate)){
+                dates.add(newDate);
+            }
+        }
+
+        Log.d(TAG, "appointment dates: " + dates);
+
+
+        // set up the spinner
+        ArrayAdapter<String> dateAdapter = new ArrayAdapter<>(
+                getApplicationContext(),
+                R.layout.spinner_item_text_colour,
+                dates
+        );
+        dateAdapter.setDropDownViewResource(R.layout.spinner_item_text_colour);
+        mySpinnerDate.setAdapter(dateAdapter);
+    }
+
+
+
+    private void setUpApplicantSpinner() {
+
+        final String url = "http://192.168.43.210:8080/e-Panjeeyan/getapplicanttype";
+        final ArrayList<String> typeList = new ArrayList<>();
+        typeList.add("Select Applicant Type *");
+
+
+        // get the applicantType from the database
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            //response from servlet is kept in the JSONArray array
+                            JSONArray array = new JSONArray(response);
+
+                            //array list is populated from JSON array
+                            for (int i = 0; i < array.length(); i++) {
+                                typeList.add(array.getString(i));
+                            }
+
+
+                            ArrayAdapter myTypeAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                                    R.layout.spinner_item_text_colour, typeList);
+
+                            myTypeAdapter.setDropDownViewResource(R.layout.spinner_item_text_colour);
+                            mySpinner1.setAdapter(myTypeAdapter);
+
+                        } catch (Exception e) {
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                });
+
+        // Add request to the Request queue
+        MySingleton.getInstance(getApplicationContext())
+                .addToRequestQueue(stringRequest);
+
+    }
+
+
+    private void setUpDeedCategorySpinner(){
+
+        final String url = "http://192.168.43.210:8080/e-Panjeeyan/getdeedcategory";
+        //deedList.add("Select Deed Category *");
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        Type collectionType = new TypeToken<List<DeedCategoryModel>>(){}.getType();
+                        deedlist = new Gson().fromJson(response, collectionType);
+
+                        // ArrayList of String which contains the category names
+                        List<String> list = new ArrayList<>();
+                        list.add("Select Deed Category *");
+
+                        Iterator<DeedCategoryModel> iterator = deedlist.iterator();
+
+                       while (iterator.hasNext()) {
+                           DeedCategoryModel model = iterator.next();
+                           list.add(model.getSection());
+                       }
+
+                        ArrayAdapter myTypeAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                                R.layout.spinner_item_text_colour, list);
+
+                        myTypeAdapter.setDropDownViewResource(R.layout.spinner_item_text_colour);
+                        mySpinner3.setAdapter(myTypeAdapter);
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                });
+
+        // Add request to the Request queue
+        MySingleton.getInstance(getApplicationContext())
+                .addToRequestQueue(stringRequest);
+
     }
 
 
@@ -697,14 +895,11 @@ public class DeedRegistration extends AppCompatActivity {
 
                 if (curState > nextState) {
                     uploadDocumentsForm.setVisibility(View.GONE);
-                }
-                else if (!validateUploadDocumentsForm()) {
+                } else if (!validateUploadDocumentsForm()) {
                     return;
-                }
-                else if (nextState == 3 && !completeAllStages()) {
+                } else if (nextState == 3 && !completeAllStages()) {
                     return;
-                }
-                else {
+                } else {
                     uploadDocumentsForm.setVisibility(View.GONE);
                 }
 

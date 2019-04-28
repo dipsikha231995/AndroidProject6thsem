@@ -37,6 +37,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
+            case R.id.myprofile_menu_item:
+                Intent intent = new Intent(this, myProfile.class);
+                startActivity(intent);
+                break;
+
             case R.id.logout_menu_item:
                 // sign-out the user
                 AuthUI.getInstance()
@@ -52,9 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
-
 
 
     public void doDeedRegister(View view) {
@@ -84,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void combineForm(View view) {
-
+        Intent intent4 = new Intent(this,MakeAssessmentFee.class);
+        startActivity(intent4);
     }
 }
