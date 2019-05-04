@@ -110,28 +110,28 @@ public class Bridedetails extends AppCompatActivity {
 
 
         //validation
-        awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
-
-        //adding validation to edittexts
-        awesomeValidation.addValidation(this, R.id.Name, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.nameerror);
-        awesomeValidation.addValidation(this, R.id.Age, Range.closed(18, 60), R.string.ageerror);
-        awesomeValidation.addValidation(this, R.id.Occupation, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.occerror);
-        awesomeValidation.addValidation(this, R.id.FName, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.fNameerror);
-
-        awesomeValidation.addValidation(this, R.id.city, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.cityerror);
-        awesomeValidation.addValidation(this, R.id.policeStation, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.policeerror);
-        awesomeValidation.addValidation(this, R.id.postofficeName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.poerror);
-        awesomeValidation.addValidation(this, R.id.districtName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.districterror);
-        awesomeValidation.addValidation(this, R.id.stateName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.stateerror);
-        awesomeValidation.addValidation(this, R.id.pin, "(\\d{6})", R.string.pinerror);
-        awesomeValidation.addValidation(this, R.id.lengthResidence, "(\\d+)", R.string.lengtherror);
-
-        awesomeValidation.addValidation(this, R.id.per_city, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.cityerror);
-        awesomeValidation.addValidation(this, R.id.per_policeStation, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.policeerror);
-        awesomeValidation.addValidation(this, R.id.per_postofficeName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.poerror);
-        awesomeValidation.addValidation(this, R.id.per_districtName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.districterror);
-        awesomeValidation.addValidation(this, R.id.per_stateName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.stateerror);
-        awesomeValidation.addValidation(this, R.id.per_pin, "(\\d{6})", R.string.pinerror);
+//        awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
+//
+//        //adding validation to edittexts
+//        awesomeValidation.addValidation(this, R.id.Name, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.nameerror);
+//        awesomeValidation.addValidation(this, R.id.Age, Range.closed(18, 60), R.string.ageerror);
+//        awesomeValidation.addValidation(this, R.id.Occupation, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.occerror);
+//        awesomeValidation.addValidation(this, R.id.FName, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.fNameerror);
+//
+//        awesomeValidation.addValidation(this, R.id.city, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.cityerror);
+//        awesomeValidation.addValidation(this, R.id.policeStation, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.policeerror);
+//        awesomeValidation.addValidation(this, R.id.postofficeName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.poerror);
+//        awesomeValidation.addValidation(this, R.id.districtName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.districterror);
+//        awesomeValidation.addValidation(this, R.id.stateName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.stateerror);
+//        awesomeValidation.addValidation(this, R.id.pin, "(\\d{6})", R.string.pinerror);
+//        awesomeValidation.addValidation(this, R.id.lengthResidence, "(\\d+)", R.string.lengtherror);
+//
+//        awesomeValidation.addValidation(this, R.id.per_city, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.cityerror);
+//        awesomeValidation.addValidation(this, R.id.per_policeStation, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.policeerror);
+//        awesomeValidation.addValidation(this, R.id.per_postofficeName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.poerror);
+//        awesomeValidation.addValidation(this, R.id.per_districtName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.districterror);
+//        awesomeValidation.addValidation(this, R.id.per_stateName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.stateerror);
+//        awesomeValidation.addValidation(this, R.id.per_pin, "(\\d{6})", R.string.pinerror);
 
     }
 

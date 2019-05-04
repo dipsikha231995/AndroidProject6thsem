@@ -26,7 +26,7 @@ public class ViewStatus extends AppCompatActivity {
         //validation
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
-        awesomeValidation.addValidation(this, R.id.number, "\\d+", R.string.refNumber);
+//        awesomeValidation.addValidation(this, R.id.number, "\\d+", R.string.refNumber);
 
     }
 

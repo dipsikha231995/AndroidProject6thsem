@@ -11,13 +11,13 @@
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
         app:spb_checkStateCompleted="true"
-        app:spb_currentStateDescriptionColor="#009688"
+        app:spb_currentStateDescriptionColor="#228B22"
         app:spb_currentStateNumber="one"
         app:spb_descriptionTopSpaceIncrementer="5dp"
         app:spb_maxStateNumber="four"
         app:spb_stateBackgroundColor="#BDBDBD"
         app:spb_stateDescriptionColor="#808080"
-        app:spb_stateForegroundColor="#009688"
+        app:spb_stateForegroundColor="#228B22"
         app:spb_stateNumberBackgroundColor="#808080"
         app:spb_stateNumberForegroundColor="#eeeeee"
         app:spb_stateSize="40dp" />
@@ -40,7 +40,7 @@
             android:focusableInTouchMode="true"
             android:gravity="center"
             android:padding="5dp"
-            android:text="Add Marriage Details"
+            android:text="@string/marriage"
             android:textColor="#fff"
             android:textSize="18sp" />
 
@@ -79,7 +79,7 @@
                         android:id="@+id/applicantNamewrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="\t\tApplicant Name *">
+                        android:hint="@string/name">
 
                         <EditText
                             android:id="@+id/applicantName"
@@ -88,10 +88,8 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginBottom="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_person_black_24dp"
+                            android:drawableLeft="@drawable/ic_person"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
 
                     </android.support.design.widget.TextInputLayout>
@@ -100,17 +98,15 @@
                         android:id="@+id/usernameWrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="\t\tEmail">
+                        android:hint="@string/email">
 
                         <EditText
                             android:id="@+id/username"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_email_black_24dp"
+                            android:drawableLeft="@drawable/ic_email"
                             android:inputType="textEmailAddress"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -119,17 +115,15 @@
                         android:id="@+id/numberWrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="\t\tMobile number *">
+                        android:hint="@string/num">
 
                         <EditText
                             android:id="@+id/number"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_phone_android_black_24dp"
+                            android:drawableLeft="@drawable/ic_phone"
                             android:inputType="phone"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -137,27 +131,23 @@
                         android:id="@+id/spinner11"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:background="@drawable/spinner_border"
-                        android:paddingEnd="20dp" />
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="10dp"/>
 
 
                     <Spinner
                         android:id="@+id/spinner2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:background="@drawable/spinner_border"
-                        android:paddingEnd="20dp" />
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="10dp"/>
 
 
                     <Spinner
                         android:id="@+id/spinner3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:background="@drawable/spinner_border"
-                        android:paddingEnd="20dp" />
+                        android:layout_marginStart="8dp" />
 
                 </LinearLayout>
 
@@ -165,8 +155,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="350dp"
-                    android:gravity="center">
+                    android:gravity="center|bottom">
 
                     <Button
                         android:id="@+id/btnSubmit1"
@@ -174,7 +163,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="#228B22"
                         android:onClick="showNextForm"
-                        android:text="Next"
+                        android:text="@string/next"
                         android:textColor="#fff" />
 
                 </LinearLayout>
@@ -186,7 +175,7 @@
             <android.support.v7.widget.CardView
                 android:id="@+id/bride_form"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="1350dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="8dp"
@@ -204,17 +193,15 @@
                         android:id="@+id/nameWrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="\t\tName of Bride*">
+                        android:hint="@string/brideName">
 
                         <EditText
                             android:id="@+id/Name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_person_black_24dp"
+                            android:drawableLeft="@drawable/ic_person"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
 
                     </android.support.design.widget.TextInputLayout>
@@ -223,17 +210,15 @@
                         android:id="@+id/ageWrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="\t\tAge *">
+                        android:hint="@string/ageMarr">
 
                         <EditText
                             android:id="@+id/Age"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_today_black_24dp"
+                            android:drawableLeft="@drawable/ic_today"
                             android:inputType="number"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
 
                     </android.support.design.widget.TextInputLayout>
@@ -242,17 +227,15 @@
                         android:id="@+id/occupationWrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="\t\tOccupation *">
+                        android:hint="@string/occ">
 
                         <EditText
                             android:id="@+id/Occupation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_work_black_24dp"
+                            android:drawableLeft="@drawable/ic_work"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
 
                     </android.support.design.widget.TextInputLayout>
@@ -261,17 +244,15 @@
                         android:id="@+id/fathernameWrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="\t\tFather's Name *">
+                        android:hint="string/fname">
 
                         <EditText
                             android:id="@+id/FName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_father_black_24dp"
+                            android:drawableLeft="@drawable/ic_father"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
 
                     </android.support.design.widget.TextInputLayout>
@@ -281,15 +262,14 @@
                         android:id="@+id/spinner1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:background="@drawable/spinner_border"
-                        android:paddingEnd="20dp" />
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"/>
 
                     <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="14dp"
+                        android:layout_marginTop="18dp"
                         android:layout_marginEnd="8dp"
                         android:backgroundTint="#4169E1">
 
@@ -300,7 +280,7 @@
                             android:focusableInTouchMode="true"
                             android:gravity="center"
                             android:padding="5dp"
-                            android:text="Present Address"
+                            android:text="@string/preAdd"
                             android:textColor="#fff"
                             android:textSize="18sp" />
 
@@ -316,11 +296,9 @@
                             android:id="@+id/city"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_location_city_black_24dp"
-                            android:hint="\t\tCity/Town/Village *"
+                            android:drawableLeft="@drawable/ic_location_city"
+                            android:hint="@string/city"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -334,11 +312,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_policestation_black_24dp"
-                            android:hint="\t\tPolice Station *"
+                            android:drawableLeft="@drawable/ic_location_on"
+                            android:hint="@string/police"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -352,11 +328,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_drafts_black_24dp"
-                            android:hint="\t\tPost Office *"
+                            android:drawableLeft="@drawable/ic_drafts"
+                            android:hint="@string/post"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -370,11 +344,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_home_black_24dp"
-                            android:hint="\t\tDistrict *"
+                            android:drawableLeft="@drawable/ic_home"
+                            android:hint="@string/district"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -388,11 +360,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_person_pin_circle_black_24dp"
-                            android:hint="\t\tState *"
+                            android:drawableLeft="@drawable/ic_person_pin"
+                            android:hint="@string/state"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -406,11 +376,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_fiber_pin_black_24dp"
-                            android:hint="\t\tPIN *"
+                            android:drawableLeft="@drawable/ic_fiber_pin"
+                            android:hint="@string/pin"
                             android:inputType="number"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -424,11 +392,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_timer_black_24dp"
-                            android:hint="\t\tLength of residence (in years)"
+                            android:drawableLeft="@drawable/ic_timer"
+                            android:hint="@string/length"
                             android:inputType="number"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -447,7 +413,7 @@
                             android:focusableInTouchMode="true"
                             android:gravity="center"
                             android:padding="5dp"
-                            android:text="Permanent Address\n(If same as Present)"
+                            android:text="@string/perAdd"
                             android:textColor="#fff"
                             android:textSize="18sp" />
 
@@ -469,10 +435,8 @@
                             android:id="@+id/per_city"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_location_city_black_24dp"
-                            android:hint="\t\tCity/Town/Village *"
-                            android:inputType="text"
+                            android:drawableLeft="@drawable/ic_location_city"
+                            android:hint="@string/city"
                             android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
@@ -487,10 +451,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_policestation_black_24dp"
-                            android:hint="\t\tPolice Station *"
-                            android:inputType="text"
+                            android:drawableLeft="@drawable/ic_location_on"
+                            android:hint="@string/police"
                             android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
@@ -505,10 +467,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_drafts_black_24dp"
-                            android:hint="\t\tPost Office *"
-                            android:inputType="text"
+                            android:drawableLeft="@drawable/ic_drafts"
+                            android:hint="@string/post"
                             android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
@@ -523,10 +483,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_home_black_24dp"
-                            android:hint="\t\tDistrict *"
-                            android:inputType="text"
+                            android:drawableLeft="@drawable/ic_home"
+                            android:hint="@string/district"
                             android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
@@ -541,11 +499,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_person_pin_circle_black_24dp"
-                            android:hint="\t\tState *"
+                            android:drawableLeft="@drawable/ic_person_pin"
+                            android:hint="@string/state"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -559,11 +515,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_fiber_pin_black_24dp"
-                            android:hint="\t\tPIN *"
+                            android:drawableLeft="@drawable/ic_fiber_pin"
+                            android:hint="@string/pin"
                             android:inputType="number"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -574,9 +528,7 @@
                     android:id="@+id/linearLayout2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="1220dp"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center">
+                    android:gravity="center|bottom">
 
 
                     <Button
@@ -585,7 +537,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="#228B22"
                         android:onClick="showNextForm"
-                        android:text="Next"
+                        android:text="@string/next"
                         android:textColor="#fff" />
 
                 </LinearLayout>
@@ -597,7 +549,7 @@
             <android.support.v7.widget.CardView
                 android:id="@+id/groom_form"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="1350dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="8dp"
@@ -616,17 +568,15 @@
                         android:id="@+id/nameWrapper2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="\t\tName of Groom *">
+                        android:hint="@string/groomName">
 
                         <EditText
                             android:id="@+id/Name2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_person_black_24dp"
+                            android:drawableLeft="@drawable/ic_person"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
 
                     </android.support.design.widget.TextInputLayout>
@@ -635,17 +585,15 @@
                         android:id="@+id/ageWrapper2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="\t\tAge *">
+                        android:hint="@string/ageMarr">
 
                         <EditText
                             android:id="@+id/Age2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_today_black_24dp"
+                            android:drawableLeft="@drawable/ic_today"
                             android:inputType="number"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
 
                     </android.support.design.widget.TextInputLayout>
@@ -654,17 +602,15 @@
                         android:id="@+id/occupationWrapper2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="\t\tOccupation *">
+                        android:hint="@string/occ">
 
                         <EditText
                             android:id="@+id/Occupation2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_work_black_24dp"
+                            android:drawableLeft="@drawable/ic_work"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
 
                     </android.support.design.widget.TextInputLayout>
@@ -673,17 +619,15 @@
                         android:id="@+id/fathernameWrapper2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="\t\tFather's Name *">
+                        android:hint="@string/fname">
 
                         <EditText
                             android:id="@+id/FName2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_father_black_24dp"
+                            android:drawableLeft="@drawable/ic_father"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
 
                     </android.support.design.widget.TextInputLayout>
@@ -693,15 +637,14 @@
                         android:id="@+id/spinner12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:background="@drawable/spinner_border"
-                        android:paddingEnd="20dp" />
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp" />
 
                     <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="14dp"
+                        android:layout_marginTop="18dp"
                         android:layout_marginEnd="8dp"
                         android:backgroundTint="#4169E1">
 
@@ -712,7 +655,7 @@
                             android:focusableInTouchMode="true"
                             android:gravity="center"
                             android:padding="5dp"
-                            android:text="Present Address"
+                            android:text="@string/preAdd"
                             android:textColor="#fff"
                             android:textSize="18sp" />
 
@@ -728,11 +671,9 @@
                             android:id="@+id/city2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_location_city_black_24dp"
-                            android:hint="\t\tCity/Town/Village *"
+                            android:drawableLeft="@drawable/ic_location_city"
+                            android:hint="@string/city"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -746,11 +687,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_policestation_black_24dp"
-                            android:hint="\t\tPolice Station *"
+                            android:drawableLeft="@drawable/ic_location_on"
+                            android:hint="@string/police"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -764,11 +703,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_drafts_black_24dp"
-                            android:hint="\t\tPost Office *"
+                            android:drawableLeft="@drawable/ic_drafts"
+                            android:hint="@string/post"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -782,10 +719,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_home_black_24dp"
-                            android:hint="\t\tDistrict *"
-                            android:inputType="text"
+                            android:drawableLeft="@drawable/ic_home"
+                            android:hint="@string/district"
                             android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
@@ -800,11 +735,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_person_pin_circle_black_24dp"
-                            android:hint="\t\tState *"
+                            android:drawableLeft="@drawable/ic_person_pin"
+                            android:hint="@string/state"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -818,11 +751,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_fiber_pin_black_24dp"
-                            android:hint="\t\tPIN *"
+                            android:drawableLeft="@drawable/ic_fiber_pin"
+                            android:hint="@string/pin"
                             android:inputType="number"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -836,11 +767,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_timer_black_24dp"
-                            android:hint="\t\tLength of residence (in years)"
+                            android:drawableLeft="@drawable/ic_timer"
+                            android:hint="@string/length"
                             android:inputType="number"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -859,7 +788,7 @@
                             android:focusableInTouchMode="true"
                             android:gravity="center"
                             android:padding="5dp"
-                            android:text="Permanent Address\n(If same as Present)"
+                            android:text="@string/perAdd"
                             android:textColor="#fff"
                             android:textSize="18sp" />
 
@@ -881,11 +810,9 @@
                             android:id="@+id/per_city2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_location_city_black_24dp"
-                            android:hint="\t\tCity/Town/Village *"
+                            android:drawableLeft="@drawable/ic_location_city"
+                            android:hint="@string/city"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -899,11 +826,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_policestation_black_24dp"
-                            android:hint="\t\tPolice Station *"
+                            android:drawableLeft="@drawable/ic_location_on"
+                            android:hint="@string/police"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -917,11 +842,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_drafts_black_24dp"
-                            android:hint="\t\tPost Office *"
+                            android:drawableLeft="@drawable/ic_drafts"
+                            android:hint="@string/post"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -935,11 +858,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_home_black_24dp"
-                            android:hint="\t\tDistrict *"
+                            android:drawableLeft="@drawable/ic_home"
+                            android:hint="@string/district"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -953,11 +874,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_person_pin_circle_black_24dp"
-                            android:hint="\t\tState *"
+                            android:drawableLeft="@drawable/ic_person_pin"
+                            android:hint="@string/state"
                             android:inputType="text"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -971,11 +890,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_fiber_pin_black_24dp"
-                            android:hint="\t\tPIN *"
+                            android:drawableLeft="@drawable/ic_fiber_pin"
+                            android:hint="@string/pin"
                             android:inputType="number"
-                            android:textColor="#4682B4"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -986,9 +903,7 @@
                     android:id="@+id/linearLayout22"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="1220dp"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center">
+                    android:gravity="center|bottom">
 
                     <Button
                         android:id="@+id/btnSubmit2"
@@ -996,7 +911,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="#228B22"
                         android:onClick="showNextForm"
-                        android:text="Next"
+                        android:text="@string/next"
                         android:textColor="#fff" />
 
                 </LinearLayout>
@@ -1020,8 +935,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#e3e3e3"
-                android:gravity="center"
+                android:gravity="center|bottom"
                 android:orientation="vertical">
 
                 <TextView
@@ -1033,9 +947,8 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:paddingTop="25dp"
-                    android:text="Are you sure you want to confirm submit?\n\n*Forms cannot be edited after the final submit is done.*\n"
+                    android:text="@string/iconfirm"
                     android:textAlignment="center"
-                    android:textColor="@color/colorAccent"
                     android:textSize="17sp"
                     android:textStyle="italic" />
 
@@ -1044,10 +957,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
-                    android:layout_marginBottom="15dp"
                     android:backgroundTint="#228B22"
                     android:onClick="submitData"
-                    android:text="Confirm Submit"
+                    android:text="@string/conSubmit"
                     android:textColor="#fff" />
 
             </LinearLayout>

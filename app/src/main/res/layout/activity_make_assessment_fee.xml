@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e3e3e3"
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
@@ -22,7 +21,7 @@
             android:focusableInTouchMode="true"
             android:gravity="center"
             android:padding="5dp"
-            android:text="Form for Assessment of Stamp Duty and Registration Fee"
+            android:text="@string/assessment"
             android:textColor="#fff"
             android:textSize="18sp" />
 
@@ -58,18 +57,16 @@
                         android:id="@+id/spinner3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:background="@drawable/spinner_border"
-                        android:paddingEnd="20dp"/>
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="8dp" />
 
 
                     <Spinner
                         android:id="@+id/spinner4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:background="@drawable/spinner_border"
-                        android:paddingEnd="20dp" />
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="10dp" />
 
 
                     <TextView
@@ -77,7 +74,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
-                        android:text="** Below information is necessary only in case of deeds related to land/flat (e.g sale or gift of land/flat etc.)"
+                        android:text="@string/below"
                         android:textColor="#D81B60" />
 
                     <android.support.design.widget.TextInputLayout
@@ -90,11 +87,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_monetization_on_black_24dp"
-                            android:hint="\t\tConsideration Amount *"
+                            android:drawableLeft="@drawable/ic_monetization"
+                            android:hint="@string/conAmt"
                             android:inputType="number"
-                            android:textColor="#5F9EA0"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -107,8 +102,8 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/edittext_border"
-                        android:drawableLeft="@drawable/ic_wc_black_24dp"
-                        android:text="\tPurchaser with"
+                        android:drawableLeft="@drawable/ic_wc"
+                        android:text="@string/pur"
                         android:textSize="16sp" />
 
                     <RadioGroup
@@ -125,21 +120,21 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            android:text="Both Female &amp; Male Members"
+                            android:text="@string/radio_both"
                             android:textSize="15sp" />
 
                         <RadioButton
                             android:id="@+id/radio_onlyFemale"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Only Female Member/Members"
+                            android:text="@string/radio_only"
                             android:textSize="15sp" />
 
                         <RadioButton
                             android:id="@+id/radio_onlyMale"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Only Male Member/Members"
+                            android:text="@string/radio_onlyM"
                             android:textSize="15sp" />
 
                     </RadioGroup>
@@ -152,8 +147,8 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/edittext_border"
-                        android:drawableLeft="@drawable/ic_my_location_black_24dp"
-                        android:text="\tLand/Flat is located in"
+                        android:drawableLeft="@drawable/ic_gps"
+                        android:text="@string/land"
                         android:textSize="16sp" />
 
                     <RadioGroup
@@ -170,36 +165,42 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            android:text="Urban(Municipality Corporation) Area"
+                            android:text="@string/urbanMCA"
                             android:textSize="15sp" />
 
                         <RadioButton
                             android:id="@+id/urbanMBA"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Urban(Municipality Board) Area"
+                            android:text="@string/urbanMBA"
                             android:textSize="15sp" />
 
                         <RadioButton
                             android:id="@+id/rural"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Rural Area"
+                            android:text="@string/rural"
                             android:textSize="15sp" />
 
                     </RadioGroup>
 
-
-                    <Button
-                        android:id="@+id/btnSubmit"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:backgroundTint="#228B22"
-                        android:onClick="submitIt"
-                        android:text="Next"
-                        android:textColor="#fff" />
+                        android:layout_height="match_parent"
+                        android:gravity="center|bottom"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/btnSubmit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:backgroundTint="#228B22"
+                            android:onClick="submitIt"
+                            android:text="@string/next"
+                            android:textColor="#fff" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

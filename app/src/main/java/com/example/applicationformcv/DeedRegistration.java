@@ -341,22 +341,22 @@ public class DeedRegistration extends AppCompatActivity {
         //validation
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
-        //adding validation to edittexts
-        awesomeValidation.addValidation(this, R.id.applicantName, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.nameerror);
-        awesomeValidation.addValidation(this, R.id.number, "^[0-9]{2}[0-9]{8}$", R.string.mobileerror);
-        awesomeValidation.addValidation(this, R.id.addressText, "[a-zA-Z0-9\\s\\.\\-]+", R.string.addresserror);
-        awesomeValidation.addValidation(this, R.id.city, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.cityerror);
-        awesomeValidation.addValidation(this, R.id.postofficeName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.poerror);
-        awesomeValidation.addValidation(this, R.id.districtName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.districterror);
-        awesomeValidation.addValidation(this, R.id.pin, "(\\d{6})", R.string.pinerror);
+//        //adding validation to edittexts
+//        awesomeValidation.addValidation(this, R.id.applicantName, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.nameerror);
+//        awesomeValidation.addValidation(this, R.id.number, "^[0-9]{2}[0-9]{8}$", R.string.mobileerror);
+//        awesomeValidation.addValidation(this, R.id.addressText, "[a-zA-Z0-9\\s\\.\\-]+", R.string.addresserror);
+//        awesomeValidation.addValidation(this, R.id.city, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.cityerror);
+//        awesomeValidation.addValidation(this, R.id.postofficeName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.poerror);
+//        awesomeValidation.addValidation(this, R.id.districtName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.districterror);
+//        awesomeValidation.addValidation(this, R.id.pin, "(\\d{6})", R.string.pinerror);
+//
+//        awesomeValidation.addValidation(this, R.id.username, "(^$|^.*@.*\\..*$)", R.string.emailerror);
 
-        awesomeValidation.addValidation(this, R.id.username, "(^$|^.*@.*\\..*$)", R.string.emailerror);
 
-        //awesomeValidation.addValidation(this, R.id.considerationAmt, Range.closed(0,10000), R.string.considerationAmterror);
 
 
         stateProgressBar = findViewById(R.id.state_progress_bar);
-        String[] descriptionData = {"Appointment\nForm", "Upload\nDocuments", "Confirm\nSubmission"};
+        String[] descriptionData = {getString(R.string.appointform), getString(R.string.upload), getString(R.string.confirm)};
         stateProgressBar.setStateDescriptionData(descriptionData);
         stateProgressBar.setOnStateItemClickListener(new OnStateItemClickListener() {
             @Override
@@ -784,7 +784,7 @@ public class DeedRegistration extends AppCompatActivity {
                 selectedTextView.setFocusable(true);
                 selectedTextView.setClickable(true);
                 selectedTextView.setFocusableInTouchMode(true);
-                selectedTextView.setError("Choose an item");
+                selectedTextView.setError(getString(R.string.spinnerError));
 
                 result = false;
             }
@@ -799,7 +799,7 @@ public class DeedRegistration extends AppCompatActivity {
                 selectedTextView2.setFocusable(true);
                 selectedTextView2.setClickable(true);
                 selectedTextView2.setFocusableInTouchMode(true);
-                selectedTextView2.setError("Choose an item");
+                selectedTextView2.setError(getString(R.string.spinnerError));
 
                 result = false;
             }
@@ -814,7 +814,7 @@ public class DeedRegistration extends AppCompatActivity {
                 selectedTextView3.setFocusable(true);
                 selectedTextView3.setClickable(true);
                 selectedTextView3.setFocusableInTouchMode(true);
-                selectedTextView3.setError("Choose an item");
+                selectedTextView3.setError(getString(R.string.spinnerError));
 
                 result = false;
             }
@@ -828,7 +828,7 @@ public class DeedRegistration extends AppCompatActivity {
                 selectedTextView4.setFocusable(true);
                 selectedTextView4.setClickable(true);
                 selectedTextView4.setFocusableInTouchMode(true);
-                selectedTextView4.setError("Choose an item");
+                selectedTextView4.setError(getString(R.string.spinnerError));
 
                 //
                 result = false;
@@ -843,7 +843,7 @@ public class DeedRegistration extends AppCompatActivity {
                 selectedTextView.setFocusable(true);
                 selectedTextView.setClickable(true);
                 selectedTextView.setFocusableInTouchMode(true);
-                selectedTextView.setError("Choose an item");
+                selectedTextView.setError(getString(R.string.spinnerError));
 
                 result = false;
             }
@@ -917,19 +917,19 @@ public class DeedRegistration extends AppCompatActivity {
             case 1:
                 appointmentForm.setVisibility(View.VISIBLE);
                 stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.ONE);
-                header.setText("Appointment Form");
+                header.setText(R.string.appointform);
                 break;
 
             case 2:
                 uploadDocumentsForm.setVisibility(View.VISIBLE);
                 stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.TWO);
-                header.setText("Upload Documents");
+                header.setText(R.string.uploadheading);
                 break;
 
             case 3:
                 confirmForm.setVisibility(View.VISIBLE);
                 stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.THREE);
-                header.setText("Confirm Submission");
+                header.setText(R.string.confirmheading);
                 break;
         }
     }
@@ -997,6 +997,12 @@ public class DeedRegistration extends AppCompatActivity {
         stateProgressBar.setOnStateItemClickListener(null);
 
         appointment_confirm.setVisibility(View.VISIBLE);
+
+        // network call to write info in the database and then payment activity is started
+
+        Intent intent = new Intent(this,PaymentActivity.class);
+        startActivity(intent);
+        finish();
 
     }
 }

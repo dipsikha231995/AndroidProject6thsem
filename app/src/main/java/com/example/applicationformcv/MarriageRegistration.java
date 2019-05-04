@@ -92,7 +92,9 @@ public class MarriageRegistration extends AppCompatActivity {
 
         stateProgressBar = findViewById(R.id.state_progress_bar);
         // state progressbar description
-        String[] descriptionData = {"Marriage\nDetails", "Bride\nDetails", "Groom\nDetails", "Confirm\nSubmission"};
+        String[] descriptionData = {getString(R.string.marriageDet), getString(R.string.brideDet),
+                                    getString(R.string.groomDet), getString(R.string.confirm)};
+
         stateProgressBar.setStateDescriptionData(descriptionData);
         stateProgressBar.setOnStateItemClickListener(new OnStateItemClickListener() {
             @Override
@@ -130,10 +132,10 @@ public class MarriageRegistration extends AppCompatActivity {
         //validation
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
-        //adding validation to edittexts
-        awesomeValidation.addValidation(this, R.id.applicantName, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.nameerror);
-        awesomeValidation.addValidation(this, R.id.username, "(^$|^.*@.*\\..*$)", R.string.emailerror);
-        awesomeValidation.addValidation(this, R.id.number, "^[0-9]{2}[0-9]{8}$", R.string.mobileerror);
+//        //adding validation to edittexts
+//        awesomeValidation.addValidation(this, R.id.applicantName, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.nameerror);
+//        awesomeValidation.addValidation(this, R.id.username, "(^$|^.*@.*\\..*$)", R.string.emailerror);
+//        awesomeValidation.addValidation(this, R.id.number, "^[0-9]{2}[0-9]{8}$", R.string.mobileerror);
 
 
 
@@ -214,26 +216,26 @@ public class MarriageRegistration extends AppCompatActivity {
         //validation for bride details
         awesomeValidation2 = new AwesomeValidation(ValidationStyle.BASIC);
 
-        //adding validation to editTexts
-        awesomeValidation2.addValidation(this, R.id.Name, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.nameerror);
-        awesomeValidation2.addValidation(this, R.id.Age, Range.closed(18, 60), R.string.ageerror);
-        awesomeValidation2.addValidation(this, R.id.Occupation, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.occerror);
-        awesomeValidation2.addValidation(this, R.id.FName, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.fNameerror);
-
-        awesomeValidation2.addValidation(this, R.id.city, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.cityerror);
-        awesomeValidation2.addValidation(this, R.id.policeStation, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.policeerror);
-        awesomeValidation2.addValidation(this, R.id.postofficeName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.poerror);
-        awesomeValidation2.addValidation(this, R.id.districtName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.districterror);
-        awesomeValidation2.addValidation(this, R.id.stateName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.stateerror);
-        awesomeValidation2.addValidation(this, R.id.pin, "(\\d{6})", R.string.pinerror);
-        awesomeValidation2.addValidation(this, R.id.lengthResidence, "(\\d+)", R.string.lengtherror);
-
-        awesomeValidation2.addValidation(this, R.id.per_city, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.cityerror);
-        awesomeValidation2.addValidation(this, R.id.per_policeStation, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.policeerror);
-        awesomeValidation2.addValidation(this, R.id.per_postofficeName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.poerror);
-        awesomeValidation2.addValidation(this, R.id.per_districtName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.districterror);
-        awesomeValidation2.addValidation(this, R.id.per_stateName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.stateerror);
-        awesomeValidation2.addValidation(this, R.id.per_pin, "(\\d{6})", R.string.pinerror);
+//        //adding validation to editTexts
+//        awesomeValidation2.addValidation(this, R.id.Name, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.nameerror);
+//        awesomeValidation2.addValidation(this, R.id.Age, Range.closed(18, 60), R.string.ageerror);
+//        awesomeValidation2.addValidation(this, R.id.Occupation, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.occerror);
+//        awesomeValidation2.addValidation(this, R.id.FName, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.fNameerror);
+//
+//        awesomeValidation2.addValidation(this, R.id.city, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.cityerror);
+//        awesomeValidation2.addValidation(this, R.id.policeStation, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.policeerror);
+//        awesomeValidation2.addValidation(this, R.id.postofficeName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.poerror);
+//        awesomeValidation2.addValidation(this, R.id.districtName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.districterror);
+//        awesomeValidation2.addValidation(this, R.id.stateName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.stateerror);
+//        awesomeValidation2.addValidation(this, R.id.pin, "(\\d{6})", R.string.pinerror);
+//        awesomeValidation2.addValidation(this, R.id.lengthResidence, "(\\d+)", R.string.lengtherror);
+//
+//        awesomeValidation2.addValidation(this, R.id.per_city, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.cityerror);
+//        awesomeValidation2.addValidation(this, R.id.per_policeStation, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.policeerror);
+//        awesomeValidation2.addValidation(this, R.id.per_postofficeName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.poerror);
+//        awesomeValidation2.addValidation(this, R.id.per_districtName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.districterror);
+//        awesomeValidation2.addValidation(this, R.id.per_stateName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.stateerror);
+//        awesomeValidation2.addValidation(this, R.id.per_pin, "(\\d{6})", R.string.pinerror);
 
 
 
@@ -314,26 +316,26 @@ public class MarriageRegistration extends AppCompatActivity {
         //validation
         awesomeValidation3 = new AwesomeValidation(ValidationStyle.BASIC);
 
-        //adding validation to editTexts
-        awesomeValidation3.addValidation(this, R.id.Name2, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.nameerror);
-        awesomeValidation3.addValidation(this, R.id.Age2, Range.closed(21, 60), R.string.ageGroomerr);
-        awesomeValidation3.addValidation(this, R.id.Occupation2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.occerror);
-        awesomeValidation3.addValidation(this, R.id.FName2, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.fNameerror);
-
-        awesomeValidation3.addValidation(this, R.id.city2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.cityerror);
-        awesomeValidation3.addValidation(this, R.id.policeStation2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.policeerror);
-        awesomeValidation3.addValidation(this, R.id.postofficeName2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.poerror);
-        awesomeValidation3.addValidation(this, R.id.districtName2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.districterror);
-        awesomeValidation3.addValidation(this, R.id.stateName2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.stateerror);
-        awesomeValidation3.addValidation(this, R.id.pin2, "(\\d{6})", R.string.pinerror);
-        awesomeValidation3.addValidation(this, R.id.lengthResidence2, "(\\d+)", R.string.lengtherror);
-
-        awesomeValidation3.addValidation(this, R.id.per_city2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.cityerror);
-        awesomeValidation3.addValidation(this, R.id.per_policeStation2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.policeerror);
-        awesomeValidation3.addValidation(this, R.id.per_postofficeName2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.poerror);
-        awesomeValidation3.addValidation(this, R.id.per_districtName2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.districterror);
-        awesomeValidation3.addValidation(this, R.id.per_stateName2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.stateerror);
-        awesomeValidation3.addValidation(this, R.id.per_pin2, "(\\d{6})", R.string.pinerror);
+//        //adding validation to editTexts
+//        awesomeValidation3.addValidation(this, R.id.Name2, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.nameerror);
+//        awesomeValidation3.addValidation(this, R.id.Age2, Range.closed(21, 60), R.string.ageGroomerr);
+//        awesomeValidation3.addValidation(this, R.id.Occupation2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.occerror);
+//        awesomeValidation3.addValidation(this, R.id.FName2, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.fNameerror);
+//
+//        awesomeValidation3.addValidation(this, R.id.city2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.cityerror);
+//        awesomeValidation3.addValidation(this, R.id.policeStation2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.policeerror);
+//        awesomeValidation3.addValidation(this, R.id.postofficeName2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.poerror);
+//        awesomeValidation3.addValidation(this, R.id.districtName2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.districterror);
+//        awesomeValidation3.addValidation(this, R.id.stateName2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.stateerror);
+//        awesomeValidation3.addValidation(this, R.id.pin2, "(\\d{6})", R.string.pinerror);
+//        awesomeValidation3.addValidation(this, R.id.lengthResidence2, "(\\d+)", R.string.lengtherror);
+//
+//        awesomeValidation3.addValidation(this, R.id.per_city2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.cityerror);
+//        awesomeValidation3.addValidation(this, R.id.per_policeStation2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.policeerror);
+//        awesomeValidation3.addValidation(this, R.id.per_postofficeName2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.poerror);
+//        awesomeValidation3.addValidation(this, R.id.per_districtName2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.districterror);
+//        awesomeValidation3.addValidation(this, R.id.per_stateName2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.stateerror);
+//        awesomeValidation3.addValidation(this, R.id.per_pin2, "(\\d{6})", R.string.pinerror);
 
         //populate date spinner
         getDates();
@@ -453,25 +455,25 @@ public class MarriageRegistration extends AppCompatActivity {
             case 1:
                 marriageDetailsForm.setVisibility(View.VISIBLE);
                 stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.ONE);
-                header.setText("Add Marriage Details");
+                header.setText(R.string.marriage);
                 break;
 
             case 2:
                 brideDetailsForm.setVisibility(View.VISIBLE);
                 stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.TWO);
-                header.setText("Add Bride Details");
+                header.setText(R.string.bride);
                 break;
 
             case 3:
                 groomDetailsForm.setVisibility(View.VISIBLE);
                 stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.THREE);
-                header.setText("Add Groom Details");
+                header.setText(R.string.groom);
                 break;
 
             case 4:
                 confirmForm.setVisibility(View.VISIBLE);
                 stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.FOUR);
-                header.setText("Confirm Submission");
+                header.setText(R.string.confirmheading);
                 break;
         }
     }
@@ -505,7 +507,7 @@ public class MarriageRegistration extends AppCompatActivity {
                 selectedTextView.setFocusable(true);
                 selectedTextView.setClickable(true);
                 selectedTextView.setFocusableInTouchMode(true);
-                selectedTextView.setError("Choose an item");
+                selectedTextView.setError(getString(R.string.spinnerError));
 
                 result = false;
 
@@ -522,7 +524,7 @@ public class MarriageRegistration extends AppCompatActivity {
                 selectedTextView2.setFocusable(true);
                 selectedTextView2.setClickable(true);
                 selectedTextView2.setFocusableInTouchMode(true);
-                selectedTextView2.setError("Choose an item");
+                selectedTextView2.setError(getString(R.string.spinnerError));
 
                 result = false;
 
@@ -539,7 +541,7 @@ public class MarriageRegistration extends AppCompatActivity {
                 selectedTextView3.setFocusable(true);
                 selectedTextView3.setClickable(true);
                 selectedTextView3.setFocusableInTouchMode(true);
-                selectedTextView3.setError("Choose an item");
+                selectedTextView3.setError(getString(R.string.spinnerError));
 
                 result = false;
 
@@ -579,7 +581,7 @@ public class MarriageRegistration extends AppCompatActivity {
                 selectedTextView.setFocusable(true);
                 selectedTextView.setClickable(true);
                 selectedTextView.setFocusableInTouchMode(true);
-                selectedTextView.setError("Choose an item");
+                selectedTextView.setError(getString(R.string.spinnerError));
 
                 b = false;
             }
@@ -609,7 +611,7 @@ public class MarriageRegistration extends AppCompatActivity {
                 selectedTextView.setFocusable(true);
                 selectedTextView.setClickable(true);
                 selectedTextView.setFocusableInTouchMode(true);
-                selectedTextView.setError("Choose an item");
+                selectedTextView.setError(getString(R.string.spinnerError));
 
                 b = false;
             }
@@ -657,5 +659,11 @@ public class MarriageRegistration extends AppCompatActivity {
         stateProgressBar.setOnStateItemClickListener(null);
 
         cardView.setVisibility(View.GONE);
+
+        // network call to write info in the database and then payment activity is started
+
+        Intent intent = new Intent(this,PaymentActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

@@ -1,5 +1,115 @@
 <resources>
+
+    <!--Main activity-->
     <string name="app_name">e-PANJEEYAN</string>
+
+    <string name="rev">Revenue &amp; Disaster Management</string>
+
+    <string name="gov">Govt. of Assam</string>
+
+    <string name="ins">Instant assessment &amp; deed registration fee</string>
+
+    <string name="deed">Deed Registration</string>
+
+    <string name="marr">Marriage Registration</string>
+
+    <string name="view">View Appointment Status</string>
+
+    <!--Deed registration-->
+
+    <string name="appointform">Appointment\nForm</string>
+    <string name="upload">Upload\nDocuments</string>
+    <string name="confirm">Confirm\nSubmission</string>
+
+
+    <string name="appoint">Form for Taking an Appointment</string>
+    <string name="uploadheading">Upload Documents</string>
+    <string name="confirmheading">Confirm Submission</string>
+
+    <string name="name">\tApplicant Name *</string>
+
+    <string name="email">\tEmail</string>
+
+    <string name="num">\tMobile number *</string>
+
+    <string name="add">\tAddress(House No/Street/Locality) *</string>
+
+    <string name="post">\tPost Office *</string>
+
+    <string name="city">\tCity/Town/Village *</string>
+
+    <string name="dis">\tDistrict *</string>
+
+    <string name="pin">\tPIN *</string>
+
+    <string name="below"> ** Below information is necessary only in case of deeds related to land/flat (e.g sale or gift of land/flat etc.)</string>
+
+    <string name="conAmt">\tConsideration Amount * </string>
+
+    <string name="pur">\tPurchaser with </string>
+    <string name="radio_both">Both Female &amp; Male Members</string>
+    <string name="radio_only">Only Female Member/Members</string>
+    <string name="radio_onlyM">Only Male Member/Members</string>
+
+    <string name="land">\tLand/Flat is located in </string>
+    <string name="urbanMCA">Urban(Municipality Corporation) Area</string>
+    <string name="urbanMBA">Urban(Municipality Board) Area</string>
+    <string name="rural">Rural Area</string>
+
+    <string name="next">Next</string>
+
+    <string name="address">Address Proof</string>
+    <string name="age">Age Proof</string>
+    <string name="identity">Identity Proof</string>
+
+    <string name="iconfirm">Are you sure you want to submit?\n\n*Forms cannot be edited after the final submit is done.*\n</string>
+    <string name="conSubmit">Confirm Submit</string>
+
+    <!--Make Assessment-->
+    <string name="assessment">Form for Assessment of Stamp Duty and Registration Fee</string>
+
+    <!--Check appointment-->
+    <string name="check">Check your Appointment Status</string>
+    <string name="reff">\tReference No. *</string>
+    <string name="checkstatus">Check Status</string>
+
+    <!--Marriage Registration-->
+    <string name="marriage">Add Marriage Details</string>
+    <string name="bride">Add Bride Details</string>
+    <string name="groom">Add Groom Details</string>
+
+
+    <string name="marriageDet">Marriage\nDetails</string>
+    <string name="brideDet">Bride\nDetails</string>
+    <string name="groomDet">Groom\nDetails</string>
+
+
+    <string name="brideName">\tName of Bride * </string>
+    <string name="ageMarr">\tAge * </string>
+    <string name="occ">\tOccupation *</string>
+    <string name="fname">\tFather\'s Name *</string>
+
+    <string name="preAdd">Present Address</string>
+
+    <string name="police">\tPolice Station *</string>
+    <string name="district">\tDistrict *</string>
+    <string name="state">\tState *</string>
+    <string name="length">\tLength of residence (in years) *</string>
+    <string name="perAdd">Permanent Address\n(If same as Present)</string>
+
+    <string name="groomName">\tName of Groom *</string>
+
+    <!--My Profile-->
+    <string name="myprofName">Dipsikha Phukan </string>
+    <string name="editpro">Edit Profile</string>
+    <string name="uname">\tUsername</string>
+    <string name="newpswd">\tNew Password</string>
+    <string name="conpswd">\tConfirm Password</string>
+    <string name="chngpswd">Change Password</string>
+    <string name="phone">\tMobile number</string>
+
+
+    <!--Spinners-->
 
     <string-array name="selectOffice">
         <item>Select Office for Registration * </item>
@@ -38,28 +148,34 @@
         <item>Married</item>
     </string-array>
 
-    <string name="nameerror">Enter a valid Name</string>
-    <string name="emailerror">Enter a valid Email</string>
-    <string name="mobileerror">Enter a valid Mobile no.</string>
-    <string name="addresserror">Enter a valid Address</string>
-    <string name="cityerror">Enter a valid City/Town/Village</string>
-    <string name="poerror">Enter a valid Post Office</string>
-    <string name="districterror">Enter a valid District</string>
-    <string name="pinerror">Enter a 6-digit valid PIN</string>
+    <!--Spinner error message-->
+    <string name="spinnerError">Choose an item</string>
 
-    <string name="ageerror">Enter age between 18-60</string>
-    <string name="occerror">Enter a valid  Occupation</string>
-    <string name="fNameerror">Enter a valid Father\'s Name</string>
 
-    <string name="ageGroomerr">Enter age between 21-60</string>
 
-    <string name="policeerror">Enter a valid Police Station</string>
-    <string name="stateerror">Enter a valid State</string>
-    <string name="lengtherror">Enter a valid Length of residence</string>
+    <!--&lt;!&ndash;validation&ndash;&gt;-->
+    <!--<string name="nameerror">Enter a valid Name</string>-->
+    <!--<string name="emailerror">Enter a valid Email</string>-->
+    <!--<string name="mobileerror">Enter a valid Mobile no.</string>-->
+    <!--<string name="addresserror">Enter a valid Address</string>-->
+    <!--<string name="cityerror">Enter a valid City/Town/Village</string>-->
+    <!--<string name="poerror">Enter a valid Post Office</string>-->
+    <!--<string name="districterror">Enter a valid District</string>-->
+    <!--<string name="pinerror">Enter a 6-digit valid PIN</string>-->
 
-    <!--view_status -->
+    <!--<string name="ageerror">Enter age between 18-60</string>-->
+    <!--<string name="occerror">Enter a valid  Occupation</string>-->
+    <!--<string name="fNameerror">Enter a valid Father\'s Name</string>-->
 
-    <string name="refNumber">Enter a valid reference no.</string>
+    <!--<string name="ageGroomerr">Enter age between 21-60</string>-->
+
+    <!--<string name="policeerror">Enter a valid Police Station</string>-->
+    <!--<string name="stateerror">Enter a valid State</string>-->
+    <!--<string name="lengtherror">Enter a valid Length of residence</string>-->
+
+    <!--&lt;!&ndash;view_status &ndash;&gt;-->
+
+    <!--<string name="refNumber">Enter a valid reference no.</string>-->
 
 
 </resources>

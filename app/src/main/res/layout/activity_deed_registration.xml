@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e3e3e3"
     android:orientation="vertical">
 
     <com.kofigyan.stateprogressbar.StateProgressBar
@@ -12,13 +11,13 @@
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
         app:spb_checkStateCompleted="true"
-        app:spb_currentStateDescriptionColor="#009688"
+        app:spb_currentStateDescriptionColor="#228B22"
         app:spb_currentStateNumber="one"
         app:spb_descriptionTopSpaceIncrementer="5dp"
         app:spb_maxStateNumber="three"
         app:spb_stateBackgroundColor="#BDBDBD"
         app:spb_stateDescriptionColor="#808080"
-        app:spb_stateForegroundColor="#009688"
+        app:spb_stateForegroundColor="#228B22"
         app:spb_stateNumberBackgroundColor="#808080"
         app:spb_stateNumberForegroundColor="#eeeeee"
         app:spb_stateSize="40dp" />
@@ -42,7 +41,7 @@
             android:focusableInTouchMode="true"
             android:gravity="center"
             android:padding="5dp"
-            android:text="Form for Taking an Appointment"
+            android:text="@string/appoint"
             android:textColor="#fff"
             android:textSize="18sp" />
 
@@ -83,17 +82,15 @@
                         android:id="@+id/applicantNamewrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="\t\tApplicant Name *">
+                        android:hint="@string/name">
 
                         <EditText
                             android:id="@+id/applicantName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_person_black_24dp"
+                            android:drawableLeft="@drawable/ic_person"
                             android:inputType="text"
-                            android:textColor="#5F9EA0"
                             android:textSize="16sp" />
 
 
@@ -109,11 +106,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_email_black_24dp"
-                            android:hint="\t\tEmail"
+                            android:drawableLeft="@drawable/ic_email"
+                            android:hint="@string/email"
                             android:inputType="textEmailAddress"
-                            android:textColor="#5F9EA0"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -129,11 +124,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_phone_android_black_24dp"
-                            android:hint="\t\tMobile number *"
+                            android:drawableLeft="@drawable/ic_phone"
+                            android:hint="@string/num"
                             android:inputType="phone"
-                            android:textColor="#5F9EA0"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -150,12 +143,10 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
                             android:layout_weight="1"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_add_location_black_24dp"
+                            android:drawableLeft="@drawable/ic_add_location"
                             android:ems="10"
-                            android:hint="\t\tAddress(House No/Street/Locality) *"
+                            android:hint="@string/add"
                             android:inputType="textMultiLine"
-                            android:textColor="#5F9EA0"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -169,11 +160,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_location_city_black_24dp"
-                            android:hint="\t\tCity/Town/Village *"
+                            android:drawableLeft="@drawable/ic_location_city"
+                            android:hint="@string/city"
                             android:inputType="text"
-                            android:textColor="#5F9EA0"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -187,11 +176,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_drafts_black_24dp"
-                            android:hint="\t\tPost Office *"
+                            android:drawableLeft="@drawable/ic_drafts"
+                            android:hint="@string/post"
                             android:inputType="text"
-                            android:textColor="#5F9EA0"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -205,11 +192,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_home_black_24dp"
-                            android:hint="\t\tDistrict *"
+                            android:drawableLeft="@drawable/ic_home"
+                            android:hint="@string/dis"
                             android:inputType="text"
-                            android:textColor="#5F9EA0"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -223,11 +208,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_person_pin_circle_black_24dp"
-                            android:hint="\t\tPIN *"
+                            android:drawableLeft="@drawable/ic_person_pin"
+                            android:hint="@string/pin"
                             android:inputType="number"
-                            android:textColor="#5F9EA0"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -235,43 +218,38 @@
                         android:id="@+id/spinner1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:background="@drawable/spinner_border"
-                        android:paddingEnd="20dp" />
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="10dp" />
 
                     <Spinner
                         android:id="@+id/spinnerDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:background="@drawable/spinner_border"
-                        android:paddingEnd="20dp" />
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="10dp" />
 
                     <Spinner
                         android:id="@+id/spinner2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:background="@drawable/spinner_border"
-                        android:paddingEnd="20dp" />
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="10dp" />
 
 
                     <Spinner
                         android:id="@+id/spinner3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:background="@drawable/spinner_border"
-                        android:paddingEnd="20dp" />
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="10dp" />
 
 
                     <Spinner
                         android:id="@+id/spinner4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:background="@drawable/spinner_border"
-                        android:paddingEnd="20dp" />
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="10dp" />
 
 
                     <TextView
@@ -280,7 +258,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:layout_marginTop="10dp"
-                        android:text="** Below information is necessary only in case of deeds related to land/flat (e.g sale or gift of land/flat etc.)"
+                        android:text="@string/below"
                         android:textColor="#D81B60"
                         android:visibility="gone" />
 
@@ -297,11 +275,10 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
                             android:background="@drawable/edittext_border"
-                            android:drawableLeft="@drawable/ic_monetization_on_black_24dp"
-                            android:hint="\t\tConsideration Amount *"
+                            android:drawableLeft="@drawable/ic_monetization"
+                            android:hint="@string/conAmt"
                             android:inputType="number"
                             android:text="0"
-                            android:textColor="#5F9EA0"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -314,8 +291,8 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/edittext_border"
-                        android:drawableLeft="@drawable/ic_wc_black_24dp"
-                        android:text="\tPurchaser with"
+                        android:drawableLeft="@drawable/ic_wc"
+                        android:text="@string/pur"
                         android:textSize="16sp"
                         android:visibility="gone" />
 
@@ -334,21 +311,21 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            android:text="Both Female &amp; Male Members"
+                            android:text="@string/radio_both"
                             android:textSize="15sp" />
 
                         <RadioButton
                             android:id="@+id/radio_onlyFemale"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Only Female Member/Members"
+                            android:text="@string/radio_only"
                             android:textSize="15sp" />
 
                         <RadioButton
                             android:id="@+id/radio_onlyMale"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Only Male Member/Members"
+                            android:text="@string/radio_onlyM"
                             android:textSize="15sp" />
 
                     </RadioGroup>
@@ -361,8 +338,8 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/edittext_border"
-                        android:drawableLeft="@drawable/ic_my_location_black_24dp"
-                        android:text="\tLand/Flat is located in"
+                        android:drawableLeft="@drawable/ic_gps"
+                        android:text="@string/land"
                         android:textSize="16sp"
                         android:visibility="gone" />
 
@@ -381,21 +358,21 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            android:text="Urban(Municipality Corporation) Area"
+                            android:text="@string/urbanMCA"
                             android:textSize="15sp" />
 
                         <RadioButton
                             android:id="@+id/urbanMBA"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Urban(Municipality Board) Area"
+                            android:text="@string/urbanMBA"
                             android:textSize="15sp" />
 
                         <RadioButton
                             android:id="@+id/rural"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Rural Area"
+                            android:text="@string/rural"
                             android:textSize="15sp" />
 
                     </RadioGroup>
@@ -403,17 +380,16 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center">
+                        android:layout_marginTop="10dp"
+                        android:gravity="center|bottom">
 
                         <Button
                             android:id="@+id/btnSubmit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="20dp"
                             android:backgroundTint="#228B22"
                             android:onClick="submitIt"
-                            android:text="Next"
+                            android:text="@string/next"
                             android:textColor="#fff" />
 
 
@@ -447,9 +423,8 @@
                         android:id="@+id/spinner5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:background="@drawable/spinner_border"
-                        android:paddingEnd="20dp" />
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="10dp" />
 
                     <TextView
                         android:id="@+id/address_proof_error"
@@ -460,10 +435,10 @@
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/edittext_border"
                         android:clickable="true"
-                        android:drawableLeft="@drawable/ic_image_black_24dp"
+                        android:drawableLeft="@drawable/ic_image"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
-                        android:text="Address Proof"
+                        android:text="@string/address"
                         android:textSize="16sp" />
 
                     <ImageView
@@ -498,10 +473,10 @@
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/edittext_border"
                         android:clickable="true"
-                        android:drawableLeft="@drawable/ic_image_black_24dp"
+                        android:drawableLeft="@drawable/ic_image"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
-                        android:text="Age Proof"
+                        android:text="@string/age"
                         android:textSize="16sp" />
 
                     <ImageView
@@ -511,7 +486,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/edittext_border"
-                        android:src="@drawable/noimage" />
+                        android:src="@drawable/noimage"/>
 
 
                     <!--NAME-->
@@ -536,10 +511,10 @@
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/edittext_border"
                         android:clickable="true"
-                        android:drawableLeft="@drawable/ic_image_black_24dp"
+                        android:drawableLeft="@drawable/ic_image"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
-                        android:text="Identity Proof"
+                        android:text="@string/identity"
                         android:textSize="16sp" />
 
                     <ImageView
@@ -568,17 +543,15 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center">
+                        android:gravity="center|bottom">
 
                         <Button
                             android:id="@+id/btnSubmit2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="20dp"
                             android:backgroundTint="#228B22"
                             android:onClick="submitIt"
-                            android:text="Next"
+                            android:text="@string/next"
                             android:textColor="#fff" />
 
 
@@ -597,13 +570,11 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="10dp"
                 android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#e3e3e3"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -616,7 +587,7 @@
                         android:focusable="true"
                         android:focusableInTouchMode="true"
                         android:paddingTop="25dp"
-                        android:text="Are you sure you want to confirm submit?\n\n*Forms cannot be edited after the final submit is done.*\n"
+                        android:text="@string/iconfirm"
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"
                         android:textSize="17sp"
@@ -627,10 +598,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
-                        android:layout_marginBottom="15dp"
                         android:backgroundTint="#228B22"
                         android:onClick="submitData"
-                        android:text="Confirm Submit"
+                        android:text="@string/conSubmit"
                         android:textColor="#fff" />
 
                 </LinearLayout>
@@ -663,7 +633,7 @@
                         android:layout_marginBottom="8dp"
                         android:paddingLeft="3dp"
                         android:paddingBottom="2dp"
-                        android:src="@drawable/goablue2" />
+                        android:src="@drawable/goa" />
                 </android.support.v7.widget.CardView>
 
                 <TextView

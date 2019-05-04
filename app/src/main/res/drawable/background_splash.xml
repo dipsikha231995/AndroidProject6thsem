@@ -9,7 +9,7 @@
     <item>
 
         <bitmap
-            android:src="@drawable/goablue2"
+            android:src="@drawable/goa"
             android:gravity="center"/>
 
     </item>

@@ -50,7 +50,7 @@ public class SplashActivity extends AppCompatActivity {
                     AuthUI.getInstance()
                             .createSignInIntentBuilder()
                             .setAvailableProviders(providers)
-                            .setLogo(R.drawable.goablue2)                  // Set logo drawable
+                            .setLogo(R.drawable.goa)                  // Set logo drawable
                             .setTheme(R.style.Theme_AppCompat_DayNight_DarkActionBar)  // Set theme
                             .setIsSmartLockEnabled(false)
                             .build(),

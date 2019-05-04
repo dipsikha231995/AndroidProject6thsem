@@ -12,13 +12,34 @@
                 android:orderInCategory="90"
                 android:title="My Profile"
                 app:showAsAction="never"
-                android:icon="@drawable/ic_person_black_24dp"/>
+                android:icon="@drawable/ic_person"/>
 
             <item
                 android:id="@+id/language_menu_item"
                 android:icon="@drawable/ic_language_black_24dp"
                 android:orderInCategory="100"
-                android:title="Language"
+                android:title="English"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/language_menu_item2"
+                android:icon="@drawable/ic_language_black_24dp"
+                android:orderInCategory="100"
+                android:title="Hindi"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/theme_menu_item"
+                android:icon="@drawable/ic_setting"
+                android:orderInCategory="100"
+                android:title="Light"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/theme_menu_item2"
+                android:icon="@drawable/ic_setting"
+                android:orderInCategory="100"
+                android:title="Dark"
                 app:showAsAction="never" />
 
             <item
