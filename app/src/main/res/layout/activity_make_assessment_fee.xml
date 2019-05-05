@@ -54,7 +54,7 @@
                     android:paddingTop="8dp">
 
                     <Spinner
-                        android:id="@+id/spinner3"
+                        android:id="@+id/deedCategory"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
@@ -62,7 +62,7 @@
 
 
                     <Spinner
-                        android:id="@+id/spinner4"
+                        android:id="@+id/subdeedCategory"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"

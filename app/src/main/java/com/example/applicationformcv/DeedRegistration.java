@@ -5,11 +5,10 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.provider.MediaStore;
+import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
@@ -29,29 +28,24 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-
-import org.json.JSONArray;
-
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.kofigyan.stateprogressbar.StateProgressBar;
 import com.kofigyan.stateprogressbar.components.StateItem;
 import com.kofigyan.stateprogressbar.listeners.OnStateItemClickListener;
+
+import org.json.JSONArray;
+
+import java.io.File;
+import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
 
 import id.zelory.compressor.Compressor;
 
@@ -147,9 +141,7 @@ public class DeedRegistration extends AppCompatActivity {
         subDeedAdapter = new ArrayAdapter<String>(this,
                 R.layout.spinner_item_text_colour, temp);
         subDeedAdapter.setDropDownViewResource(R.layout.spinner_item_text_colour);
-
         mySpinner4.setAdapter(subDeedAdapter);
-
 
 
         mySpinnerDate = findViewById(R.id.spinnerDate);         // date spinner
@@ -303,28 +295,6 @@ public class DeedRegistration extends AppCompatActivity {
                     radioUrbanRural.setVisibility(View.GONE);
                 }
 
-
-                // populate the other spinner
-                if (category.equalsIgnoreCase("AFFIDAVIT")) {
-
-                    //
-                    list.clear();
-
-                    list.add("Select Deed Sub Category *");
-                    list.add("AFFIDAVIT");
-
-                    myAdapter4.notifyDataSetChanged();
-                } else if (category.equalsIgnoreCase("AGREEMENT")) {
-                    //
-                    list.clear();
-
-                    list.add("Select Deed Sub Category *");
-                    list.add("Sale of a bill of Exchange");
-                    list.add("Sale of a Government Security");
-                    list.add("Others");
-
-                    myAdapter4.notifyDataSetChanged();
-                }
             }
 
             @Override
@@ -664,7 +634,7 @@ public class DeedRegistration extends AppCompatActivity {
 
         // set up the spinner
         ArrayAdapter<String> dateAdapter = new ArrayAdapter<>(
-                getApplicationContext(),
+                DeedRegistration.this,
                 R.layout.spinner_item_text_colour,
                 dates
         );
@@ -697,7 +667,7 @@ public class DeedRegistration extends AppCompatActivity {
                             }
 
 
-                            ArrayAdapter myTypeAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                            ArrayAdapter myTypeAdapter = new ArrayAdapter<String>(DeedRegistration.this,
                                     R.layout.spinner_item_text_colour, typeList);
 
                             myTypeAdapter.setDropDownViewResource(R.layout.spinner_item_text_colour);
@@ -744,7 +714,7 @@ public class DeedRegistration extends AppCompatActivity {
                            list.add(model.getSection());
                        }
 
-                        ArrayAdapter myTypeAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                        ArrayAdapter myTypeAdapter = new ArrayAdapter<String>(DeedRegistration.this,
                                 R.layout.spinner_item_text_colour, list);
 
                         myTypeAdapter.setDropDownViewResource(R.layout.spinner_item_text_colour);

@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.Menu;
@@ -21,8 +19,6 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Locale;
 
@@ -34,8 +30,10 @@ public class MainActivity extends AppCompatActivity{
     private static Locale myLocale;
 
     //Shared Preferences Variables
-    private static final String Locale_Preference = "Locale Preference";
-    private static final String Locale_KeyValue = "Saved Locale";    //this is the key which will have the value either en,hi,as
+    private static final String Locale_Preference = "Locale Preference"; //name of the shared preference
+    private static final String Locale_KeyValue = "Language key"; //this is the key which will have the value either en,hi
+    private static final String ThemeKey = "Theme key"; //this is the key which will have the value either li,da
+
     private static SharedPreferences sharedPreferences;  //text file contains app settings in the form of key and value
     private static SharedPreferences.Editor editor;  //write in shared preference
 
@@ -48,14 +46,12 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
-        loadLocale();
+
+        loadSettings();
     }
 
 /////////////////////////////////////////////////
     private void initViews() {
-        sharedPreferences = getSharedPreferences(Locale_Preference, Activity.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-
         rev =  findViewById(R.id.revText);
         gov = findViewById(R.id.govText);
         ins = findViewById(R.id.button);
@@ -64,7 +60,7 @@ public class MainActivity extends AppCompatActivity{
         viewStatus = findViewById(R.id.button4);
     }
 
-    private void changeLocale(String lang) {
+    private void changeLanguage(String lang) {
         if (lang.equalsIgnoreCase(""))
             return;
 
@@ -85,9 +81,25 @@ public class MainActivity extends AppCompatActivity{
         editor.commit();
     }
 
-    private void loadLocale() {
-        String language = sharedPreferences.getString(Locale_KeyValue, "en");
-        changeLocale(language);
+    private void loadSettings() {
+        sharedPreferences = getSharedPreferences(Locale_Preference, Activity.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        String language = sharedPreferences.getString(Locale_KeyValue, "en"); //read the default language
+        String theme = sharedPreferences.getString(ThemeKey, "li");           //read the default theme
+
+        changeLanguage(language);
+        changeTheme(theme);
+
+    }
+
+    private void changeTheme(String theme) {
+
+        if (theme.equalsIgnoreCase("li")) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        } else if (theme.equalsIgnoreCase("da")) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
     }
 
     private void updateTexts() {
@@ -102,6 +114,10 @@ public class MainActivity extends AppCompatActivity{
 ///////////////////////////////////////////////////////
 
 
+    private void saveTheme(String theme) {
+        editor.putString(ThemeKey, theme);
+        editor.commit();
+    }
 
 
     @Override
@@ -115,6 +131,7 @@ public class MainActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
 
         String lang = "";
+        String theme = "";
 
         switch (item.getItemId()) {
 
@@ -125,34 +142,33 @@ public class MainActivity extends AppCompatActivity{
 
             case R.id.language_menu_item:
                 lang = "en";//Default Language
+                changeLanguage(lang);//Change Locale on selection basis
                 Toast.makeText(this, "You choosed English", Toast.LENGTH_SHORT).show();
                 break;
 
 
             case R.id.language_menu_item2:
                 lang = "hi";
+                changeLanguage(lang);//Change Locale on selection basis
                 Toast.makeText(this, "You choosed Hindi", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.theme_menu_item:
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                theme = "li";
+                saveTheme(theme);
 
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 startActivity(getIntent());
                 finish();
-
-
-                // recreate the activity
-                //this.recreate();
                 break;
 
             case R.id.theme_menu_item2:
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                theme = "da";
+                saveTheme(theme);
 
-                // recreate the activity
-                //this.recreate();
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 startActivity(getIntent());
                 finish();
-
                 break;
 
 //            case R.id.about_menu_item:
@@ -169,12 +185,7 @@ public class MainActivity extends AppCompatActivity{
                                 finish();
                             }
                         });
-                return true;
         }
-
-
-
-        changeLocale(lang);//Change Locale on selection basis
 
         return true;
     }

@@ -123,11 +123,6 @@
         <item>Identity Proof</item>
     </string-array>
 
-    <string-array name="desiredDate">
-        <item>Select Desired Appointment Date *</item>
-        <item>...</item>
-    </string-array>
-
     <string-array name="marriageType">
         <item>Select Marriage Type *</item>
         <item>Intended Marriage</item>
