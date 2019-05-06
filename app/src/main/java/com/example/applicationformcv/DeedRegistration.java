@@ -136,7 +136,7 @@ public class DeedRegistration extends AppCompatActivity {
         mySpinner4 = findViewById(R.id.spinner4);               // sub deed category spinner
 
         List<String> temp = new ArrayList<>();
-        temp.add("Select Sub Deed Category *");
+        temp.add(getString(R.string.subdeedSpinner));
 
         subDeedAdapter = new ArrayAdapter<String>(this,
                 R.layout.spinner_item_text_colour, temp);
@@ -222,12 +222,11 @@ public class DeedRegistration extends AppCompatActivity {
                 if (position > 0) {
                     Log.d(TAG, deedlist.get(position - 1).toString()); //model list and category list are not in same order
 
-                    DeedCategoryModel obj = deedlist.get(position-1); //getting the model from the deedlist & storing in obj
+                    DeedCategoryModel obj = deedlist.get(position - 1); //getting the model from the deedlist & storing in obj
                     int code = obj.getCode(); //storing the code in variable code
 
 
-                    final String url =  "http://192.168.43.210:8080/e-Panjeeyan/getsubdeed?codeVal=" + code;
-
+                    final String url = "http://192.168.43.210:8080/e-Panjeeyan/getsubdeed?codeVal=" + code;
 
 
                     StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -239,8 +238,8 @@ public class DeedRegistration extends AppCompatActivity {
                                         //response from servlet is kept in the JSONArray array
                                         JSONArray array = new JSONArray(response);
 
-                                        List<String> subDeed= new ArrayList<>();
-                                        subDeed.add("Select Sub Deed Category *");
+                                        List<String> subDeed = new ArrayList<>();
+                                        subDeed.add(getString(R.string.subdeedSpinner));
 
                                         //array list is populated from JSON array
                                         for (int i = 0; i < array.length(); i++) {
@@ -321,8 +320,6 @@ public class DeedRegistration extends AppCompatActivity {
 //        awesomeValidation.addValidation(this, R.id.pin, "(\\d{6})", R.string.pinerror);
 //
 //        awesomeValidation.addValidation(this, R.id.username, "(^$|^.*@.*\\..*$)", R.string.emailerror);
-
-
 
 
         stateProgressBar = findViewById(R.id.state_progress_bar);
@@ -414,8 +411,7 @@ public class DeedRegistration extends AppCompatActivity {
                     executeAsyncTask(path, IDENTITY_PROOF_REQUEST);
                     break;
             }
-        }
-        else if (mimeType.equals("application/pdf")) {
+        } else if (mimeType.equals("application/pdf")) {
             switch (docType) {
                 case ADDRESS_PROOF_REQUEST:
                     loadPDF(path, ADDRESS_PROOF_REQUEST);
@@ -431,7 +427,6 @@ public class DeedRegistration extends AppCompatActivity {
             }
         }
     }
-
 
 
     private void executeAsyncTask(Uri uri, final int requestCode) {
@@ -454,8 +449,8 @@ public class DeedRegistration extends AppCompatActivity {
                             .compressToFile(
                                     MyFileUtil.createTempFile(getApplicationContext(), uris[0])
                             );
+                } catch (Exception ex) {
                 }
-                catch (Exception ex) { }
 
                 return tempFile;            // return the compressed file
             }
@@ -481,11 +476,9 @@ public class DeedRegistration extends AppCompatActivity {
 
             if (requestCode == ADDRESS_PROOF_REQUEST) {
                 imageView = addressimageView;
-            }
-            else if (requestCode == AGE_PROOF_REQUEST) {
+            } else if (requestCode == AGE_PROOF_REQUEST) {
                 imageView = ageImageView;
-            }
-            else if (requestCode == IDENTITY_PROOF_REQUEST) {
+            } else if (requestCode == IDENTITY_PROOF_REQUEST) {
                 imageView = idImageView;
             }
 
@@ -608,12 +601,11 @@ public class DeedRegistration extends AppCompatActivity {
     }
 
 
-
     private void setUpAppointmentDateSpinner(List<String> holidays) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
         List<String> dates = new ArrayList<>();
-        dates.add("Select Appointment Date *");
+        dates.add(getString(R.string.dateSpinner));
 
 
         // generate 15 days from today
@@ -624,7 +616,7 @@ public class DeedRegistration extends AppCompatActivity {
             String newDate = formatter.format(cal.getTime());
 
             // check if the new date is a holiday
-            if (!holidays.contains(newDate)){
+            if (!holidays.contains(newDate)) {
                 dates.add(newDate);
             }
         }
@@ -643,12 +635,11 @@ public class DeedRegistration extends AppCompatActivity {
     }
 
 
-
     private void setUpApplicantSpinner() {
 
         final String url = "http://192.168.43.210:8080/e-Panjeeyan/getapplicanttype";
         final ArrayList<String> typeList = new ArrayList<>();
-        typeList.add("Select Applicant Type *");
+        typeList.add(getString(R.string.apptypeSpinner));
 
 
         // get the applicantType from the database
@@ -690,7 +681,7 @@ public class DeedRegistration extends AppCompatActivity {
     }
 
 
-    private void setUpDeedCategorySpinner(){
+    private void setUpDeedCategorySpinner() {
 
         final String url = "http://192.168.43.210:8080/e-Panjeeyan/getdeedcategory";
         //deedList.add("Select Deed Category *");
@@ -700,19 +691,20 @@ public class DeedRegistration extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
 
-                        Type collectionType = new TypeToken<List<DeedCategoryModel>>(){}.getType();
+                        Type collectionType = new TypeToken<List<DeedCategoryModel>>() {
+                        }.getType();
                         deedlist = new Gson().fromJson(response, collectionType);
 
                         // ArrayList of String which contains the category names
                         List<String> list = new ArrayList<>();
-                        list.add("Select Deed Category *");
+                        list.add(getString(R.string.deedSpinner));
 
                         Iterator<DeedCategoryModel> iterator = deedlist.iterator();
 
-                       while (iterator.hasNext()) {
-                           DeedCategoryModel model = iterator.next();
-                           list.add(model.getSection());
-                       }
+                        while (iterator.hasNext()) {
+                            DeedCategoryModel model = iterator.next();
+                            list.add(model.getSection());
+                        }
 
                         ArrayAdapter myTypeAdapter = new ArrayAdapter<String>(DeedRegistration.this,
                                 R.layout.spinner_item_text_colour, list);
@@ -750,7 +742,8 @@ public class DeedRegistration extends AppCompatActivity {
 
             TextView selectedTextView = (TextView) selectedView;
 
-            if (selectedTextView.getText().toString().equalsIgnoreCase("Select Applicant Type *")) {
+            if ((selectedTextView.getText().toString().equalsIgnoreCase("Select Applicant Type *")) ||
+                    (selectedTextView.getText().toString().equalsIgnoreCase("आवेदक प्रकार का चयन करें *"))) {
                 selectedTextView.setFocusable(true);
                 selectedTextView.setClickable(true);
                 selectedTextView.setFocusableInTouchMode(true);
@@ -765,7 +758,8 @@ public class DeedRegistration extends AppCompatActivity {
 
             TextView selectedTextView2 = (TextView) selectedView2;
 
-            if (selectedTextView2.getText().toString().equalsIgnoreCase("Select Office for Registration *")) {
+            if ((selectedTextView2.getText().toString().equalsIgnoreCase("Select Office for Registration *")) ||
+                    (selectedTextView2.getText().toString().equalsIgnoreCase(""))) {
                 selectedTextView2.setFocusable(true);
                 selectedTextView2.setClickable(true);
                 selectedTextView2.setFocusableInTouchMode(true);
@@ -780,7 +774,8 @@ public class DeedRegistration extends AppCompatActivity {
 
             TextView selectedTextView3 = (TextView) selectedView3;
 
-            if (selectedTextView3.getText().toString().equalsIgnoreCase("Select Deed Category *")) {
+            if ((selectedTextView3.getText().toString().equalsIgnoreCase("Select Deed Category *")) ||
+                    (selectedTextView3.getText().toString().equalsIgnoreCase("डीड श्रेणी का चयन करें *"))) {
                 selectedTextView3.setFocusable(true);
                 selectedTextView3.setClickable(true);
                 selectedTextView3.setFocusableInTouchMode(true);
@@ -794,7 +789,8 @@ public class DeedRegistration extends AppCompatActivity {
 
             TextView selectedTextView4 = (TextView) selectedView4;
 
-            if (selectedTextView4.getText().toString().equalsIgnoreCase("Select Deed Sub Category *")) {
+            if ((selectedTextView4.getText().toString().equalsIgnoreCase("Select Deed Sub Category *")) ||
+                    (selectedTextView4.getText().toString().equalsIgnoreCase("सब डीड श्रेणी का चयन करें *"))) {
                 selectedTextView4.setFocusable(true);
                 selectedTextView4.setClickable(true);
                 selectedTextView4.setFocusableInTouchMode(true);
@@ -807,13 +803,14 @@ public class DeedRegistration extends AppCompatActivity {
 
         if (selectedView5 instanceof TextView) {
 
-            TextView selectedTextView = (TextView) selectedView5;
+            TextView selectedTextView5 = (TextView) selectedView5;
 
-            if (selectedTextView.getText().toString().equalsIgnoreCase("Select Appointment Date *")) {
-                selectedTextView.setFocusable(true);
-                selectedTextView.setClickable(true);
-                selectedTextView.setFocusableInTouchMode(true);
-                selectedTextView.setError(getString(R.string.spinnerError));
+            if ((selectedTextView5.getText().toString().equalsIgnoreCase("Select Appointment Date *")) ||
+                    (selectedTextView5.getText().toString().equalsIgnoreCase("अपॉइंटमेंट तिथि का चयन करें *"))) {
+                selectedTextView5.setFocusable(true);
+                selectedTextView5.setClickable(true);
+                selectedTextView5.setFocusableInTouchMode(true);
+                selectedTextView5.setError(getString(R.string.spinnerError));
 
                 result = false;
             }
@@ -970,7 +967,7 @@ public class DeedRegistration extends AppCompatActivity {
 
         // network call to write info in the database and then payment activity is started
 
-        Intent intent = new Intent(this,PaymentActivity.class);
+        Intent intent = new Intent(this, PaymentActivity.class);
         startActivity(intent);
         finish();
 

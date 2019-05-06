@@ -143,9 +143,22 @@
         <item>Married</item>
     </string-array>
 
+    <!--Spinners first select line-->
+    <string name="apptypeSpinner">Select Applicant Type *</string>
+
+    <string name="dateSpinner">Select Appointment Date *</string>
+
+    <string name="sroSpinner">Select Office for Registration *</string>
+
+    <string name="deedSpinner">Select Deed Category *</string>
+
+    <string name="subdeedSpinner">Select Sub Deed Category *</string>
+
+    <!--<string name="imageSpinner">Select Deed Category *</string>-->
+
+
     <!--Spinner error message-->
     <string name="spinnerError">Choose an item</string>
-
 
 
     <!--&lt;!&ndash;validation&ndash;&gt;-->
@@ -171,6 +184,15 @@
     <!--&lt;!&ndash;view_status &ndash;&gt;-->
 
     <!--<string name="refNumber">Enter a valid reference no.</string>-->
+
+
+    <!--About page-->
+    <string name="version">Version 1.0</string>
+    <string name="developer">Designed &amp; developed by NIC, Assam</string>
+    <string name="about_page_description">e-Panjeeyan is an Android Mobile Application of Revenue &amp; Disaster Management Department. It is a government\'s registration system for online deed registration and marriage registration. So basically, the registration process involves the preparation of the deeds by selecting its category, calculating the applicable stamp duty and registration fees for the deed and an appointment date is provided on successful registration. After payment of the fees, the Sub-Registrar Office (SRO) of the area will record the deed legally.
+   </string>
+    <string name="connect_us_label">Contact with us</string>
+    <string name="epanjeeyan_web_address" translatable="false">http://revenueassam.nic.in/panjeeyanonline/index.jsp</string>
 
 
 </resources>

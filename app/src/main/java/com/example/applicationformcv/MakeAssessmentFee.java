@@ -38,7 +38,7 @@ public class MakeAssessmentFee extends AppCompatActivity {
         setUpDeedCategorySpinner();
 
         List<String> temp = new ArrayList<>();
-        temp.add("Select Sub Deed Category *");
+        temp.add(getString(R.string.subdeedSpinner));
 
         subDeedAdapter = new ArrayAdapter<String>(this,
                 R.layout.spinner_item_text_colour, temp);
@@ -65,7 +65,7 @@ public class MakeAssessmentFee extends AppCompatActivity {
                                         JSONArray array = new JSONArray(response);
 
                                         List<String> subDeed = new ArrayList<>();
-                                        subDeed.add("Select Sub Deed Category *");
+                                        subDeed.add(getString(R.string.subdeedSpinner));
 
                                         //array list is populated from JSON array
                                         for (int i = 0; i < array.length(); i++) {
@@ -117,7 +117,7 @@ public class MakeAssessmentFee extends AppCompatActivity {
 
                         // ArrayList of String which contains the category names
                         List<String> list = new ArrayList<>();
-                        list.add("Select Deed Category *");
+                        list.add(getString(R.string.deedSpinner));
 
                         Iterator<DeedCategoryModel> iterator = deedlist.iterator();
 

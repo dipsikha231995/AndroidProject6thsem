@@ -1,8 +1,8 @@
 package com.example.applicationformcv;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
@@ -22,7 +22,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
-import com.google.common.collect.Range;
 import com.kofigyan.stateprogressbar.StateProgressBar;
 import com.kofigyan.stateprogressbar.components.StateItem;
 import com.kofigyan.stateprogressbar.listeners.OnStateItemClickListener;
@@ -347,7 +346,7 @@ public class MarriageRegistration extends AppCompatActivity {
         final String url = "http://192.168.43.210:8080/mvcbook/getdates";
 
         final ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("Select Appointment Date *");
+        arrayList.add((getString(R.string.dateSpinner)));
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
 
@@ -503,7 +502,8 @@ public class MarriageRegistration extends AppCompatActivity {
 
             TextView selectedTextView = (TextView) selectedView;
 
-            if (selectedTextView.getText().toString().equalsIgnoreCase("Select Appointment Date *")) {
+            if ((selectedTextView.getText().toString().equalsIgnoreCase("Select Appointment Date *")) ||
+                    (selectedTextView.getText().toString().equalsIgnoreCase("अपॉइंटमेंट तिथि का चयन करें *"))) {
                 selectedTextView.setFocusable(true);
                 selectedTextView.setClickable(true);
                 selectedTextView.setFocusableInTouchMode(true);

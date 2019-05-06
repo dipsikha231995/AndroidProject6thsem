@@ -171,8 +171,10 @@ public class MainActivity extends AppCompatActivity{
                 finish();
                 break;
 
-//            case R.id.about_menu_item:
-//                break;
+            case R.id.about_menu_item:
+                Intent aboutIntent = new Intent(this, AboutActivity.class);
+                startActivity(aboutIntent);
+                break;
 
 
             case R.id.logout_menu_item:
