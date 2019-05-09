@@ -32,6 +32,8 @@ public class MakeAssessmentFee extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_assessment_fee);
+        setTitle(getString(R.string.title_check_fee));
+
         deedCategorySpinner = findViewById(R.id.deedCategory);
         subDeedCategorySpinner = findViewById(R.id.subdeedCategory);
 

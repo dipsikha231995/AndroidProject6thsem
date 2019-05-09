@@ -60,6 +60,12 @@ dependencies {
 
     //about page
     implementation 'com.github.medyo:android-about-page:1.2.5'
+
+    //onboarding library
+    implementation 'com.codemybrainsout.onboarding:onboarder:1.0.4'
+
+    //Navigational drawer
+    implementation 'com.infideap.drawerbehavior:drawer-behavior:0.1.5'
 }
 
 apply plugin: 'com.google.gms.google-services'

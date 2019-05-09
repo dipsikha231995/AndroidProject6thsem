@@ -10,8 +10,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".AboutActivity"></activity>
+        android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar">
+        <activity android:name=".OnBoardingActivity"></activity>
+        <activity
+            android:name=".AboutActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".PaymentGateway"
             android:parentActivityName=".MainActivity" />
@@ -51,7 +54,9 @@
         <activity
             android:name=".DeedRegistration"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

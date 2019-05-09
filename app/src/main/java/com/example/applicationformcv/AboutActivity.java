@@ -36,7 +36,7 @@ public class AboutActivity extends AppCompatActivity {
                 .create();
 
         setContentView(aboutPage);
-        ////setTitle(R.string.title_about_egras);
+        setTitle(R.string.title_about_epanjeeyan);
 
     }
 }

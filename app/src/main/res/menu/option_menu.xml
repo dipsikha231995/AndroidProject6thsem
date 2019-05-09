@@ -2,62 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="Main Menu"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_more_vert_black_24dp">
-        <menu>
-
-            <item
-                android:id="@+id/myprofile_menu_item"
-                android:orderInCategory="90"
-                android:title="My Profile"
-                app:showAsAction="never"
-                android:icon="@drawable/ic_person"/>
-
-            <item
-                android:id="@+id/language_menu_item"
-                android:icon="@drawable/ic_language_black_24dp"
-                android:orderInCategory="100"
-                android:title="English"
-                app:showAsAction="never" />
-
-            <item
-                android:id="@+id/language_menu_item2"
-                android:icon="@drawable/ic_language_black_24dp"
-                android:orderInCategory="100"
-                android:title="Hindi"
-                app:showAsAction="never" />
-
-            <item
-                android:id="@+id/theme_menu_item"
-                android:icon="@drawable/ic_setting"
-                android:orderInCategory="100"
-                android:title="Light"
-                app:showAsAction="never" />
-
-            <item
-                android:id="@+id/theme_menu_item2"
-                android:icon="@drawable/ic_setting"
-                android:orderInCategory="100"
-                android:title="Dark"
-                app:showAsAction="never" />
-
-            <item
-                android:id="@+id/about_menu_item"
-                android:icon="@drawable/ic_info_outline_black_24dp"
-                android:orderInCategory="100"
-                android:title="About e-Panjeeyan"
-                app:showAsAction="never" />
-
-            <item
-                android:id="@+id/logout_menu_item"
-                android:icon="@drawable/ic_logout_24dp"
-                android:orderInCategory="110"
-                android:title="Logout"
-                app:showAsAction="never" />
-
-        </menu>
-    </item>
-
-
+    <item
+        android:id="@+id/settings_menu_item"
+        android:icon="@drawable/ic_settings"
+        android:title="Settings"
+        app:showAsAction="always" />
 </menu>

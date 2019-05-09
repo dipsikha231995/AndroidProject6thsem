@@ -193,6 +193,12 @@
    </string>
     <string name="connect_us_label">Contact with us</string>
     <string name="epanjeeyan_web_address" translatable="false">http://revenueassam.nic.in/panjeeyanonline/index.jsp</string>
+    <string name="title_about_epanjeeyan">About e-Panjeeyan</string>
+
+
+    <!--Title of action bar-->
+    <string name="title_profile_epanjeeyan">My Profile</string>
+    <string name="title_check_fee">Fee assessment</string>
 
 
 </resources>

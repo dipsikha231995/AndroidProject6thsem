@@ -448,7 +448,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/edittext_border"
-                        android:src="@drawable/noimage" />
+                        app:srcCompat="@drawable/noimage" />
 
 
                     <!--NAME-->
@@ -486,7 +486,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/edittext_border"
-                        android:src="@drawable/noimage"/>
+                        app:srcCompat="@drawable/noimage" />
 
 
                     <!--NAME-->
@@ -524,7 +524,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/edittext_border"
-                        android:src="@drawable/noimage" />
+                        app:srcCompat="@drawable/noimage" />
 
 
                     <!--NAME-->
@@ -633,7 +633,7 @@
                         android:layout_marginBottom="8dp"
                         android:paddingLeft="3dp"
                         android:paddingBottom="2dp"
-                        android:src="@drawable/goa" />
+                        app:srcCompat="@drawable/goa" />
                 </android.support.v7.widget.CardView>
 
                 <TextView
@@ -665,7 +665,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:scaleType="fitStart"
-                        android:src="@drawable/ic_check_circle_black_24dp" />
+                        app:srcCompat="@drawable/ic_check_circle_black_24dp" />
 
                     <TextView
                         android:layout_width="match_parent"

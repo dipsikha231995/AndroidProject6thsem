@@ -124,6 +124,7 @@ public class DeedRegistration extends AppCompatActivity {
         setContentView(R.layout.activity_deed_registration);
         initializeValidation();
 
+        setTitle(getString(R.string.deed));
         appointmentForm = findViewById(R.id.appoint_form);
         uploadDocumentsForm = findViewById(R.id.document_upload_form);
         confirmForm = findViewById(R.id.confirm_form);

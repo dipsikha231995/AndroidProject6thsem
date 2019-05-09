@@ -82,6 +82,7 @@ public class MarriageRegistration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_marriage_registration);
 
+        setTitle(getString(R.string.marr));
         // form layouts
         marriageDetailsForm = findViewById(R.id.marriage_form);
         brideDetailsForm = findViewById(R.id.bride_form);
