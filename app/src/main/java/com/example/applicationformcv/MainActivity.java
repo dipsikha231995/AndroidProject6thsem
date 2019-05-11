@@ -1,5 +1,6 @@
 package com.example.applicationformcv;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +19,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,10 +35,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //////Navigational Drawer//////
     Advance3DDrawerLayout drawer;
+    private static Button ins, deed, marr, viewStatus;
+    NavigationView navigationView;
+    ////Switch Night Mode///////
+    View view;
 
     ///////language change//////
     private static TextView rev, gov;
-    private static Button ins, deed, marr, viewStatus ;
+    Switch aSwitch;
     private static Locale myLocale;
 
     //Shared Preferences Variables
@@ -70,13 +78,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.setRadius(Gravity.END, 25); //set end container's corner radius (dimension)
 
         // setting NavigationView menu item click listener
-        NavigationView navigationView = findViewById(R.id.nav_view_notification);
+        navigationView = findViewById(R.id.nav_view_notification);
         navigationView.setNavigationItemSelectedListener(this);
         /////////////////////////
 
         initViews();
 
         loadSettings();
+
+        aSwitch = findViewById(R.id.drawer_switch); ///Night Mode
     }
 
     //Navigational Drawer//
@@ -89,9 +99,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-/////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     private void initViews() {
-        rev =  findViewById(R.id.revText);
+        rev = findViewById(R.id.revText);
         gov = findViewById(R.id.govText);
         ins = findViewById(R.id.button);
         deed = findViewById(R.id.button2);
@@ -134,10 +144,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void changeTheme(String theme) {
 
-        if (theme.equalsIgnoreCase("li")) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        } else if (theme.equalsIgnoreCase("da")) {
+        if (theme.equalsIgnoreCase("da")) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else if (theme.equalsIgnoreCase("li")) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
 
@@ -243,9 +253,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
 
-        String lang = "";
-        String theme = "";
-
         switch (item.getItemId()) {
 
             case R.id.myprofile_menu_item:
@@ -254,39 +261,101 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.language_menu_item:
-                lang = "en";//Default Language
-                changeLanguage(lang);//Change Locale on selection basis
-                Toast.makeText(this, "You choosed English", Toast.LENGTH_SHORT).show();
-                break;
+                String[] singleChoiceItems = getResources().getStringArray(R.array.dialog_single_choice_array);
+                int itemSelected = 0;
+                new AlertDialog.Builder(this)
+                        .setTitle("Choose a language")
+                        .setSingleChoiceItems(singleChoiceItems, itemSelected, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int selectedIndex) {
+                                if (selectedIndex == 0) {
+                                    String lang = "";
+                                    lang = "en";//Default Language
+                                    changeLanguage(lang);//Change Locale on selection basis
 
+                                } else if (selectedIndex == 1) {
+                                    String lang = "";
+                                    lang = "hi";
+                                    changeLanguage(lang);//Change Locale on selection basis
 
-            case R.id.language_menu_item2:
-                lang = "hi";
-                changeLanguage(lang);//Change Locale on selection basis
-                Toast.makeText(this, "You choosed Hindi", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        })
+                        .setCancelable(false)
+                        .setNegativeButton("Cancel", null)
+                        .show();
+
                 break;
 
             case R.id.theme_menu_item:
-                theme = "li";
-                saveTheme(theme);
 
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                startActivity(getIntent());
-                finish();
-                break;
+                // Toggle button
+                view = navigationView.getMenu().findItem(R.id.theme_menu_item).getActionView();
+                aSwitch = view.findViewById(R.id.drawer_switch);
 
-            case R.id.theme_menu_item2:
-                theme = "da";
-                saveTheme(theme);
+                aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                startActivity(getIntent());
-                finish();
+                    String theme = "";
+
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                        if (isChecked) {
+
+                            theme = "da";
+                            saveTheme(theme);
+                            // Log.d("MY_APP", theme);
+
+//                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//                            startActivity(getIntent());
+//                            finish();
+
+                            Toast.makeText(MainActivity.this, "Checked", Toast.LENGTH_SHORT).show();
+                        } else {
+
+                            theme = "li";
+                            saveTheme(theme);
+                            //  Log.d("MY_APP", theme);
+
+//                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//                            startActivity(getIntent());
+//                            finish();
+
+                            Toast.makeText(MainActivity.this, "UN Checked", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+
+                });
+                /////////////////////
+
+
+//                theme = "li";
+//                saveTheme(theme);
+//
+//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//                startActivity(getIntent());
+//                finish();
+//                break;
+
+//            case R.id.theme_menu_item2:
+//                theme = "da";
+//                saveTheme(theme);
+//
+//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//                startActivity(getIntent());
+//                finish();
                 break;
 
             case R.id.about_menu_item:
                 Intent aboutIntent = new Intent(this, AboutActivity.class);
                 startActivity(aboutIntent);
+                break;
+
+            case R.id.help_menu_item:
+                Intent helpIntent = new Intent(this, HelpActivity.class);
+                startActivity(helpIntent);
                 break;
 
 
@@ -302,43 +371,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         });
         }
 
-        /////
-//        int id = item.getItemId();
-//
-//        if (id == R.id.language_menu_item) {
-//            Toast.makeText(this, "Change language", Toast.LENGTH_SHORT).show();
-//        }
-//        else if (id == R.id.theme_menu_item) {
-//            Toast.makeText(this, "Change Theme", Toast.LENGTH_SHORT).show();
-//        }
-//        else if (id == R.id.nav_about) {
-//            Toast.makeText(this, "About e-panjeeyan", Toast.LENGTH_SHORT).show();
-//        }
-//        else if (id == R.id.nav_help) {
-//            Toast.makeText(this, "Help Dany!", Toast.LENGTH_SHORT).show();
-//        }
-//        else if (id == R.id.nav_logout) {
-//            Toast.makeText(this, "Logout user", Toast.LENGTH_SHORT).show();
-//        }
-
         drawer.closeDrawer(GravityCompat.END);
         return true;
     }
 
 
     public void doDeedRegister(View view) {
-        Intent intent1 = new Intent(this,DeedRegistration.class);
+        Intent intent1 = new Intent(this, DeedRegistration.class);
         startActivity(intent1);
     }
 
     public void doMarriageRegistration(View view) {
-        Intent intent2 = new Intent(this,MarriageRegistration.class);
+        Intent intent2 = new Intent(this, MarriageRegistration.class);
         intent2.putExtra("name", name);
         startActivity(intent2);
     }
 
     public void doViewStaus(View view) {
-        Intent intent3 = new Intent(this,ViewStatus.class);
+        Intent intent3 = new Intent(this, ViewStatus.class);
         startActivity(intent3);
     }
 
@@ -353,7 +403,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void combineForm(View view) {
-        Intent intent4 = new Intent(this,MakeAssessmentFee.class);
+        Intent intent4 = new Intent(this, MakeAssessmentFee.class);
         startActivity(intent4);
     }
 }

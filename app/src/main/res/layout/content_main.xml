@@ -76,7 +76,7 @@
                     android:layout_width="157dp"
                     android:layout_height="215dp"
                     android:layout_marginRight="10dp"
-                    android:drawableTop="@drawable/money"
+                    android:drawableTop="@drawable/ic_feeicon"
                     android:onClick="combineForm"
                     android:text="@string/ins"
                     android:textSize="14sp" />
@@ -86,7 +86,7 @@
                     android:id="@+id/button2"
                     android:layout_width="157dp"
                     android:layout_height="215dp"
-                    android:drawableTop="@drawable/addfriend"
+                    android:drawableTop="@drawable/ic_deedicon"
                     android:onClick="doDeedRegister"
                     android:text="@string/deed"
                     android:textSize="14sp" />
@@ -107,7 +107,7 @@
                     android:layout_width="157dp"
                     android:layout_height="215dp"
                     android:layout_marginRight="10dp"
-                    android:drawableTop="@drawable/weddingrings"
+                    android:drawableTop="@drawable/ic_marriageicon"
                     android:onClick="doMarriageRegistration"
                     android:text="@string/marr"
                     android:textSize="14sp" />
@@ -117,7 +117,7 @@
                     android:id="@+id/button4"
                     android:layout_width="157dp"
                     android:layout_height="215dp"
-                    android:drawableTop="@drawable/eyeyellow"
+                    android:drawableTop="@drawable/ic_viewicon"
                     android:onClick="doViewStaus"
                     android:text="@string/view"
                     android:textSize="14sp" />

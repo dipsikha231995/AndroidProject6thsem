@@ -57,6 +57,7 @@ public class OnBoardingActivity extends AhoyOnboarderActivity {
     public void onFinishButtonPressed() {
         Intent gotoMain = new Intent(this, MainActivity.class);
         startActivity(gotoMain);
+        finish();
 
     }
 
