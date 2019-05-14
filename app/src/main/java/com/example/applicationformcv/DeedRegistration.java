@@ -51,6 +51,8 @@ import id.zelory.compressor.Compressor;
 
 public class DeedRegistration extends AppCompatActivity {
 
+//    ProgressDialog dialog;
+
     public static final String TAG = "MY-APP";
 
     public static final String Date_array = "Date";
@@ -118,11 +120,19 @@ public class DeedRegistration extends AppCompatActivity {
 
     List<DeedCategoryModel> deedlist = new ArrayList<>();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deed_registration);
         initializeValidation();
+
+//        dialog = new ProgressDialog(this);
+//        dialog.setTitle("Loading...");
+//        dialog.setMessage("Please wait");
+//        dialog.setMax(10);
+//        dialog.setCancelable(false);
+//        dialog.show();
 
         setTitle(getString(R.string.deed));
         appointmentForm = findViewById(R.id.appoint_form);
@@ -950,7 +960,7 @@ public class DeedRegistration extends AppCompatActivity {
 
     public void submitData(View view) {
 
-        Toast.makeText(this, "data submitted", Toast.LENGTH_SHORT).show();
+        //  Toast.makeText(this, "data submitted", Toast.LENGTH_SHORT).show();
 
         confirmForm.setVisibility(View.GONE);
 

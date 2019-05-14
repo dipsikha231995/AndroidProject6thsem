@@ -1,7 +1,9 @@
 package com.example.applicationformcv;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -26,49 +28,39 @@ public class SplashActivity extends AppCompatActivity {
         // do I show on-boarding activity or the main activity?
         // show the on-boarding activity during installation
 
-        Intent intent = new Intent(SplashActivity.this, OnBoardingActivity.class);
-        startActivity(intent);
-        finish();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean appIntroShown = sharedPref.getBoolean(KEY_APP_INTO, false);
 
-//        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//        boolean appIntroShown = sharedPref.getBoolean(KEY_APP_INTO, false);
-//        if (!appIntroShown) {
-//
-//            // show the app intro for once
-//            // go to the on-boarding activity
-//            // make the field as true
-//
-//            SharedPreferences.Editor editor = sharedPref.edit();
-//            editor.putBoolean(KEY_APP_INTO, true);
-//            editor.apply();
-//            Intent intent2 = new Intent(getApplicationContext(), OnBoardingActivity.class);
-//            startActivity(intent2);
-//            finish();
-//        }
-//        else {
-//            // route to either log-in or mainActivity
-//            routeToAppropriateScreen();
-//        }
+        if (!appIntroShown) {
+            // show the app intro for once
+            // go to the on-boarding activity
+            // make the field as true
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putBoolean(KEY_APP_INTO, true);
+            editor.apply();
 
+            Intent intent = new Intent(getApplicationContext(), OnBoardingActivity.class);
+            startActivity(intent);
+            finish();
 
-        // check for network connectivity first
-
-//        routeToAppropriateScreen();
-//        Log.d("Error", "Checking the working in Splash Activity ");
+        } else {
+            // route to either log-in or mainActivity
+            routeToAppropriateScreen();
+        }
     }
-
 
     private void routeToAppropriateScreen() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null) {
-            // User already signed in
-            sendToHomeScreen();
+            // User is already signed in
+            // verify token at the backend
+
+            signInUser();
         } else {
             // No user is signed in
-            // show the firebase auth UI
+            // Show the Firebase Auth UI
 
-            // Choose authentication providers
             List<AuthUI.IdpConfig> providers = Arrays.asList(
                     new AuthUI.IdpConfig.EmailBuilder().build(),
                     new AuthUI.IdpConfig.PhoneBuilder().build());
@@ -78,14 +70,13 @@ public class SplashActivity extends AppCompatActivity {
                     AuthUI.getInstance()
                             .createSignInIntentBuilder()
                             .setAvailableProviders(providers)
-                            .setLogo(R.drawable.goa)                  // Set logo drawable
-                            .setTheme(R.style.Theme_AppCompat_DayNight_DarkActionBar)  // Set theme
+                            .setTheme(R.style.AppTheme)
+                            .setLogo(R.drawable.goa)
                             .setIsSmartLockEnabled(false)
                             .build(),
                     RC_SIGN_IN);
         }
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -96,9 +87,10 @@ public class SplashActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
-                sendToHomeScreen();
+                // verify token at the backend
+
+                signInUser();
             } else {
-                // Sign in failed.
                 if (response != null) {
                     Toast.makeText(this, response.getError().getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -107,9 +99,10 @@ public class SplashActivity extends AppCompatActivity {
     }
 
 
-    private void sendToHomeScreen() {
-        Intent intent = new Intent(this, MainActivity.class);
+    private void signInUser() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
         finish();
     }
+
 }

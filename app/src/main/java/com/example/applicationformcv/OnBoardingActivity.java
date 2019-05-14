@@ -13,6 +13,8 @@ import java.util.List;
 
 public class OnBoardingActivity extends AhoyOnboarderActivity {
 
+    private static final String TAG = "MY-APP";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +60,5 @@ public class OnBoardingActivity extends AhoyOnboarderActivity {
         Intent gotoMain = new Intent(this, MainActivity.class);
         startActivity(gotoMain);
         finish();
-
     }
-
 }

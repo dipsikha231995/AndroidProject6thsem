@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
@@ -22,7 +23,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,29 +33,27 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    //////Navigational Drawer//////
-    Advance3DDrawerLayout drawer;
-    private static Button ins, deed, marr, viewStatus;
-    NavigationView navigationView;
-    ////Switch Night Mode///////
-    View view;
-
-    ///////language change//////
-    private static TextView rev, gov;
-    Switch aSwitch;
-    private static Locale myLocale;
+    private static final String TAG = "MY-APP";
 
     //Shared Preferences Variables
     private static final String Locale_Preference = "Locale Preference"; //name of the shared preference
     private static final String Locale_KeyValue = "Language key"; //this is the key which will have the value either en,hi
     private static final String ThemeKey = "Theme key"; //this is the key which will have the value either li,da
-
+    public static String name = "";
+    private static Button ins, deed, marr, viewStatus;
+    ///////language change//////
+    private static TextView rev, gov;
+    private static Locale myLocale;
     private static SharedPreferences sharedPreferences;  //text file contains app settings in the form of key and value
     private static SharedPreferences.Editor editor;  //write in shared preference
+    //////Navigational Drawer//////
+    Advance3DDrawerLayout drawer;
+    NavigationView navigationView;
+    ////Switch Night Mode///////
+    View view;
 
     //////////////////////////
-
-    public static String name = "";
+    Switch aSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +64,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        sharedPreferences = getSharedPreferences(Locale_Preference, AppCompatActivity.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
         drawer = findViewById(R.id.drawer_layout);
         drawer.useCustomBehavior(Gravity.END); //assign custom behavior for "Right" drawer
+        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View view, float v) {
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View view) {
+                // change the switch state, if necessary
+                if (aSwitch != null) {
+                    String theme = sharedPreferences.getString(ThemeKey, "li");           //read the default theme
+
+                    if (theme.equalsIgnoreCase("li")) {
+                        aSwitch.setChecked(false);
+                    } else if (theme.equalsIgnoreCase("da")) {
+                        aSwitch.setChecked(true);
+                    }
+                }
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View view) {
+            }
+
+            @Override
+            public void onDrawerStateChanged(int i) {
+            }
+        });
 
         // customisation of the drawer
         drawer.setViewRotation(Gravity.END, 15); // set degree of Y-rotation ( value : 0 -> 45)
@@ -86,8 +114,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         loadSettings();
 
-        aSwitch = findViewById(R.id.drawer_switch); ///Night Mode
+        // Toggle button
+        view = navigationView.getMenu().findItem(R.id.theme_menu_item).getActionView();
+        aSwitch = view.findViewById(R.id.drawer_switch);
+        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            String theme = "";
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    theme = "da";
+                    MainActivity.this.getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                } else {
+                    theme = "li";
+                    MainActivity.this.getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                }
+
+                saveTheme(theme);
+            }
+        });
+
+        Log.d(TAG, "onCreate called ");
     }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart called");
+    }
+
+
 
     //Navigational Drawer//
     @Override
@@ -131,19 +188,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void loadSettings() {
-        sharedPreferences = getSharedPreferences(Locale_Preference, AppCompatActivity.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-
         String language = sharedPreferences.getString(Locale_KeyValue, "en"); //read the default language
         String theme = sharedPreferences.getString(ThemeKey, "li");           //read the default theme
 
         changeLanguage(language);
         changeTheme(theme);
-
     }
 
     private void changeTheme(String theme) {
-
         if (theme.equalsIgnoreCase("da")) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else if (theme.equalsIgnoreCase("li")) {
@@ -181,68 +233,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (item.getItemId() == R.id.settings_menu_item) {
             // open the right navigation drawer
-
             drawer.openDrawer(Gravity.END, true);
         }
-
-//        String lang = "";
-//        String theme = "";
-
-//        switch (item.getItemId()) {
-//
-//            case R.id.myprofile_menu_item:
-//                Intent intent = new Intent(this, myProfile.class);
-//                startActivity(intent);
-//                break;
-//
-//            case R.id.language_menu_item:
-//                lang = "en";//Default Language
-//                changeLanguage(lang);//Change Locale on selection basis
-//                Toast.makeText(this, "You choosed English", Toast.LENGTH_SHORT).show();
-//                break;
-//
-//
-//            case R.id.language_menu_item2:
-//                lang = "hi";
-//                changeLanguage(lang);//Change Locale on selection basis
-//                Toast.makeText(this, "You choosed Hindi", Toast.LENGTH_SHORT).show();
-//                break;
-//
-//            case R.id.theme_menu_item:
-//                theme = "li";
-//                saveTheme(theme);
-//
-//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//                startActivity(getIntent());
-//                finish();
-//                break;
-//
-//            case R.id.theme_menu_item2:
-//                theme = "da";
-//                saveTheme(theme);
-//
-//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//                startActivity(getIntent());
-//                finish();
-//                break;
-//
-//            case R.id.about_menu_item:
-//                Intent aboutIntent = new Intent(this, AboutActivity.class);
-//                startActivity(aboutIntent);
-//                break;
-//
-//
-//            case R.id.logout_menu_item:
-//                // sign-out the user
-//                AuthUI.getInstance()
-//                        .signOut(this)
-//                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                            public void onComplete(@NonNull Task<Void> task) {
-//                                startActivity(new Intent(getApplicationContext(), SplashActivity.class));
-//                                finish();
-//                            }
-//                        });
-//        }
 
         return true;
     }
@@ -262,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.language_menu_item:
                 String[] singleChoiceItems = getResources().getStringArray(R.array.dialog_single_choice_array);
-                int itemSelected = 0;
+                int itemSelected = getSelectedItemIndex();
                 new AlertDialog.Builder(this)
                         .setTitle("Choose a language")
                         .setSingleChoiceItems(singleChoiceItems, itemSelected, new DialogInterface.OnClickListener() {
@@ -289,63 +281,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.theme_menu_item:
-
-                // Toggle button
-                view = navigationView.getMenu().findItem(R.id.theme_menu_item).getActionView();
-                aSwitch = view.findViewById(R.id.drawer_switch);
-
-                aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-                    String theme = "";
-
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                        if (isChecked) {
-
-                            theme = "da";
-                            saveTheme(theme);
-                            // Log.d("MY_APP", theme);
-
-//                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//                            startActivity(getIntent());
-//                            finish();
-
-                            Toast.makeText(MainActivity.this, "Checked", Toast.LENGTH_SHORT).show();
-                        } else {
-
-                            theme = "li";
-                            saveTheme(theme);
-                            //  Log.d("MY_APP", theme);
-
-//                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//                            startActivity(getIntent());
-//                            finish();
-
-                            Toast.makeText(MainActivity.this, "UN Checked", Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-
-                });
-                /////////////////////
-
-
-//                theme = "li";
-//                saveTheme(theme);
-//
-//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//                startActivity(getIntent());
-//                finish();
-//                break;
-
-//            case R.id.theme_menu_item2:
-//                theme = "da";
-//                saveTheme(theme);
-//
-//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//                startActivity(getIntent());
-//                finish();
                 break;
 
             case R.id.about_menu_item:
@@ -373,6 +308,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawer.closeDrawer(GravityCompat.END);
         return true;
+    }
+
+
+    private int getSelectedItemIndex() {
+        String language = sharedPreferences.getString(Locale_KeyValue, "en"); //read the default language
+        if (language.equalsIgnoreCase("en")) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
 
