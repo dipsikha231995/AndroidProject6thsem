@@ -1,53 +1,76 @@
 package com.example.applicationformcv;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.github.ybq.android.spinkit.style.Wave;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import com.kofigyan.stateprogressbar.StateProgressBar;
 import com.kofigyan.stateprogressbar.components.StateItem;
 import com.kofigyan.stateprogressbar.listeners.OnStateItemClickListener;
 
+import org.aviran.cookiebar2.CookieBar;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MarriageRegistration extends AppCompatActivity {
+
+    Map<String, String> params;
+
+    AlertDialog alertDialog;
+
+    CookieBar.Builder cookieBar;
 
     private static final String TAG = "MY_APP";
 
     // Marriage details form fields
-    EditText editText, email, mobile;
+    EditText applicantName, email, mobile;
     Spinner mySpinner1, mySpinner2, mySpinner3;
 
-//    Spinner mySpinnerDate;
-
     // Bride details form fields
-    EditText eCity, ePolice, ePost, eDistrict, eState, ePin, sameCity, samePolice, samePost, sameDistrict, sameState, samePin;
+    EditText eCity, ePolice, ePost, eDistrict, eState, ePin, perCity, perPolice, perPost, perDistrict, perState, perPin, lengthOfResidence;
     CheckBox cBox;
     EditText name, age, occupation, fName;
     Spinner mySpinner4;
 
     // Groom details form fields
-    EditText eCity2, ePolice2, ePost2, eDistrict2, eState2, ePin2, sameCity2, samePolice2, samePost2, sameDistrict2, sameState2, samePin2;
+    EditText eCity2, ePolice2, ePost2, eDistrict2, eState2, ePin2, perCity2, perPolice2, perPost2, perDistrict2, perState2, perPin2, lengthOfResidence2;
     CheckBox cBox2;
     EditText name2, age2, occupation2, fName2;
     Spinner mySpinner5;
@@ -76,11 +99,40 @@ public class MarriageRegistration extends AppCompatActivity {
     // the header textView
     TextView header;
 
+    List<RegistrationOfficeModel> officeList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_marriage_registration);
+
+        params = new HashMap<>();
+
+        //Loading spin kit
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.layout_loading_dialog, null);
+        ProgressBar progressBar = view.findViewById(R.id.spin_kit);
+        Wave wave = new Wave();
+        progressBar.setIndeterminateDrawable(wave);
+
+        alertDialog = new AlertDialog.Builder(this)
+                .setCancelable(false)
+                .setView(view)
+                .create();
+        alertDialog.show();
+
+        //No internet coonection error
+        cookieBar = CookieBar.build(MarriageRegistration.this)
+                .setTitle("Network Error")
+                .setTitleColor(android.R.color.white)
+                .setBackgroundColor(R.color.colorPrimary)
+                .setIcon(R.drawable.ic_icon)
+                .setEnableAutoDismiss(true)
+                .setCookiePosition(CookieBar.TOP)
+                .setSwipeToDismiss(true);
+
+        setUpOfficeSpinner();
 
         setTitle(getString(R.string.marr));
         // form layouts
@@ -93,7 +145,7 @@ public class MarriageRegistration extends AppCompatActivity {
         stateProgressBar = findViewById(R.id.state_progress_bar);
         // state progressbar description
         String[] descriptionData = {getString(R.string.marriageDet), getString(R.string.brideDet),
-                                    getString(R.string.groomDet), getString(R.string.confirm)};
+                getString(R.string.groomDet), getString(R.string.confirm)};
 
         stateProgressBar.setStateDescriptionData(descriptionData);
         stateProgressBar.setOnStateItemClickListener(new OnStateItemClickListener() {
@@ -110,10 +162,10 @@ public class MarriageRegistration extends AppCompatActivity {
 
         // marriage details views
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        mySpinner1 = findViewById(R.id.spinner11);
-        mySpinner2 = findViewById(R.id.spinner2);
-        mySpinner3 = findViewById(R.id.spinner3);
-        editText = findViewById(R.id.applicantName);
+        mySpinner1 = findViewById(R.id.spinner11);    //appointment dates
+        mySpinner2 = findViewById(R.id.spinner2);     //marriage type
+        mySpinner3 = findViewById(R.id.spinner3);     //sro offices
+        applicantName = findViewById(R.id.applicantName);
         email = findViewById(R.id.username);
         mobile = findViewById(R.id.number);
 
@@ -124,10 +176,6 @@ public class MarriageRegistration extends AppCompatActivity {
         myAdapter2.setDropDownViewResource(R.layout.spinner_item_text_colour);
         mySpinner2.setAdapter(myAdapter2);
 
-        ArrayAdapter<String> myAdapter3 = new ArrayAdapter<String>(this, R.layout.spinner_item_text_colour,
-                getResources().getStringArray(R.array.officeRegistration));
-        myAdapter3.setDropDownViewResource(R.layout.spinner_item_text_colour);
-        mySpinner3.setAdapter(myAdapter3);
 
         //validation
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
@@ -136,7 +184,6 @@ public class MarriageRegistration extends AppCompatActivity {
 //        awesomeValidation.addValidation(this, R.id.applicantName, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.nameerror);
 //        awesomeValidation.addValidation(this, R.id.username, "(^$|^.*@.*\\..*$)", R.string.emailerror);
 //        awesomeValidation.addValidation(this, R.id.number, "^[0-9]{2}[0-9]{8}$", R.string.mobileerror);
-
 
 
         // bride details views
@@ -148,13 +195,14 @@ public class MarriageRegistration extends AppCompatActivity {
         eDistrict = findViewById(R.id.districtName);
         eState = findViewById(R.id.stateName);
         ePin = findViewById(R.id.pin);
+        lengthOfResidence = findViewById(R.id.lengthResidence);
         cBox = findViewById(R.id.checkbox);
-        sameCity = findViewById(R.id.per_city);
-        samePolice = findViewById(R.id.per_policeStation);
-        samePost = findViewById(R.id.per_postofficeName);
-        sameDistrict = findViewById(R.id.per_districtName);
-        sameState = findViewById(R.id.per_stateName);
-        samePin = findViewById(R.id.per_pin);
+        perCity = findViewById(R.id.per_city);
+        perPolice = findViewById(R.id.per_policeStation);
+        perPost = findViewById(R.id.per_postofficeName);
+        perDistrict = findViewById(R.id.per_districtName);
+        perState = findViewById(R.id.per_stateName);
+        perPin = findViewById(R.id.per_pin);
         name = findViewById(R.id.Name);
         age = findViewById(R.id.Age);
         occupation = findViewById(R.id.Occupation);
@@ -173,42 +221,45 @@ public class MarriageRegistration extends AppCompatActivity {
             public void onClick(View v) {
                 if (cBox.isChecked()) {
 
+                    Log.d(TAG, "onClick: " + cBox.isChecked());
+
                     String ename1 = eCity.getText().toString();
-                    sameCity.setText(ename1);
-                    sameCity.setError(null);
+                    perCity.setText(ename1);
+                    perCity.setError(null);
 
                     String ename2 = ePolice.getText().toString();
-                    samePolice.setText(ename2);
-                    samePolice.setError(null);
+                    perPolice.setText(ename2);
+                    perPolice.setError(null);
 
                     String ename3 = ePost.getText().toString();
-                    samePost.setText(ename3);
-                    samePost.setError(null);
+                    perPost.setText(ename3);
+                    perPost.setError(null);
 
                     String ename4 = eDistrict.getText().toString();
-                    sameDistrict.setText(ename4);
-                    sameDistrict.setError(null);
+                    perDistrict.setText(ename4);
+                    perDistrict.setError(null);
 
                     String ename5 = eState.getText().toString();
-                    sameState.setText(ename5);
-                    sameState.setError(null);
+                    perState.setText(ename5);
+                    perState.setError(null);
 
                     String ename6 = ePin.getText().toString();
-                    samePin.setText(ename6);
-                    samePin.setError(null);
+                    perPin.setText(ename6);
+                    perPin.setError(null);
 
                 } else {
-                    sameCity.setText("");
 
-                    samePolice.setText("");
+                    perCity.setText("");
 
-                    samePost.setText("");
+                    perPolice.setText("");
 
-                    sameDistrict.setText("");
+                    perPost.setText("");
 
-                    sameState.setText("");
+                    perDistrict.setText("");
 
-                    samePin.setText("");
+                    perState.setText("");
+
+                    perPin.setText("");
                 }
             }
         });
@@ -238,7 +289,6 @@ public class MarriageRegistration extends AppCompatActivity {
 //        awesomeValidation2.addValidation(this, R.id.per_pin, "(\\d{6})", R.string.pinerror);
 
 
-
         // groom details views
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -250,13 +300,14 @@ public class MarriageRegistration extends AppCompatActivity {
         eDistrict2 = findViewById(R.id.districtName2);
         eState2 = findViewById(R.id.stateName2);
         ePin2 = findViewById(R.id.pin2);
+        lengthOfResidence2 = findViewById(R.id.lengthResidence2);
         cBox2 = findViewById(R.id.groom_checkbox);
-        sameCity2 = findViewById(R.id.per_city2);
-        samePolice2 = findViewById(R.id.per_policeStation2);
-        samePost2 = findViewById(R.id.per_postofficeName2);
-        sameDistrict2 = findViewById(R.id.per_districtName2);
-        sameState2 = findViewById(R.id.per_stateName2);
-        samePin2 = findViewById(R.id.per_pin2);
+        perCity2 = findViewById(R.id.per_city2);
+        perPolice2 = findViewById(R.id.per_policeStation2);
+        perPost2 = findViewById(R.id.per_postofficeName2);
+        perDistrict2 = findViewById(R.id.per_districtName2);
+        perState2 = findViewById(R.id.per_stateName2);
+        perPin2 = findViewById(R.id.per_pin2);
         name2 = findViewById(R.id.Name2);
         age2 = findViewById(R.id.Age2);
         occupation2 = findViewById(R.id.Occupation2);
@@ -272,43 +323,43 @@ public class MarriageRegistration extends AppCompatActivity {
                 if (cBox2.isChecked()) {
 
                     String ename1 = eCity2.getText().toString();
-                    sameCity2.setText(ename1);
-                    sameCity2.setError(null);
+                    perCity2.setText(ename1);
+                    perCity2.setError(null);
 
                     String ename2 = ePolice2.getText().toString();
-                    samePolice2.setText(ename2);
-                    samePolice2.setError(null);
+                    perPolice2.setText(ename2);
+                    perPolice2.setError(null);
 
                     String ename3 = ePost2.getText().toString();
-                    samePost2.setText(ename3);
-                    samePost2.setError(null);
+                    perPost2.setText(ename3);
+                    perPost2.setError(null);
 
                     String ename4 = eDistrict2.getText().toString();
-                    sameDistrict2.setText(ename4);
-                    sameDistrict2.setError(null);
+                    perDistrict2.setText(ename4);
+                    perDistrict2.setError(null);
 
                     String ename5 = eState2.getText().toString();
-                    sameState2.setText(ename5);
-                    sameState2.setError(null);
+                    perState2.setText(ename5);
+                    perState2.setError(null);
 
                     String ename6 = ePin2.getText().toString();
-                    samePin2.setText(ename6);
-                    samePin2.setError(null);
+                    perPin2.setText(ename6);
+                    perPin2.setError(null);
 
 
-                }
-                else {
-                    sameCity2.setText("");
+                } else {
 
-                    samePolice2.setText("");
+                    perCity2.setText("");
 
-                    samePost2.setText("");
+                    perPolice2.setText("");
 
-                    sameDistrict2.setText("");
+                    perPost2.setText("");
 
-                    sameState2.setText("");
+                    perDistrict2.setText("");
 
-                    samePin2.setText("");
+                    perState2.setText("");
+
+                    perPin2.setText("");
                 }
             }
         });
@@ -340,31 +391,168 @@ public class MarriageRegistration extends AppCompatActivity {
         //populate date spinner
         getDates();
 
+
+        mySpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "onItemSelected: " + parent.getItemAtPosition(position).toString());
+                params.put("appointment_date", parent.getItemAtPosition(position).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        mySpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                params.put("MarriageType", parent.getItemAtPosition(position).toString());
+                Log.d(TAG, "onItemSelected: " + parent.getItemAtPosition(position).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        mySpinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0) {
+
+                    RegistrationOfficeModel obj = officeList.get(position - 1); //getting the model from the list & storing in obj
+                    int code = obj.getSroCode(); //storing the code in variable code
+
+                    params.put("sro_office", String.valueOf(code));
+
+                    Log.d(TAG, "onItemSelected: " + code);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        mySpinner4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                params.put("BrideMarriageCondition", parent.getItemAtPosition(position).toString());
+                Log.d(TAG, "onItemSelected: " + parent.getItemAtPosition(position).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        mySpinner5.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                params.put("GroomMarriageCondition", parent.getItemAtPosition(position).toString());
+                Log.d(TAG, "onItemSelected: " + parent.getItemAtPosition(position).toString());
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+    }
+
+    private void setUpOfficeSpinner() {
+        final String url = "http://192.168.43.210:8080/e-Panjeeyan/registrationoffice";
+
+        // get the registration office from the database
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        if (alertDialog.isShowing()) {
+                            alertDialog.dismiss();
+                        }
+
+                        Type collectionType = new TypeToken<List<RegistrationOfficeModel>>() {
+                        }.getType();
+                        officeList = new Gson().fromJson(response, collectionType);
+
+                        ArrayList<String> list = new ArrayList<>();
+                        list.add(getString(R.string.sroSpinner));
+
+                        //array list is populated from JSON array
+                        for (int i = 0; i < officeList.size(); i++) {
+                            list.add(officeList.get(i).getOfficeName());
+                        }
+
+                        ArrayAdapter myTypeAdapter = new ArrayAdapter<String>(MarriageRegistration.this,
+                                R.layout.spinner_item_text_colour, list);
+
+                        myTypeAdapter.setDropDownViewResource(R.layout.spinner_item_text_colour);
+                        mySpinner3.setAdapter(myTypeAdapter);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        showErrorMessage(getVolleyErrorMessage(error));
+                    }
+                });
+
+        // Add request to the Request queue
+        MySingleton.getInstance(getApplicationContext())
+                .addToRequestQueue(stringRequest);
+
     }
 
     private void getDates() {
 
-        final String url = "http://192.168.43.210:8080/mvcbook/getdates";
+        final String url = "http://192.168.43.210:8080/panjeeyanonline/getmarriagedates";
+        final ArrayList<String> dateList = new ArrayList<>();
 
-        final ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add((getString(R.string.dateSpinner)));
-
+        // get the holidays from the database
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
                         try {
-                            //response from servlet is kept in the JSONArray array
-                            JSONArray array = new JSONArray(response);
+                            Log.d(TAG, "onResponse: " + response);
 
-                            //array list is populated from JSON array
-                            for (int i = 0; i < array.length(); i++) {
-                                arrayList.add(array.getString(i));
+                            JSONObject object = new JSONObject(response);              //response string to object
+
+                            if (object.getBoolean("success")) {
+                                JSONArray array = object.getJSONArray("dates");  //json array dates:["25-05-2019","26-05-2019"]
+
+                                //empty list is declared which will hold the json array items
+                                List<String> dateList = new ArrayList<>();
+                                dateList.add(getString(R.string.dateSpinner));
+
+                                //array list is populated from JSON array
+                                for (int i = 0; i < array.length(); i++) {
+                                    dateList.add(array.getString(i));
+                                }
+
+
+                                ArrayAdapter<String> dateAdapter = new ArrayAdapter<>(
+                                        MarriageRegistration.this,
+                                        R.layout.spinner_item_text_colour,
+                                        dateList
+                                );
+                                dateAdapter.setDropDownViewResource(R.layout.spinner_item_text_colour);
+                                mySpinner1.setAdapter(dateAdapter);
+                            } else {
+                                String msg = object.getString("msg");
+                                showErrorMessage(msg);
                             }
-
-                            setUpAppointmentDateSpinner(arrayList);
 
                         } catch (Exception e) {
                         }
@@ -373,20 +561,14 @@ public class MarriageRegistration extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        showErrorMessage(getVolleyErrorMessage(error));
                     }
                 });
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+        // Add request to the Request queue
+        MySingleton.getInstance(getApplicationContext())
+                .addToRequestQueue(stringRequest);
 
-    }
-
-
-    private void setUpAppointmentDateSpinner(ArrayList<String> dataSource) {
-
-        ArrayAdapter myDateAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item_text_colour, dataSource);
-        myDateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mySpinner1.setAdapter(myDateAdapter);
     }
 
 
@@ -401,8 +583,7 @@ public class MarriageRegistration extends AppCompatActivity {
 
                 if (!validateMarriageDetails()) {
                     return;
-                }
-                else if (nextState == 4 && !completeAllStages()) {
+                } else if (nextState == 4 && !completeAllStages()) {
                     return;
                 }
 
@@ -413,14 +594,11 @@ public class MarriageRegistration extends AppCompatActivity {
 
                 if (curState > nextState) {
                     brideDetailsForm.setVisibility(View.GONE);
-                }
-                else if (!validateBrideDetails()) {
+                } else if (!validateBrideDetails()) {
                     return;
-                }
-                else if (nextState == 4 && !completeAllStages()) {
+                } else if (nextState == 4 && !completeAllStages()) {
                     return;
-                }
-                else {
+                } else {
                     brideDetailsForm.setVisibility(View.GONE);
                 }
 
@@ -430,14 +608,11 @@ public class MarriageRegistration extends AppCompatActivity {
 
                 if (curState > nextState) {
                     groomDetailsForm.setVisibility(View.GONE);
-                }
-                else if (!validateGroomDetails()) {
+                } else if (!validateGroomDetails()) {
                     return;
-                }
-                else if (nextState == 4 && !completeAllStages()) {
+                } else if (nextState == 4 && !completeAllStages()) {
                     return;
-                }
-                else {
+                } else {
                     groomDetailsForm.setVisibility(View.GONE);
                 }
 
@@ -484,8 +659,7 @@ public class MarriageRegistration extends AppCompatActivity {
         if (!isMarriageFormCompleted || !isBrideFormCompleted || !isGroomFormCompleted) {
             Toast.makeText(this, "Complete all the previous stages first", Toast.LENGTH_SHORT).show();
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
@@ -557,14 +731,12 @@ public class MarriageRegistration extends AppCompatActivity {
     }
 
 
-
-
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     public void showNextForm(View view) {
         // get the current state number
         int curState = stateProgressBar.getCurrentStateNumber();
 
-        showFrom(curState, curState+1);
+        showFrom(curState, curState + 1);
     }
 
 
@@ -591,8 +763,7 @@ public class MarriageRegistration extends AppCompatActivity {
         if (a && b) {
             isGroomFormCompleted = true;
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -622,12 +793,10 @@ public class MarriageRegistration extends AppCompatActivity {
         if (a && b) {
             isBrideFormCompleted = true;
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
-
 
 
     private boolean validateMarriageDetails() {
@@ -640,15 +809,189 @@ public class MarriageRegistration extends AppCompatActivity {
         if (a && b) {
             isMarriageFormCompleted = true;
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
 
     public void submitData(View view) {
-        Toast.makeText(this, "data submitted", Toast.LENGTH_SHORT).show();
+        /*
+        appointment_date : 25-05-2019
+        MarriageType : Intended Marriage
+        ApplicantName : Dipsikha Phukan
+        sro_office : 1
+        email : dipsikhaphukan09@gmail.com
+        mobile : 9706672004
+
+        BrideName : Dipsikha Phukan
+        BrideAge : 19
+        BrideMarriageCondition : Unmarried
+        BrideOccupation : service
+        BrideFathersName : Dipsikha Phukan
+
+        BrideVillage : JORHAT
+        BridePoliceStation : jorhat
+        BridePostOffice : Jorhat
+        BrideDistrict : jorhat
+        BrideState : Assam
+        BridePincode : 785001
+
+        BridePermanentVillage : JORHAT
+        BridePermanentPS : jorhat
+        BridePermanentPO : Jorhat
+        BridePermanentDistrict : jorhat
+        BridePermanentState : Assam
+        BridePermanentPincode : 785001
+        BrideLengthOfResidence : 9
+
+        GroomName : Dipsikha Phukan
+        GroomAge : 22
+        GroomMarriageCondition : Widower
+        GroomOccupation : grg
+        GroomFathersName : D hjk
+
+        GroomVillage : JORHAT
+        GroomPoliceStation : ghy
+        GroomPostOffice : hijggy
+        GroomDistrict : ghy
+        GroomState : Assam
+        GroomPincode : 785001
+
+        GroomPermanentVillage : JORHAT
+        GroomPermanentPO : ghy
+        GroomPermanentPS : hijggy
+        GroomPermanentDistrict : ghy
+        GroomPermanentState : Assam
+        GroomPermanentPincode : 785001
+        gLengthOfResidence : 8
+           */
+
+
+//        appointment_date : 27-05-2019
+//        MarriageType : Intended Marriage
+//        ApplicantName : John
+//        sro_office : 1
+//        email : john@gmail.com
+//        mobile : 9706672004
+//        BrideName : Rekha
+//        BrideAge : 25
+//        BrideMarriageCondition : Married
+//        BrideOccupation : service
+//        BrideFathersName : Raj
+//        BrideVillage : Ghy
+//        BridePoliceStation : Ghy
+//        BridePostOffice : Ghy
+//        BrideDistrict : Ghy
+//        BrideState : Assam
+//        BridePincode : 781005
+//        IfPresentPermanentBride : 0
+//        BridePermanentVillage : Ghy
+//        BridePermanentPS : Ghy
+//        BridePermanentPO : Ghy
+//        BridePermanentDistrict : Ghy
+//        BridePermanentState : Assam
+//        BridePermanentPincode : 781005
+//        BrideLengthOfResidence : 2
+//        GroomName : Kaku
+//        GroomAge : 43
+//        GroomMarriageCondition : Widow
+//        GroomOccupation : IT
+//        GroomFathersName : Kaki
+//        GroomVillage : Jorhat
+//        GroomPoliceStation : Jorhat
+//        GroomPostOffice : Jorhat
+//        GroomDistrict : Jorhat
+//        GroomState : Assam
+//        GroomPincode : 781002
+//        IfPresentPermanentGroom : 1
+//        GroomPermanentVillage : Jorhat
+//        GroomPermanentPO : Jorhat
+//        GroomPermanentPS : Jorhat
+//        GroomPermanentDistrict : Jorhat
+//        GroomPermanentState : Assam
+//        GroomPermanentPincode : 781002
+//        gLengthOfResidence : 2
+//
+
+
+        params.put("ApplicantName", applicantName.getText().toString());
+        params.put("email", email.getText().toString());
+        params.put("mobile", mobile.getText().toString());
+
+        params.put("BrideName", name.getText().toString());
+        params.put("BrideAge", age.getText().toString());
+        params.put("BrideOccupation", occupation.getText().toString());
+        params.put("BrideFathersName", fName.getText().toString());
+
+        params.put("BrideVillage", eCity.getText().toString());
+        params.put("BridePoliceStation", ePolice.getText().toString());
+        params.put("BridePostOffice", ePost.getText().toString());
+        params.put("BrideDistrict", eDistrict.getText().toString());
+        params.put("BrideState", eState.getText().toString());
+        params.put("BridePincode", ePin.getText().toString());
+
+        params.put("BridePermanentVillage", perCity.getText().toString());
+        params.put("BridePermanentPS", perPolice.getText().toString());
+        params.put("BridePermanentPO", perPost.getText().toString());
+        params.put("BridePermanentDistrict", perDistrict.getText().toString());
+        params.put("BridePermanentState", perState.getText().toString());
+        params.put("BridePermanentPincode", perPin.getText().toString());
+        params.put("BrideLengthOfResidence", lengthOfResidence.getText().toString());
+
+        params.put("GroomName", name2.getText().toString());
+        params.put("GroomAge", age2.getText().toString());
+        params.put("GroomOccupation", occupation2.getText().toString());
+        params.put("GroomFathersName", fName2.getText().toString());
+
+        params.put("GroomVillage", eCity2.getText().toString());
+        params.put("GroomPoliceStation", ePolice2.getText().toString());
+        params.put("GroomPostOffice", ePost2.getText().toString());
+        params.put("GroomDistrict", eDistrict2.getText().toString());
+        params.put("GroomState", eState2.getText().toString());
+        params.put("GroomPincode", ePin2.getText().toString());
+
+        params.put("GroomPermanentVillage", perCity2.getText().toString());
+        params.put("GroomPermanentPS", perPolice2.getText().toString());
+        params.put("GroomPermanentPO", perPost2.getText().toString());
+        params.put("GroomPermanentDistrict", perDistrict2.getText().toString());
+        params.put("GroomPermanentState", perState2.getText().toString());
+        params.put("GroomPermanentPincode", perPin2.getText().toString());
+        params.put("gLengthOfResidence", lengthOfResidence2.getText().toString());
+
+
+        AndroidNetworking.post("http://192.168.43.210:8080/panjeeyanonline/addmarriagedetails")
+                .addBodyParameter(params)
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        if (alertDialog.isShowing()) {
+                            alertDialog.dismiss();
+                        }
+
+                        Log.d(TAG, "success: " + response.toString());
+
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        if (alertDialog.isShowing()) {
+                            alertDialog.dismiss();
+                        }
+
+                        cookieBar.setMessage(error.getMessage());
+                        cookieBar.show();
+
+                        Log.d(TAG, "onError: " + error.getErrorCode());
+                        Log.d(TAG, "onError: " + error.getMessage());
+
+
+                    }
+                });
+
+
 
         confirmForm.setVisibility(View.GONE);
         header.setVisibility(View.GONE);
@@ -663,8 +1006,33 @@ public class MarriageRegistration extends AppCompatActivity {
 
         // network call to write info in the database and then payment activity is started
 
-        Intent intent = new Intent(this,PaymentActivity.class);
-        startActivity(intent);
-        finish();
+//        Intent intent = new Intent(this, PaymentActivity.class);
+//        startActivity(intent);
+//        finish();
+    }
+
+    private void showErrorMessage(String msg) {
+        if (alertDialog.isShowing()) {
+            alertDialog.dismiss();
+        }
+
+        cookieBar.setMessage(msg);
+        cookieBar.show();
+    }
+
+
+    private String getVolleyErrorMessage(VolleyError error) {
+        String msg = "";
+
+        if (error instanceof TimeoutError || error instanceof NoConnectionError || error instanceof NetworkError) {
+            //This indicates that the request has either time out or there is no connection
+            msg = "Please, check your network connection else the Server is not reachable at this moment.";
+        } else if (error instanceof AuthFailureError) {
+            msg = "Unauthorized access denied. ";
+        } else if (error instanceof ServerError) {
+            msg = "Server temporarily out of service.";
+        }
+
+        return msg;
     }
 }

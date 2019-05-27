@@ -617,40 +617,6 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <android.support.v7.widget.CardView
-                    android:layout_width="155dp"
-                    android:layout_height="155dp"
-                    android:layout_gravity="center"
-                    android:elevation="10dp"
-                    app:cardCornerRadius="80dp">
-
-                    <ImageView
-                        android:layout_width="150dp"
-                        android:layout_height="140dp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="8dp"
-                        android:paddingLeft="3dp"
-                        android:paddingBottom="2dp"
-                        app:srcCompat="@drawable/goa" />
-                </android.support.v7.widget.CardView>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="Revenue &amp; Disaster Management"
-                    android:textColor="#000"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="Govt. of Assam"
-                    android:textColor="#000"
-                    android:textSize="16sp" />
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
@@ -696,28 +662,42 @@
                         android:orientation="vertical">
 
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_margin="5dp"
-                            android:text="Your Appointment ID:"
-                            android:textSize="17sp" />
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="Your Appointment ID:"
+                                android:textSize="17sp" />
+
+
+                            <TextView
+                                android:id="@+id/appointment_id"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:textSize="17sp" />
+
+                        </LinearLayout>
 
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginStart="8dp"
-                            android:text="** Please note this Appointment ID for future reference.\n"
+                            android:layout_marginStart="4dp"
+                            android:text="**Please note this Appointment ID for future reference.\n"
                             android:textColor="#F08080"
-                            android:textSize="16sp" />
+                            android:textSize="13sp" />
 
 
                         <TextView
+                            android:id="@+id/appointment_details"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginStart="8dp"
-                            android:text="Appointment for appointment id ______ is confirmed. You are requested to report on date ____ at ___ am/pm and submit the registration fees.\n"
+                            android:layout_margin="3dp"
                             android:textSize="16sp" />
 
 

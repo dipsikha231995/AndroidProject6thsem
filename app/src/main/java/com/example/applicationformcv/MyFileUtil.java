@@ -16,9 +16,14 @@ public class MyFileUtil {
     private static final String TAG = "MY-APP";
 
 
-    public static File createTempFile(Context context, Uri uri) {
+    public static File createTempFile(Context context, Uri uri, String type) {
 
         File tempFile = null;
+
+        Log.d(TAG, "createTempFile: " + type);
+
+
+        String[] parts = type.split("/");
 
         try {
             // DO FILE I/O IN A BACKGROUND THREAD
@@ -28,11 +33,11 @@ public class MyFileUtil {
             // getApplicationContext().getCacheDir()        # App's temporary cache directory
 
             // create a temp file
-            tempFile = File.createTempFile("bob", null, context.getCacheDir());
+            tempFile = File.createTempFile("arya", "." + parts[1], context.getCacheDir());
 
             FileOutputStream fos = new FileOutputStream(tempFile);
 
-            long byteCopied = IOUtils.copyLarge(is, fos);
+            IOUtils.copyLarge(is, fos);
 
 
             Log.d(TAG, "original: " + (tempFile.length() / 1024) + "KB");
@@ -42,7 +47,6 @@ public class MyFileUtil {
             fos.close();
 
             // delete the temp file at the end
-
         }
         catch (Exception ex) {
             Log.d(TAG, "Error: " + ex.getMessage());

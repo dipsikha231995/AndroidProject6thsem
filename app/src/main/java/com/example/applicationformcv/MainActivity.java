@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -27,7 +26,7 @@ import android.widget.TextView;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.infideap.drawerbehavior.Advance3DDrawerLayout;
+import com.infideap.drawerbehavior.AdvanceDrawerLayout;
 
 import java.util.Locale;
 
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static SharedPreferences sharedPreferences;  //text file contains app settings in the form of key and value
     private static SharedPreferences.Editor editor;  //write in shared preference
     //////Navigational Drawer//////
-    Advance3DDrawerLayout drawer;
+    AdvanceDrawerLayout drawer;
     NavigationView navigationView;
     ////Switch Night Mode///////
     View view;
@@ -98,12 +97,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         // customisation of the drawer
-        drawer.setViewRotation(Gravity.END, 15); // set degree of Y-rotation ( value : 0 -> 45)
-        drawer.setViewScale(Gravity.END, 1f); //set height scale for main view (0f to 1f)
-        drawer.setViewElevation(Gravity.END, 20); //set main view elevation when drawer open (dimension)
-        drawer.setViewScrimColor(Gravity.END, Color.TRANSPARENT); //set drawer overlay (color)
-        drawer.setDrawerElevation(Gravity.END, 20); //set drawer elevation (dimension)
-        drawer.setRadius(Gravity.END, 25); //set end container's corner radius (dimension)
+//        drawer.setViewRotation(Gravity.END, 15); // set degree of Y-rotation ( value : 0 -> 45)
+//        drawer.setViewScale(Gravity.END, 1f); //set height scale for main view (0f to 1f)
+//        drawer.setViewElevation(Gravity.END, 20); //set main view elevation when drawer open (dimension)
+//        drawer.setViewScrimColor(Gravity.END, Color.TRANSPARENT); //set drawer overlay (color)
+//        drawer.setDrawerElevation(Gravity.END, 20); //set drawer elevation (dimension)
+//        drawer.setRadius(Gravity.END, 25); //set end container's corner radius (dimension)
 
         // setting NavigationView menu item click listener
         navigationView = findViewById(R.id.nav_view_notification);
@@ -206,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void updateTexts() {
         rev.setText(R.string.rev);
         gov.setText(R.string.gov);
-        ins.setText(R.string.ins);
+        ins.setText(R.string.title_check_fee);
         deed.setText(R.string.deed);
         marr.setText(R.string.marr);
         viewStatus.setText(R.string.view);
@@ -269,7 +268,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     String lang = "";
                                     lang = "hi";
                                     changeLanguage(lang);//Change Locale on selection basis
-
                                 }
                             }
 

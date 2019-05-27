@@ -1,16 +1,18 @@
 package com.example.applicationformcv;
 
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
 public class MySingleton {
+
+    private static final String TAG = "MY-APP";
     private static MySingleton instance;
-    private RequestQueue requestQueue;
+    private static RequestQueue requestQueue;
     private static Context ctx;
 
     private MySingleton(Context context) {
@@ -25,6 +27,7 @@ public class MySingleton {
         return instance;
     }
 
+
     public RequestQueue getRequestQueue() {
         if (requestQueue == null) {
             // getApplicationContext() is key, it keeps you from leaking the
@@ -37,4 +40,12 @@ public class MySingleton {
     public <T> void addToRequestQueue(Request<T> req) {
         getRequestQueue().add(req);
     }
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        return networkInfo != null && networkInfo.isConnected();
+    }
+
 }

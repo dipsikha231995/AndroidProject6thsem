@@ -10,20 +10,20 @@
             android:id="@+id/myprofile_menu_item"
             android:icon="@drawable/ic_my_profile"
             android:orderInCategory="90"
-            android:title="My Profile"
+            android:title="@string/title_profile_epanjeeyan"
             app:showAsAction="always" />
 
         <item
             android:id="@+id/language_menu_item"
             android:icon="@drawable/ic_language"
             android:orderInCategory="100"
-            android:title="Language"
+            android:title="@string/language"
             app:showAsAction="never" />
 
         <item
             android:id="@+id/theme_menu_item"
             android:icon="@drawable/ic_night"
-            android:title="Night mode"
+            android:title="@string/mode"
             app:actionLayout="@layout/layout_switch"
             android:orderInCategory="100"
             app:showAsAction="never" />
@@ -33,21 +33,21 @@
             android:id="@+id/about_menu_item"
             android:icon="@drawable/ic_info"
             android:orderInCategory="100"
-            android:title="About e-Panjeeyan"
+            android:title="@string/about"
             app:showAsAction="never" />
 
         <item
             android:id="@+id/help_menu_item"
             android:icon="@drawable/ic_help"
             android:orderInCategory="100"
-            android:title="Help"
+            android:title="@string/help"
             app:showAsAction="never" />
 
         <item
             android:id="@+id/logout_menu_item"
             android:icon="@drawable/ic_logout"
             android:orderInCategory="110"
-            android:title="Logout"
+            android:title="@string/logout"
             app:showAsAction="never" />
 
 

@@ -67,7 +67,17 @@ dependencies {
     //Navigational drawer
     implementation 'com.infideap.drawerbehavior:drawer-behavior:0.1.5'
 
+    //Spin kit for loading
+    implementation 'com.github.ybq:Android-SpinKit:1.2.0'
 
+    //Toast library
+    implementation 'org.aviran.cookiebar2:cookiebar2:1.1.2'
+
+//    // Volley plus
+//    implementation 'dev.dworks.libs:volleyplus:+'
+
+    // FAN
+    implementation 'com.amitshekhar.android:android-networking:1.0.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -1,9 +1,7 @@
 package com.example.applicationformcv;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -28,25 +26,32 @@ public class SplashActivity extends AppCompatActivity {
         // do I show on-boarding activity or the main activity?
         // show the on-boarding activity during installation
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        boolean appIntroShown = sharedPref.getBoolean(KEY_APP_INTO, false);
+//        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        boolean appIntroShown = sharedPref.getBoolean(KEY_APP_INTO, false);
+//
+//        if (!appIntroShown) {
+//            // show the app intro for once
+//            // go to the on-boarding activity
+//            // make the field as true
+//            SharedPreferences.Editor editor = sharedPref.edit();
+//            editor.putBoolean(KEY_APP_INTO, true);
+//            editor.apply();
+//
+//            Intent intent = new Intent(getApplicationContext(), OnBoardingActivity.class);
+//            startActivity(intent);
+//            finish();
+//
+//        } else {
+//            // route to either log-in or mainActivity
+//            routeToAppropriateScreen();
+//        }
 
-        if (!appIntroShown) {
-            // show the app intro for once
-            // go to the on-boarding activity
-            // make the field as true
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putBoolean(KEY_APP_INTO, true);
-            editor.apply();
 
-            Intent intent = new Intent(getApplicationContext(), OnBoardingActivity.class);
-            startActivity(intent);
-            finish();
+        //routeToAppropriateScreen();
 
-        } else {
-            // route to either log-in or mainActivity
-            routeToAppropriateScreen();
-        }
+        startActivity(new Intent(this, OnBoardingActivity.class));
+        finish();
+
     }
 
     private void routeToAppropriateScreen() {

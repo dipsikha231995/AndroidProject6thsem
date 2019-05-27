@@ -67,6 +67,7 @@
 
     <!--Make Assessment-->
     <string name="assessment">Form for Assessment of Stamp Duty and Registration Fee</string>
+    <string name="Rs" translatable="false">\u20B9</string>
 
     <!--Check appointment-->
     <string name="check">Check your Appointment Status</string>
@@ -99,8 +100,15 @@
 
     <string name="groomName">\tName of Groom *</string>
 
+    <!--Settings Menu-->
+    <string name="language">Language</string>
+    <string name="mode">Night mode</string>
+    <string name="about">About e-Panjeeyan</string>
+    <string name="help">Help</string>
+    <string name="logout">Logout</string>
+
     <!--My Profile-->
-    <string name="myprofName">Dipsikha Phukan </string>
+    <string name="myprofName">e-PANJEEYAN user</string>
     <string name="editpro">Edit Profile</string>
     <string name="uname">\tUsername</string>
     <string name="newpswd">\tNew Password</string>
@@ -111,10 +119,10 @@
 
     <!--Spinners-->
 
-    <string-array name="selectOffice">
-        <item>Select Office for Registration * </item>
-        <item>Kamrup Metro</item>
-    </string-array>
+    <!--<string-array name="selectOffice">-->
+    <!--<item>Select Office for Registration * </item>-->
+    <!--<item>Kamrup Metro</item>-->
+    <!--</string-array>-->
 
     <string-array name="doc_type">
         <item>Select Image Document Type *</item>
@@ -129,10 +137,10 @@
         <item>Marriage</item>
     </string-array>
 
-    <string-array name="officeRegistration">
-        <item>Select Office for Registration *</item>
-        <item>Kamrup Metro</item>
-    </string-array>
+    <!--<string-array name="officeRegistration">-->
+    <!--<item>Select Office for Registration *</item>-->
+    <!--<item>Kamrup Metro</item>-->
+    <!--</string-array>-->
 
     <string-array name="maritalStatus">
         <item>Select Marital Status *</item>
