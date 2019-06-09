@@ -76,12 +76,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
-                        android:text="@string/below" />
+                        android:text="@string/below"
+                        android:visibility="gone" />
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/considerationWrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         app:errorEnabled="true">
 
                         <EditText
@@ -93,6 +95,7 @@
                             android:drawableLeft="@drawable/ic_monetization"
                             android:hint="@string/conAmt"
                             android:inputType="number"
+                            android:text="0"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -107,7 +110,8 @@
                         android:background="@drawable/edittext_border"
                         android:drawableLeft="@drawable/ic_wc"
                         android:text="@string/pur"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:visibility="gone" />
 
                     <RadioGroup
                         android:id="@+id/radioGroup1"
@@ -116,7 +120,8 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/edittext_border"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <RadioButton
                             android:id="@+id/radio_both"
@@ -152,7 +157,8 @@
                         android:background="@drawable/edittext_border"
                         android:drawableLeft="@drawable/ic_gps"
                         android:text="@string/land"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:visibility="gone" />
 
                     <RadioGroup
                         android:id="@+id/radioGroup2"
@@ -161,7 +167,8 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/edittext_border"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <RadioButton
                             android:id="@+id/urbanMCA"

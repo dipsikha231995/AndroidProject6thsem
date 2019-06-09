@@ -33,7 +33,7 @@ public class MyFileUtil {
             // getApplicationContext().getCacheDir()        # App's temporary cache directory
 
             // create a temp file
-            tempFile = File.createTempFile("arya", "." + parts[1], context.getCacheDir());
+            tempFile = File.createTempFile("doc", "." + parts[1], context.getCacheDir());
 
             FileOutputStream fos = new FileOutputStream(tempFile);
 

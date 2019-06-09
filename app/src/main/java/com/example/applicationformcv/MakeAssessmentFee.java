@@ -15,7 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -57,6 +56,7 @@ public class MakeAssessmentFee extends AppCompatActivity {
     CookieBar.Builder cookieBar;
     CardView appointmentCard;
     TextView showAmount, showStampFee, showRegFee;
+    TextView forSale, forSalePurchase, forLandFlat;
 
     Spinner deedCategorySpinner, subDeedCategorySpinner;
 
@@ -80,6 +80,10 @@ public class MakeAssessmentFee extends AppCompatActivity {
         showAmount = findViewById(R.id.showAmount);
         showStampFee = findViewById(R.id.showStamp);
         showRegFee = findViewById(R.id.showRegfee);
+
+        forSale = findViewById(R.id.extraForSale);
+        forSalePurchase = findViewById(R.id.extraForSalePur);
+        forLandFlat = findViewById(R.id.landFlat);
 
 
         //Loading spin kit
@@ -125,6 +129,8 @@ public class MakeAssessmentFee extends AppCompatActivity {
         deedCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String category = parent.getItemAtPosition(position).toString();
+
                 if (position > 0) {
 
                     DeedCategoryModel obj = deedlist.get(position - 1); //getting the model from the deedlist & storing in obj
@@ -151,9 +157,11 @@ public class MakeAssessmentFee extends AppCompatActivity {
                                             subDeed.add(array.getString(i));
                                         }
 
-                                        subDeedAdapter.clear();
-                                        subDeedAdapter.addAll(subDeed);
-                                        subDeedAdapter.notifyDataSetChanged();
+                                        subDeedAdapter = new ArrayAdapter<String>(MakeAssessmentFee.this,
+                                                R.layout.spinner_item_text_colour,
+                                                subDeed);
+                                        subDeedAdapter.setDropDownViewResource(R.layout.spinner_item_text_colour);
+                                        subDeedCategorySpinner.setAdapter(subDeedAdapter);
 
                                     } catch (Exception e) {
                                     }
@@ -169,6 +177,35 @@ public class MakeAssessmentFee extends AppCompatActivity {
                     MySingleton.getInstance(getApplicationContext())
                             .addToRequestQueue(stringRequest);
                 }
+
+
+                if (category.equalsIgnoreCase("SALE") || category.equalsIgnoreCase("GIFT")) {
+                    forSale.setVisibility(View.VISIBLE);
+                    //amount.setVisibility(View.VISIBLE);
+
+                    findViewById(R.id.considerationWrapper).setVisibility(View.VISIBLE);
+
+                    forSalePurchase.setVisibility(View.VISIBLE);
+                    radioGroupPurchase.setVisibility(View.VISIBLE);
+                    forLandFlat.setVisibility(View.VISIBLE);
+                    radioGroupLocation.setVisibility(View.VISIBLE);
+                } else {
+                    forSale.setVisibility(View.GONE);
+                    //amount.setVisibility(View.GONE);
+
+                    considerationAmt.setText("0");
+                    considerationAmt.setError(null);
+                    findViewById(R.id.considerationWrapper).setVisibility(View.GONE);
+
+                    //
+
+                    forSalePurchase.setVisibility(View.GONE);
+                    radioGroupPurchase.setVisibility(View.GONE);
+                    forLandFlat.setVisibility(View.GONE);
+                    radioGroupLocation.setVisibility(View.GONE);
+                }
+
+
             }
 
             @Override
@@ -316,62 +353,62 @@ public class MakeAssessmentFee extends AppCompatActivity {
     public void submitIt(View view) {
 
         if (considerationAmt.getText().toString().isEmpty()) {
-            amountLayout.setError("\t\t\t\t\tEnter a valid amount");
+            amountLayout.setError("\t\t\t\t\tPlease enter this required field");
             return;
         } else {
-            Toast.makeText(this, "Valid Amount", Toast.LENGTH_SHORT).show();
+
+            alertDialog.show();
+
+            params.put("ConsiderationAmt", considerationAmt.getText().toString());
+
+            Log.d(TAG, "submitIt: " + params.toString());
+
+            AndroidNetworking.post("http://192.168.43.210:8080/panjeeyanonline/enquiry_api_demo")
+                    .addBodyParameter(params)
+                    .setTag(TAG_FEE_ASSESSMENT)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            if (alertDialog.isShowing()) {
+                                alertDialog.dismiss();
+                            }
+
+                            try {
+
+                                Log.d(TAG, "success: " + response.getInt("success"));
+
+                                JSONArray parentArray = response.getJSONArray("Result");  //Result array in json response
+
+                                JSONObject finalObj = parentArray.getJSONObject(0);  // The object in 0th position in Result
+
+                                int conAmount = finalObj.getInt("conAmount");
+                                int stampDuty = finalObj.getInt("stampDuty");
+                                int regFee = finalObj.getInt("regFee");
+
+                                showInputDialog(conAmount, stampDuty, regFee);
+
+                            } catch (JSONException e1) {
+                                Log.d(TAG, "onResponse: " + e1.getMessage());
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(ANError error) {
+                            if (alertDialog.isShowing()) {
+                                alertDialog.dismiss();
+                            }
+
+                            cookieBar.setMessage(error.getMessage());
+                            cookieBar.show();
+
+                            Log.d(TAG, "onError: " + error.getErrorCode());
+                        }
+                    });
+
         }
-
-        alertDialog.show();
-
-        params.put("ConsiderationAmt", considerationAmt.getText().toString());
-
-        Log.d(TAG, "submitIt: " + params.toString());
-
-        AndroidNetworking.post("http://192.168.43.210:8080/panjeeyanonline/enquiry_api_demo")
-                .addBodyParameter(params)
-                .setTag(TAG_FEE_ASSESSMENT)
-                .setPriority(Priority.MEDIUM)
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        if (alertDialog.isShowing()) {
-                            alertDialog.dismiss();
-                        }
-
-                        try {
-
-                            Log.d(TAG, "success: " + response.getInt("success"));
-
-                            JSONArray parentArray = response.getJSONArray("Result");  //Result array in json response
-
-                            JSONObject finalObj = parentArray.getJSONObject(0);  // The object in 0th position in Result
-
-                            int conAmount = finalObj.getInt("conAmount");
-                            int stampDuty = finalObj.getInt("stampDuty");
-                            int regFee = finalObj.getInt("regFee");
-
-                            showInputDialog(conAmount, stampDuty, regFee);
-
-                        } catch (JSONException e1) {
-                            Log.d(TAG, "onResponse: " + e1.getMessage());
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(ANError error) {
-                        if (alertDialog.isShowing()) {
-                            alertDialog.dismiss();
-                        }
-
-                        cookieBar.setMessage(error.getMessage());
-                        cookieBar.show();
-
-                        Log.d(TAG, "onError: " + error.getErrorCode());
-                    }
-                });
 
     }
 
@@ -386,7 +423,6 @@ public class MakeAssessmentFee extends AppCompatActivity {
         giveStampFee = view.findViewById(R.id.giveStamp);
         giveRegFee = view.findViewById(R.id.giveRegFee);
 
-//      giveAmount.setText(R.string.Rs) ;
         giveAmount.setText(getResources().getString(R.string.Rs) + String.valueOf(conAmount));
         giveStampFee.setText(getResources().getString(R.string.Rs) + String.valueOf(stampDuty));
         giveRegFee.setText(getResources().getString(R.string.Rs) + String.valueOf(regFee));
@@ -395,10 +431,10 @@ public class MakeAssessmentFee extends AppCompatActivity {
         alertDialogBuilder.setView(view);
 
         // setup a dialog window
-        alertDialogBuilder.setTitle("Fee assessment");
+        alertDialogBuilder.setTitle(R.string.title_check_fee);
         alertDialogBuilder.setCancelable(false)
                 .setView(view)
-                .setPositiveButton("DONE", null);
+                .setPositiveButton(R.string.done, null);
 
         // create an alert dialog
         AlertDialog alert = alertDialogBuilder.create();

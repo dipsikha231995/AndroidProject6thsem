@@ -68,6 +68,10 @@
     <!--Make Assessment-->
     <string name="assessment">Form for Assessment of Stamp Duty and Registration Fee</string>
     <string name="Rs" translatable="false">\u20B9</string>
+    <string name="cons_amnt">Consideration Amount</string>
+    <string name="stmp_duty">Stamp Duty Amount</string>
+    <string name="reg_fee">Registration Fee</string>
+    <string name="done">Done</string>
 
     <!--Check appointment-->
     <string name="check">Check your Appointment Status</string>
@@ -117,38 +121,39 @@
     <string name="phone">\tMobile number</string>
 
 
-    <!--Spinners-->
-
-    <!--<string-array name="selectOffice">-->
-    <!--<item>Select Office for Registration * </item>-->
-    <!--<item>Kamrup Metro</item>-->
-    <!--</string-array>-->
+    <string name="select_doc">Select Image Document Type *</string>
 
     <string-array name="doc_type">
-        <item>Select Image Document Type *</item>
-        <item>Address Proof</item>
-        <item>Age Proof</item>
-        <item>Identity Proof</item>
+        <item>@string/select_doc</item>
+        <item>@string/address</item>
+        <item>@string/age</item>
+        <item>@string/identity</item>
     </string-array>
+
+    <string name="marr_type">Select Marriage Type *</string>
+    <string name="intended_marr">Intended Marriage</string>
+    <string name="marriage_type">Marriage</string>
 
     <string-array name="marriageType">
-        <item>Select Marriage Type *</item>
-        <item>Intended Marriage</item>
-        <item>Marriage</item>
+        <item>@string/marr_type</item>
+        <item>@string/intended_marr</item>
+        <item>@string/marr</item>
     </string-array>
 
-    <!--<string-array name="officeRegistration">-->
-    <!--<item>Select Office for Registration *</item>-->
-    <!--<item>Kamrup Metro</item>-->
-    <!--</string-array>-->
+    <string name="marrStaus">Select Marital Status *</string>
+    <string name="unmarried">Unmarried</string>
+    <string name="widower">Widower</string>
+    <string name="widow">Widow</string>
+    <string name="divorcee">Divorcee</string>
+    <string name="married">Married</string>
 
     <string-array name="maritalStatus">
-        <item>Select Marital Status *</item>
-        <item>Unmarried</item>
-        <item>Widower</item>
-        <item>Widow</item>
-        <item>Divorcee</item>
-        <item>Married</item>
+        <item>@string/marrStaus</item>
+        <item>@string/unmarried</item>
+        <item>@string/widower</item>
+        <item>@string/widow</item>
+        <item>@string/divorcee</item>
+        <item>@string/married</item>
     </string-array>
 
     <!--Spinners first select line-->
@@ -162,11 +167,9 @@
 
     <string name="subdeedSpinner">Select Sub Deed Category *</string>
 
-    <!--<string name="imageSpinner">Select Deed Category *</string>-->
-
 
     <!--Spinner error message-->
-    <string name="spinnerError">Choose an item</string>
+    <string name="spinnerError" translatable="false">Choose an item</string>
 
 
     <!--&lt;!&ndash;validation&ndash;&gt;-->

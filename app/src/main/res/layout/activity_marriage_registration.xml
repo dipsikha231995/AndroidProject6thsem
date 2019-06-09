@@ -79,7 +79,8 @@
                         android:id="@+id/applicantNamewrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/name">
+                        android:hint="@string/name"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/applicantName"
@@ -87,7 +88,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
-                            android:layout_marginBottom="8dp"
                             android:drawableLeft="@drawable/ic_person"
                             android:inputType="textCapWords"
                             android:textSize="16sp" />
@@ -104,7 +104,8 @@
                             android:id="@+id/username"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_email"
                             android:inputType="textEmailAddress"
                             android:textSize="16sp" />
@@ -115,13 +116,16 @@
                         android:id="@+id/numberWrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/num">
+                        android:layout_marginTop="12dp"
+                        android:hint="@string/num"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/number"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_phone"
                             android:inputType="phone"
                             android:textSize="16sp" />
@@ -132,6 +136,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"/>
 
 
@@ -175,7 +180,7 @@
             <android.support.v7.widget.CardView
                 android:id="@+id/bride_form"
                 android:layout_width="match_parent"
-                android:layout_height="1350dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="8dp"
@@ -186,6 +191,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="60dp"
                     android:layout_weight="0.5"
                     android:orientation="vertical">
 
@@ -193,13 +199,15 @@
                         android:id="@+id/nameWrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/brideName">
+                        android:hint="@string/brideName"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/Name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_person"
                             android:inputType="textCapWords"
                             android:textSize="16sp" />
@@ -210,13 +218,15 @@
                         android:id="@+id/ageWrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/ageMarr">
+                        android:hint="@string/ageMarr"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/Age"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_today"
                             android:inputType="number"
                             android:textSize="16sp" />
@@ -227,13 +237,15 @@
                         android:id="@+id/occupationWrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/occ">
+                        android:hint="@string/occ"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/Occupation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_work"
                             android:inputType="textCapWords"
                             android:textSize="16sp" />
@@ -244,13 +256,15 @@
                         android:id="@+id/fathernameWrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="string/fname">
+                        android:hint="@string/fname"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/FName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_father"
                             android:inputType="textCapWords"
                             android:textSize="16sp" />
@@ -263,7 +277,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"/>
+                        android:layout_marginTop="12dp" />
 
                     <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
@@ -290,7 +304,10 @@
                         android:id="@+id/cityNamewrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp">
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="8dp"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/city"
@@ -305,13 +322,15 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/policeStationwrapper"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/policeStation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_location_on"
                             android:hint="@string/police"
                             android:inputType="textCapWords"
@@ -321,13 +340,15 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/postofficeNamewrapper"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/postofficeName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_drafts"
                             android:hint="@string/post"
                             android:inputType="textCapWords"
@@ -337,13 +358,15 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/districtNamewrapper"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/districtName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_home"
                             android:hint="@string/district"
                             android:inputType="textCapWords"
@@ -353,13 +376,15 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/stateNamewrapper"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/stateName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_person_pin"
                             android:hint="@string/state"
                             android:inputType="textCapWords"
@@ -369,13 +394,15 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/pinWrapper"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/pin"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_fiber_pin"
                             android:hint="@string/pin"
                             android:inputType="number"
@@ -385,13 +412,15 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/lengthResidencewrapper"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/lengthResidence"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_timer"
                             android:hint="@string/length"
                             android:inputType="number"
@@ -429,7 +458,10 @@
                         android:id="@+id/per_cityNamewrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp">
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/per_city"
@@ -437,7 +469,6 @@
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_location_city"
                             android:hint="@string/city"
-                            android:textColor="#4682B4"
                             android:inputType="textCapWords"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
@@ -445,16 +476,17 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/per_policeStationwrapper"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/per_policeStation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_location_on"
                             android:hint="@string/police"
-                            android:textColor="#4682B4"
                             android:inputType="textCapWords"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
@@ -462,16 +494,17 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/per_postofficeNamewrapper"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/per_postofficeName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_drafts"
                             android:hint="@string/post"
-                            android:textColor="#4682B4"
                             android:inputType="textCapWords"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
@@ -479,16 +512,17 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/per_districtNamewrapper"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/per_districtName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_home"
                             android:hint="@string/district"
-                            android:textColor="#4682B4"
                             android:inputType="textCapWords"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
@@ -496,13 +530,15 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/per_stateNamewrapper"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/per_stateName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_person_pin"
                             android:hint="@string/state"
                             android:inputType="textCapWords"
@@ -512,13 +548,15 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/per_pinWrapper"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/per_pin"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_fiber_pin"
                             android:hint="@string/pin"
                             android:inputType="number"
@@ -532,15 +570,14 @@
                     android:id="@+id/linearLayout2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center|bottom">
-
+                    android:gravity="bottom">
 
                     <Button
                         android:id="@+id/btnSubmit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#228B22"
-                        android:onClick="showNextForm"
+                        android:onClick="goToNextForm"
                         android:text="@string/next"
                         android:textColor="#fff" />
 
@@ -553,7 +590,7 @@
             <android.support.v7.widget.CardView
                 android:id="@+id/groom_form"
                 android:layout_width="match_parent"
-                android:layout_height="1350dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="8dp"
@@ -566,19 +603,22 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="0.5"
+                    android:layout_marginBottom="60dp"
                     android:orientation="vertical">
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/nameWrapper2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/groomName">
+                        android:hint="@string/groomName"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/Name2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_person"
                             android:inputType="textCapWords"
                             android:textSize="16sp" />
@@ -589,13 +629,15 @@
                         android:id="@+id/ageWrapper2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/ageMarr">
+                        android:hint="@string/ageMarr"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/Age2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_today"
                             android:inputType="number"
                             android:textSize="16sp" />
@@ -606,13 +648,15 @@
                         android:id="@+id/occupationWrapper2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/occ">
+                        android:hint="@string/occ"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/Occupation2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_work"
                             android:inputType="textCapWords"
                             android:textSize="16sp" />
@@ -623,13 +667,15 @@
                         android:id="@+id/fathernameWrapper2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/fname">
+                        android:hint="@string/fname"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/FName2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_father"
                             android:inputType="textCapWords"
                             android:textSize="16sp" />
@@ -669,7 +715,10 @@
                         android:id="@+id/cityNamewrapper2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp">
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="8dp"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/city2"
@@ -684,13 +733,15 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/policeStationwrapper2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/policeStation2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_location_on"
                             android:hint="@string/police"
                             android:inputType="textCapWords"
@@ -700,13 +751,15 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/postofficeNamewrapper2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/postofficeName2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_drafts"
                             android:hint="@string/post"
                             android:inputType="textCapWords"
@@ -716,16 +769,17 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/districtNamewrapper2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/districtName2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_home"
                             android:hint="@string/district"
-                            android:textColor="#4682B4"
                             android:inputType="textCapWords"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
@@ -733,13 +787,15 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/stateNamewrapper2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/stateName2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_person_pin"
                             android:hint="@string/state"
                             android:inputType="textCapWords"
@@ -749,13 +805,15 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/pinWrapper2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/pin2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_fiber_pin"
                             android:hint="@string/pin"
                             android:inputType="number"
@@ -765,13 +823,15 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/lengthResidencewrapper2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/lengthResidence2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_timer"
                             android:hint="@string/length"
                             android:inputType="number"
@@ -809,7 +869,10 @@
                         android:id="@+id/per_cityNamewrapper2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp">
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="8dp"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/per_city2"
@@ -824,13 +887,15 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/per_policeStationwrapper2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/per_policeStation2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_location_on"
                             android:hint="@string/police"
                             android:inputType="textCapWords"
@@ -840,13 +905,15 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/per_postofficeNamewrapper2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/per_postofficeName2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_drafts"
                             android:hint="@string/post"
                             android:inputType="textCapWords"
@@ -856,13 +923,15 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/per_districtNamewrapper2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/per_districtName2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_home"
                             android:hint="@string/district"
                             android:inputType="textCapWords"
@@ -872,13 +941,15 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/per_stateNamewrapper2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/per_stateName2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_person_pin"
                             android:hint="@string/state"
                             android:inputType="textCapWords"
@@ -888,13 +959,15 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/per_pinWrapper2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/per_pin2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_fiber_pin"
                             android:hint="@string/pin"
                             android:inputType="number"
@@ -915,7 +988,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#228B22"
-                        android:onClick="showNextForm"
+                        android:onClick="clickNext"
                         android:text="@string/next"
                         android:textColor="#fff" />
 

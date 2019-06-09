@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Consideration Amount :"
+                android:text="@string/cons_amnt"
                 android:textAlignment="center"
                 android:textSize="17sp" />
 
@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Stamp Duty Amount :"
+                android:text="@string/stmp_duty"
                 android:textAlignment="center"
                 android:textSize="17sp" />
 
@@ -61,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Registration Fee :"
+                android:text="@string/reg_fee"
                 android:textAlignment="center"
                 android:textSize="17sp" />
 

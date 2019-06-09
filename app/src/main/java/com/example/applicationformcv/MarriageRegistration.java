@@ -1,6 +1,9 @@
 package com.example.applicationformcv;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -41,6 +44,7 @@ import com.kofigyan.stateprogressbar.listeners.OnStateItemClickListener;
 
 import org.aviran.cookiebar2.CookieBar;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
@@ -60,20 +64,31 @@ public class MarriageRegistration extends AppCompatActivity {
     private static final String TAG = "MY_APP";
 
     // Marriage details form fields
+    TextInputLayout nameLayout, mobileLayout;
     EditText applicantName, email, mobile;
     Spinner mySpinner1, mySpinner2, mySpinner3;
 
     // Bride details form fields
-    EditText eCity, ePolice, ePost, eDistrict, eState, ePin, perCity, perPolice, perPost, perDistrict, perState, perPin, lengthOfResidence;
-    CheckBox cBox;
+    TextInputLayout bridenameLayout, ageLayout, occupationLayout, fNameLayout;
     EditText name, age, occupation, fName;
     Spinner mySpinner4;
 
+    TextInputLayout eCityLayout, ePoliceLayout, ePostLayout, eDistrictLayout, eStateLayout, ePinLayout, perCityLayout,
+            perPoliceLayout, perPostLayout, perDistrictLayout, perStateLayout, perPinLayout, lengthOfResidenceLayout;
+    EditText eCity, ePolice, ePost, eDistrict, eState, ePin, perCity, perPolice, perPost, perDistrict, perState, perPin, lengthOfResidence;
+    CheckBox cBox;
+
+
     // Groom details form fields
-    EditText eCity2, ePolice2, ePost2, eDistrict2, eState2, ePin2, perCity2, perPolice2, perPost2, perDistrict2, perState2, perPin2, lengthOfResidence2;
-    CheckBox cBox2;
+    TextInputLayout groomnameLayout, ageLayout2, occupationLayout2, fNameLayout2;
     EditText name2, age2, occupation2, fName2;
     Spinner mySpinner5;
+
+    TextInputLayout eCityLayout2, ePoliceLayout2, ePostLayout2, eDistrictLayout2, eStateLayout2, ePinLayout2, perCityLayout2,
+            perPoliceLayout2, perPostLayout2, perDistrictLayout2, perStateLayout2, perPinLayout2, lengthOfResidenceLayout2;
+    EditText eCity2, ePolice2, ePost2, eDistrict2, eState2, ePin2, perCity2, perPolice2, perPost2, perDistrict2, perState2, perPin2, lengthOfResidence2;
+    CheckBox cBox2;
+
 
     CardView cardView;
 
@@ -162,6 +177,8 @@ public class MarriageRegistration extends AppCompatActivity {
 
         // marriage details views
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        nameLayout = findViewById(R.id.applicantNamewrapper);
+        mobileLayout = findViewById(R.id.numberWrapper);
         mySpinner1 = findViewById(R.id.spinner11);    //appointment dates
         mySpinner2 = findViewById(R.id.spinner2);     //marriage type
         mySpinner3 = findViewById(R.id.spinner3);     //sro offices
@@ -188,7 +205,32 @@ public class MarriageRegistration extends AppCompatActivity {
 
         // bride details views
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        bridenameLayout = findViewById(R.id.nameWrapper);
+        ageLayout = findViewById(R.id.ageWrapper);
+        occupationLayout = findViewById(R.id.occupationWrapper);
+        fNameLayout = findViewById(R.id.fathernameWrapper);
+
+        name = findViewById(R.id.Name);
+        age = findViewById(R.id.Age);
+        occupation = findViewById(R.id.Occupation);
+        fName = findViewById(R.id.FName);
+
         mySpinner4 = findViewById(R.id.spinner1);
+
+        eCityLayout = findViewById(R.id.cityNamewrapper);
+        ePoliceLayout = findViewById(R.id.policeStationwrapper);
+        ePostLayout = findViewById(R.id.postofficeNamewrapper);
+        eDistrictLayout = findViewById(R.id.districtNamewrapper);
+        eStateLayout = findViewById(R.id.stateNamewrapper);
+        ePinLayout = findViewById(R.id.pinWrapper);
+        lengthOfResidenceLayout = findViewById(R.id.lengthResidencewrapper);
+        perCityLayout = findViewById(R.id.per_cityNamewrapper);
+        perPoliceLayout = findViewById(R.id.per_policeStationwrapper);
+        perPostLayout = findViewById(R.id.per_postofficeNamewrapper);
+        perDistrictLayout = findViewById(R.id.per_districtNamewrapper);
+        perStateLayout = findViewById(R.id.per_stateNamewrapper);
+        perPinLayout = findViewById(R.id.per_pinWrapper);
+
         eCity = findViewById(R.id.city);
         ePolice = findViewById(R.id.policeStation);
         ePost = findViewById(R.id.postofficeName);
@@ -203,10 +245,6 @@ public class MarriageRegistration extends AppCompatActivity {
         perDistrict = findViewById(R.id.per_districtName);
         perState = findViewById(R.id.per_stateName);
         perPin = findViewById(R.id.per_pin);
-        name = findViewById(R.id.Name);
-        age = findViewById(R.id.Age);
-        occupation = findViewById(R.id.Occupation);
-        fName = findViewById(R.id.FName);
 
         //create array adapter
         ArrayAdapter<String> myAdapter4 = new ArrayAdapter<String>(this, R.layout.spinner_item_text_colour,
@@ -291,8 +329,32 @@ public class MarriageRegistration extends AppCompatActivity {
 
         // groom details views
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        groomnameLayout = findViewById(R.id.nameWrapper2);
+        ageLayout2 = findViewById(R.id.ageWrapper2);
+        occupationLayout2 = findViewById(R.id.occupationWrapper2);
+        fNameLayout2 = findViewById(R.id.fathernameWrapper2);
+
+        name2 = findViewById(R.id.Name2);
+        age2 = findViewById(R.id.Age2);
+        occupation2 = findViewById(R.id.Occupation2);
+        fName2 = findViewById(R.id.FName2);
 
         mySpinner5 = findViewById(R.id.spinner12);
+
+        eCityLayout2 = findViewById(R.id.cityNamewrapper2);
+        ePoliceLayout2 = findViewById(R.id.policeStationwrapper2);
+        ePostLayout2 = findViewById(R.id.postofficeNamewrapper2);
+        eDistrictLayout2 = findViewById(R.id.districtNamewrapper2);
+        eStateLayout2 = findViewById(R.id.stateNamewrapper2);
+        ePinLayout2 = findViewById(R.id.pinWrapper2);
+        lengthOfResidenceLayout2 = findViewById(R.id.lengthResidencewrapper2);
+        perCityLayout2 = findViewById(R.id.per_cityNamewrapper2);
+        perPoliceLayout2 = findViewById(R.id.per_policeStationwrapper2);
+        perPostLayout2 = findViewById(R.id.per_postofficeNamewrapper2);
+        perDistrictLayout2 = findViewById(R.id.per_districtNamewrapper2);
+        perStateLayout2 = findViewById(R.id.per_stateNamewrapper2);
+        perPinLayout2 = findViewById(R.id.per_pinWrapper2);
+
 
         eCity2 = findViewById(R.id.city2);
         ePolice2 = findViewById(R.id.policeStation2);
@@ -308,10 +370,6 @@ public class MarriageRegistration extends AppCompatActivity {
         perDistrict2 = findViewById(R.id.per_districtName2);
         perState2 = findViewById(R.id.per_stateName2);
         perPin2 = findViewById(R.id.per_pin2);
-        name2 = findViewById(R.id.Name2);
-        age2 = findViewById(R.id.Age2);
-        occupation2 = findViewById(R.id.Occupation2);
-        fName2 = findViewById(R.id.FName2);
 
         mySpinner5.setAdapter(myAdapter4);
 
@@ -733,6 +791,255 @@ public class MarriageRegistration extends AppCompatActivity {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     public void showNextForm(View view) {
+
+        if (applicantName.getText().toString().isEmpty()) {
+            nameLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            nameLayout.setError(null);
+        }
+
+        if (mobile.getText().toString().isEmpty()) {
+            mobileLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            mobileLayout.setError(null);
+        }
+
+        // get the current state number
+        int curState = stateProgressBar.getCurrentStateNumber();
+
+        showFrom(curState, curState + 1);
+    }
+
+    ////////////// BRIDE FORM///////////////////
+    public void goToNextForm(View view) {
+
+        if (name.getText().toString().isEmpty()) {
+            bridenameLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            bridenameLayout.setError(null);
+        }
+
+        if (age.getText().toString().isEmpty()) {
+            ageLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            ageLayout.setError(null);
+        }
+
+        if (occupation.getText().toString().isEmpty()) {
+            occupationLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            occupationLayout.setError(null);
+        }
+
+        if (fName.getText().toString().isEmpty()) {
+            fNameLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            fNameLayout.setError(null);
+        }
+
+//        present address
+
+        if (eCity.getText().toString().isEmpty()) {
+            eCityLayout.setError("\t\t\t\tPlease enter this required field");
+        } else {
+            eCityLayout.setError(null);
+        }
+
+        if (ePolice.getText().toString().isEmpty()) {
+            ePoliceLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            ePoliceLayout.setError(null);
+        }
+
+        if (ePost.getText().toString().isEmpty()) {
+            ePostLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            ePostLayout.setError(null);
+        }
+
+        if (eDistrict.getText().toString().isEmpty()) {
+            eDistrictLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            eDistrictLayout.setError(null);
+        }
+
+        if (eState.getText().toString().isEmpty()) {
+            eStateLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            eStateLayout.setError(null);
+        }
+
+        if (ePin.getText().toString().isEmpty()) {
+            ePinLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            ePinLayout.setError(null);
+        }
+
+        if (lengthOfResidence.getText().toString().isEmpty()) {
+            lengthOfResidenceLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            lengthOfResidenceLayout.setError(null);
+        }
+
+//        permanent address
+
+        if (perCity.getText().toString().isEmpty()) {
+            perCityLayout.setError("\t\t\t\tPlease enter this required field");
+        } else {
+            perCityLayout.setError(null);
+        }
+
+        if (perPolice.getText().toString().isEmpty()) {
+            perPoliceLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            perPoliceLayout.setError(null);
+        }
+
+        if (perPost.getText().toString().isEmpty()) {
+            perPostLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            perPostLayout.setError(null);
+        }
+
+        if (perDistrict.getText().toString().isEmpty()) {
+            perDistrictLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            perDistrictLayout.setError(null);
+        }
+
+        if (perState.getText().toString().isEmpty()) {
+            perStateLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            perStateLayout.setError(null);
+        }
+
+        if (perPin.getText().toString().isEmpty()) {
+            perPinLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            perPinLayout.setError(null);
+        }
+
+
+        // get the current state number
+        int curState = stateProgressBar.getCurrentStateNumber();
+
+        showFrom(curState, curState + 1);
+
+
+    }
+
+
+    /////////////GROOM FORM/////////////////////////
+    public void clickNext(View view) {
+
+        if (name2.getText().toString().isEmpty()) {
+            groomnameLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            groomnameLayout.setError(null);
+        }
+
+        if (age2.getText().toString().isEmpty()) {
+            ageLayout2.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            ageLayout2.setError(null);
+        }
+
+        if (occupation2.getText().toString().isEmpty()) {
+            occupationLayout2.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            occupationLayout2.setError(null);
+        }
+
+        if (fName2.getText().toString().isEmpty()) {
+            fNameLayout2.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            fNameLayout2.setError(null);
+        }
+
+
+        //        present address
+
+        if (eCity2.getText().toString().isEmpty()) {
+            eCityLayout2.setError("\t\t\t\tPlease enter this required field");
+        } else {
+            eCityLayout2.setError(null);
+        }
+
+        if (ePolice2.getText().toString().isEmpty()) {
+            ePoliceLayout2.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            ePoliceLayout2.setError(null);
+        }
+
+        if (ePost2.getText().toString().isEmpty()) {
+            ePostLayout2.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            ePostLayout2.setError(null);
+        }
+
+        if (eDistrict2.getText().toString().isEmpty()) {
+            eDistrictLayout2.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            eDistrictLayout2.setError(null);
+        }
+
+        if (eState2.getText().toString().isEmpty()) {
+            eStateLayout2.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            eStateLayout2.setError(null);
+        }
+
+        if (ePin2.getText().toString().isEmpty()) {
+            ePinLayout2.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            ePinLayout2.setError(null);
+        }
+
+        if (lengthOfResidence2.getText().toString().isEmpty()) {
+            lengthOfResidenceLayout2.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            lengthOfResidenceLayout2.setError(null);
+        }
+
+//        permanent address
+
+        if (perCity2.getText().toString().isEmpty()) {
+            perCityLayout2.setError("\t\t\t\tPlease enter this required field");
+        } else {
+            perCityLayout2.setError(null);
+        }
+
+        if (perPolice2.getText().toString().isEmpty()) {
+            perPoliceLayout2.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            perPoliceLayout2.setError(null);
+        }
+
+        if (perPost2.getText().toString().isEmpty()) {
+            perPostLayout2.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            perPostLayout2.setError(null);
+        }
+
+        if (perDistrict2.getText().toString().isEmpty()) {
+            perDistrictLayout2.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            perDistrictLayout2.setError(null);
+        }
+
+        if (perState2.getText().toString().isEmpty()) {
+            perStateLayout2.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            perStateLayout2.setError(null);
+        }
+
+        if (perPin2.getText().toString().isEmpty()) {
+            perPinLayout2.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            perPinLayout2.setError(null);
+        }
+
+
         // get the current state number
         int curState = stateProgressBar.getCurrentStateNumber();
 
@@ -967,12 +1274,28 @@ public class MarriageRegistration extends AppCompatActivity {
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        if (alertDialog.isShowing()) {
-                            alertDialog.dismiss();
+                        try {
+
+                            if (alertDialog.isShowing()) {
+                                alertDialog.dismiss();
+                            }
+
+                            Log.d(TAG, "onResponse: " + response);
+
+                            if (response.getBoolean("success")) {
+
+                                String appointment_id = response.getString("appointment_id");
+
+                                showInputDialog(appointment_id);
+
+                            }
+
+//                            else {
+//                                showErrorMessage(response.getString("msg"));
+//                            }
+
+                        } catch (JSONException e) {
                         }
-
-                        Log.d(TAG, "success: " + response.toString());
-
                     }
 
                     @Override
@@ -987,14 +1310,9 @@ public class MarriageRegistration extends AppCompatActivity {
                         Log.d(TAG, "onError: " + error.getErrorCode());
                         Log.d(TAG, "onError: " + error.getMessage());
 
-
                     }
                 });
 
-
-
-        confirmForm.setVisibility(View.GONE);
-        header.setVisibility(View.GONE);
 
         // mark all the states "done"
         stateProgressBar.setAllStatesCompleted(true);
@@ -1002,13 +1320,43 @@ public class MarriageRegistration extends AppCompatActivity {
         // make them unclickable
         stateProgressBar.setOnStateItemClickListener(null);
 
-        cardView.setVisibility(View.GONE);
-
         // network call to write info in the database and then payment activity is started
+    }
 
-//        Intent intent = new Intent(this, PaymentActivity.class);
-//        startActivity(intent);
-//        finish();
+    private void showInputDialog(String appointment_id) {
+
+        TextView appointmentID, showID;
+
+        // layout of fee Dialog
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View view = layoutInflater.inflate(R.layout.layout_view_status_dialog, null);
+
+        appointmentID = view.findViewById(R.id.your_appointment_id);
+        showID = view.findViewById(R.id.showid);
+
+        appointmentID.setText("Your appointment id is :");
+        showID.setText(appointment_id);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MarriageRegistration.this);
+        alertDialogBuilder.setView(view);
+
+        // setup a dialog window
+        alertDialogBuilder.setTitle("Marriage Registration");
+        alertDialogBuilder.setCancelable(false)
+                .setView(view)
+                .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(MarriageRegistration.this, PaymentActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+
     }
 
     private void showErrorMessage(String msg) {
@@ -1035,4 +1383,5 @@ public class MarriageRegistration extends AppCompatActivity {
 
         return msg;
     }
+
 }

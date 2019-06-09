@@ -1,5 +1,6 @@
 package com.example.applicationformcv;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -8,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -20,7 +22,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -100,6 +101,7 @@ public class DeedRegistration extends AppCompatActivity {
     private AwesomeValidation awesomeValidation;
 
     //for validation
+    TextInputLayout nameLayout, mobileLayout, addressLayout, cityLayout, poLayout, districtLayout, pinLayout;
     private EditText name, email, mobile, address, city, po, district, pin;
     private Button submit;
 
@@ -131,8 +133,6 @@ public class DeedRegistration extends AppCompatActivity {
 
     CardView cardView;
 
-    LinearLayout appointment_confirm;
-
     private boolean appointmentFormCompleted = false;
     private boolean uploadDocumentsCompleted = false;
 
@@ -143,7 +143,7 @@ public class DeedRegistration extends AppCompatActivity {
     List<RegistrationOfficeModel> officeList = new ArrayList<>();
 
     TextView show_appointmenID, show_appointmentDetails;
-
+    TextView appointmentID, showID, details;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,10 +207,6 @@ public class DeedRegistration extends AppCompatActivity {
 
 
         cardView = findViewById(R.id.card1);
-        appointment_confirm = findViewById(R.id.confirm_appointment);
-
-        show_appointmenID = findViewById(R.id.appointment_id);
-        show_appointmentDetails = findViewById(R.id.appointment_details);
 
         // select document spinner
         mySpinner5 = findViewById(R.id.spinner5);
@@ -358,9 +354,11 @@ public class DeedRegistration extends AppCompatActivity {
                                             subDeed.add(array.getString(i));
                                         }
 
-                                        subDeedAdapter.clear();
-                                        subDeedAdapter.addAll(subDeed);
-                                        subDeedAdapter.notifyDataSetChanged();
+                                        subDeedAdapter = new ArrayAdapter<String>(DeedRegistration.this,
+                                                R.layout.spinner_item_text_colour,
+                                                subDeed);
+                                        subDeedAdapter.setDropDownViewResource(R.layout.spinner_item_text_colour);
+                                        mySpinner4.setAdapter(subDeedAdapter);
 
 
                                     } catch (Exception e) {
@@ -459,19 +457,6 @@ public class DeedRegistration extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private void initializeValidation() {
-        name = findViewById(R.id.applicantName);
-        email = findViewById(R.id.username);
-        mobile = findViewById(R.id.number);
-        address = findViewById(R.id.addressText);
-        city = findViewById(R.id.city);
-        po = findViewById(R.id.postofficeName);
-        district = findViewById(R.id.districtName);
-        pin = findViewById(R.id.pin);
-
-        submit = findViewById(R.id.btnSubmit);
     }
 
 
@@ -1043,13 +1028,27 @@ public class DeedRegistration extends AppCompatActivity {
         return true;
     }
 
+    private void initializeValidation() {
 
-    // go to the next form
-    public void submitIt(View view) {
-        // get the current state number
-        int curState = stateProgressBar.getCurrentStateNumber();
 
-        showFrom(curState, curState + 1);
+        nameLayout = findViewById(R.id.applicantNamewrapper);
+        mobileLayout = findViewById(R.id.numberWrapper);
+        addressLayout = findViewById(R.id.addressWrapper);
+        cityLayout = findViewById(R.id.cityNamewrapper);
+        poLayout = findViewById(R.id.postofficeNamewrapper);
+        districtLayout = findViewById(R.id.districtNamewrapper);
+        pinLayout = findViewById(R.id.pinWrapper);
+
+        name = findViewById(R.id.applicantName);
+        email = findViewById(R.id.username);
+        mobile = findViewById(R.id.number);
+        address = findViewById(R.id.addressText);
+        city = findViewById(R.id.city);
+        po = findViewById(R.id.postofficeName);
+        district = findViewById(R.id.districtName);
+        pin = findViewById(R.id.pin);
+
+        submit = findViewById(R.id.btnSubmit);
     }
 
     private void showFrom(int curState, int nextState) {
@@ -1156,11 +1155,60 @@ public class DeedRegistration extends AppCompatActivity {
         }
     }
 
+    // go to the next form
+    public void submitIt(View view) {
+
+        if (name.getText().toString().isEmpty()) {
+            nameLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            nameLayout.setError(null);
+        }
+
+        if (mobile.getText().toString().isEmpty()) {
+            mobileLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            mobileLayout.setError(null);
+        }
+
+        if (address.getText().toString().isEmpty()) {
+            addressLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            addressLayout.setError(null);
+        }
+
+        if (city.getText().toString().isEmpty()) {
+            cityLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            cityLayout.setError(null);
+        }
+
+        if (po.getText().toString().isEmpty()) {
+            poLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            poLayout.setError(null);
+        }
+
+        if (district.getText().toString().isEmpty()) {
+            districtLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            districtLayout.setError(null);
+        }
+
+        if (pin.getText().toString().isEmpty()) {
+            pinLayout.setError("\t\t\t\t\tPlease enter this required field");
+        } else {
+            pinLayout.setError(null);
+        }
+
+        // get the current state number
+        int curState = stateProgressBar.getCurrentStateNumber();
+
+        showFrom(curState, curState + 1);
+
+
+    }
 
     public void submitData(View view) {
-        confirmForm.setVisibility(View.GONE);
-        header.setVisibility(View.GONE);
-        cardView.setVisibility(View.GONE);
 
         // mark all the states "done"
         stateProgressBar.setAllStatesCompleted(true);
@@ -1168,15 +1216,12 @@ public class DeedRegistration extends AppCompatActivity {
         // make them unclickable
         stateProgressBar.setOnStateItemClickListener(null);
 
-        appointment_confirm.setVisibility(View.VISIBLE);
-
 
         if (amount.getText().toString().isEmpty()) {
             params.put("ConsiderationAmt", "0");
         } else {
             params.put("ConsiderationAmt", amount.getText().toString());
         }
-
         alertDialog.show();
 
         Log.d(TAG, "params" + params.toString());
@@ -1205,24 +1250,29 @@ public class DeedRegistration extends AppCompatActivity {
                                 alertDialog.dismiss();
                             }
 
-                            String appointment_id = response.getString("appointment_id");
-                            String message = String.valueOf(android.text.Html.fromHtml(String.valueOf(response.getString("message"))));
+                            Log.d(TAG, "onResponse: " + response);
 
-                            Log.d(TAG, "onResponse: " + appointment_id);
-                            Log.d(TAG, "onResponse: " + message);
+                            if (response.getBoolean("success")) {
 
-                            show_appointmenID.setText("\t" + appointment_id);
-                            show_appointmentDetails.setText("You are requested to report 15 minutes before the below mentioned date and time.\n\n" + message);
+                                String appointment_id = response.getString("appointment_id");
+                                String officer_assigned = response.getString("Officer assigned");
+                                String consideration_amount = response.getString("Consideration Amount");
+                                String date_and_time = response.getString("Appointment Date and time");
+                                String registration_fee = response.getString("Registration Fee");
+                                String stamp_duty = response.getString("Stamp Duty");
 
 
-                            uploadFiles();
+                                showInputDialog(appointment_id, officer_assigned, consideration_amount,
+                                        date_and_time, registration_fee, stamp_duty);
 
-//                        Intent intent = new Intent(DeedRegistration.this, PaymentActivity.class);
-//                        startActivity(intent);
-//                        finish();
+                                uploadFiles();
+
+
+                            } else {
+                                showErrorMessage(response.getString("msg"));
+                            }
 
                         } catch (JSONException e) {
-
                         }
                     }
 
@@ -1238,6 +1288,47 @@ public class DeedRegistration extends AppCompatActivity {
                         Log.d(TAG, "onError: " + error.getErrorCode());
                     }
                 });
+    }
+
+    private void showInputDialog(String appointment_id, String officer_assigned, String consideration_amount,
+                                 String date_and_time, String registration_fee, String stamp_duty) {
+
+        // layout of fee Dialog
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View view = layoutInflater.inflate(R.layout.layout_view_status_dialog, null);
+
+        appointmentID = view.findViewById(R.id.your_appointment_id);
+        showID = view.findViewById(R.id.showid);
+        details = view.findViewById(R.id.allDetails);
+
+        appointmentID.setText("Your appointment id is :");
+        showID.setText(appointment_id);
+        details.setText("You are requested to report 15 minutes before the mentioned date and time i.e., on " + date_and_time + "." +
+                " Under the " + "sub registrar office, a consideration amount of " + getResources().getString(R.string.Rs) +
+                String.valueOf(consideration_amount) + "," + " a registration fee of " + getResources().getString(R.string.Rs) +
+                String.valueOf(registration_fee) + " and a stamp duty of " + getResources().getString(R.string.Rs) +
+                String.valueOf(stamp_duty) + " is to be paid.");
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeedRegistration.this);
+        alertDialogBuilder.setView(view);
+
+        // setup a dialog window
+        alertDialogBuilder.setTitle("View Appointment Status");
+        alertDialogBuilder.setCancelable(false)
+                .setView(view)
+                .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(DeedRegistration.this, PaymentActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+
     }
 
     private void uploadFiles() {
@@ -1273,7 +1364,6 @@ public class DeedRegistration extends AppCompatActivity {
                         if (alertDialog.isShowing()) {
                             alertDialog.dismiss();
                         }
-
 
                         Log.d(TAG, "onResponse: " + response);
                     }

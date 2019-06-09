@@ -1,6 +1,7 @@
 package com.example.applicationformcv;
 
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,31 +10,38 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.github.ybq.android.spinkit.style.Wave;
 
 import org.aviran.cookiebar2.CookieBar;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ViewStatus extends AppCompatActivity {
 
+    public static final String TAG = "MY-APP";
+    Map<String, String> params;
+
     AlertDialog alertDialog;
 
     CookieBar.Builder cookieBar;
+    TextInputLayout referenceNoLayout;
 
     EditText refNo;
 
@@ -41,14 +49,19 @@ public class ViewStatus extends AppCompatActivity {
 
     //defining AwesomeValidation object
     private AwesomeValidation awesomeValidation;
+    TextView appointmentID, showID, details;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_status);
         setTitle(getString(R.string.view));
+        referenceNoLayout = findViewById(R.id.numberWrapper);
         refNo = findViewById(R.id.number);
         check = findViewById(R.id.btnCheck);
+
+        params = new HashMap<>();
+
 
         //Loading spin kit
         LayoutInflater inflater = getLayoutInflater();
@@ -81,44 +94,131 @@ public class ViewStatus extends AppCompatActivity {
 
     public void checkStatus(View view) {
 
-        alertDialog.show();
+        if (refNo.getText().toString().isEmpty()) {
+            referenceNoLayout.setError("\t\t\t\t\tPlease enter this required field");
+            return;
+        } else {
+
+            alertDialog.show();
+
+            params.put("DocRefNo", refNo.getText().toString());
 
 //        if (awesomeValidation.validate()) { }
 
-        //VOLLEY POST
-        String url = "http://192.168.43.210:8080/e-Panjeeyan/viewstatusservlet";
+            AndroidNetworking.post("http://192.168.43.210:8080/panjeeyanonline/appointment_status")
+                    .addBodyParameter(params)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //This code is executed if the server responds, whether or not the response contains data.
-                //The String 'response' contains the server's response.
-                if (alertDialog.isShowing()) {
-                    alertDialog.dismiss();
-                }
-                Toast.makeText(ViewStatus.this, response, Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //This code is executed if there is an error.
-                showErrorMessage(getVolleyErrorMessage(error));
-            }
-        }) {
-            protected Map<String, String> getParams() {
-                String number = refNo.getText().toString();
-                Log.d("check", number);
-                Map<String, String> MyData = new HashMap<String, String>();
-                MyData.put("refno", number); //Add the data you'd like to send to the server.
-                return MyData;
-            }
-        };
+                        @Override
+                        public void onResponse(JSONObject response) {
 
-        // Add request to the Request queue
-        MySingleton.getInstance(getApplicationContext())
-                .addToRequestQueue(stringRequest);
+                            try {
+                                if (alertDialog.isShowing()) {
+                                    alertDialog.dismiss();
+                                }
+
+                                Log.d(TAG, "success: " + response);
+
+                                if (response.getBoolean("success")) {
+
+                                    String appointment_id = response.getString("Appointment ID");
+                                    String date_and_time = response.getString("Appointment Date and time");
+                                    String registry_office = response.getString("Registry Office");
+                                    String registration_fee = response.getString("Registration Fee");
+                                    String stamp_duty = response.getString("Stamp Duty");
+
+                                    // remove the error
+                                    referenceNoLayout.setErrorEnabled(false);
+
+                                    showInputDialog(appointment_id, date_and_time, registry_office, registration_fee, stamp_duty);
+
+                                } else {
+
+                                    String msg = response.getString("msg");
+
+                                    showInputDialog(msg);
+                                }
+
+                            } catch (JSONException e) {
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(ANError error) {
+
+                            showErrorMessage(error.getMessage());
+
+                            Log.d(TAG, "onError: " + error.getErrorCode());
+                            Log.d(TAG, "onError: " + error.getMessage());
+
+                        }
+
+                    });
+        }
+    }
+
+    private void showInputDialog(String appointment_id, String date_and_time, String registry_office,
+                                 String registration_fee, String stamp_duty) {
+
+
+        // layout of fee Dialog
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View view = layoutInflater.inflate(R.layout.layout_view_status_dialog, null);
+
+        appointmentID = view.findViewById(R.id.your_appointment_id);
+        showID = view.findViewById(R.id.showid);
+        details = view.findViewById(R.id.allDetails);
+
+        appointmentID.setText("Your appointment id is :");
+        showID.setText(appointment_id);
+        details.setText("You are requested to report 15 minutes before the mentioned date and time i.e., on " + date_and_time + "." +
+                " Under the " + registry_office + "sub registrar office, a registration fee of " +
+                getResources().getString(R.string.Rs) + String.valueOf(registration_fee) +
+                " and a stamp duty of " + getResources().getString(R.string.Rs) + String.valueOf(stamp_duty) + " is to be paid.");
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ViewStatus.this);
+        alertDialogBuilder.setView(view);
+
+        // setup a dialog window
+        alertDialogBuilder.setTitle("View Appointment Status");
+        alertDialogBuilder.setCancelable(false)
+                .setView(view)
+                .setPositiveButton("DONE", null);
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
 
     }
+
+    private void showInputDialog(String msg) {
+
+        Log.d(TAG, "showInputDialog: " + msg);
+
+        // layout of fee Dialog
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View view = layoutInflater.inflate(R.layout.layout_view_status_dialog, null);
+
+        appointmentID = view.findViewById(R.id.showid);
+        appointmentID.setText(msg);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ViewStatus.this);
+        alertDialogBuilder.setView(view);
+
+        // setup a dialog window
+        alertDialogBuilder.setTitle("View Appointment Status");
+        alertDialogBuilder.setCancelable(false)
+                .setView(view)
+                .setPositiveButton("DONE", null);
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
 
     private void showErrorMessage(String msg) {
 
