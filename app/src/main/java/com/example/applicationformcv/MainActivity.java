@@ -5,14 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -26,9 +18,18 @@ import android.widget.TextView;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.infideap.drawerbehavior.AdvanceDrawerLayout;
 
 import java.util.Locale;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -209,6 +210,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         deed.setText(R.string.deed);
         marr.setText(R.string.marr);
         viewStatus.setText(R.string.view);
+
+        // update the text of the nav menu items
+        if (navigationView != null) {
+            Menu menu = navigationView.getMenu();
+
+            // find MenuItem you want to change
+            menu.findItem(R.id.myprofile_menu_item).setTitle(R.string.title_profile_epanjeeyan);
+            menu.findItem(R.id.language_menu_item).setTitle(R.string.language);
+            menu.findItem(R.id.theme_menu_item).setTitle(R.string.mode);
+            menu.findItem(R.id.about_menu_item).setTitle(R.string.about);
+            menu.findItem(R.id.help_menu_item).setTitle(R.string.help);
+            menu.findItem(R.id.logout_menu_item).setTitle(R.string.logout);
+
+            // add NavigationItemSelectedListener to check the navigation clicks
+            navigationView.setNavigationItemSelectedListener(this);
+        }
     }
 
 ///////////////////////////////////////////////////////
@@ -232,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (item.getItemId() == R.id.settings_menu_item) {
             // open the right navigation drawer
-            drawer.openDrawer(Gravity.END, true);
+            drawer.openDrawer(GravityCompat.END, true);
         }
 
         return true;

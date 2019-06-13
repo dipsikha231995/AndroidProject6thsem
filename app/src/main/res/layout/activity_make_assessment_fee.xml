@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/card1"
         android:layout_width="match_parent"
         android:layout_height="58dp"
@@ -26,7 +26,7 @@
             android:textColor="#fff"
             android:textSize="18sp" />
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/appoint_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,31 +55,43 @@
                     android:orientation="vertical"
                     android:paddingTop="8dp">
 
-                    <Spinner
+
+                    <fr.ganfra.materialspinner.MaterialSpinner
                         android:id="@+id/deedCategory"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginEnd="8dp"
+                        app:ms_alignLabels="true"
+                        app:ms_arrowColor="@color/colorAccent"
+                        app:ms_arrowSize="14dp"
+                        app:ms_enableErrorLabel="true"
+                        app:ms_floatingLabelColor="@color/colorAccent"
+                        app:ms_hint="@string/deedSpinner" />
 
-
-                    <Spinner
+                    <fr.ganfra.materialspinner.MaterialSpinner
                         android:id="@+id/subdeedCategory"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginBottom="10dp" />
-
+                        android:layout_marginEnd="8dp"
+                        app:ms_alignLabels="true"
+                        app:ms_arrowColor="@color/colorAccent"
+                        app:ms_arrowSize="14dp"
+                        app:ms_enableErrorLabel="true"
+                        app:ms_floatingLabelColor="@color/colorAccent"
+                        app:ms_hint="@string/subdeedSpinner" />
 
                     <TextView
                         android:id="@+id/extraForSale"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
+                        android:textColor="@color/colorAccent"
                         android:text="@string/below"
                         android:visibility="gone" />
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/considerationWrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -97,7 +109,7 @@
                             android:inputType="number"
                             android:text="0"
                             android:textSize="16sp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
                     <TextView
@@ -127,7 +139,7 @@
                             android:id="@+id/radio_both"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:checked="false"
+                            android:checked="true"
                             android:text="@string/radio_both"
                             android:textSize="15sp" />
 
@@ -174,7 +186,7 @@
                             android:id="@+id/urbanMCA"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:checked="false"
+                            android:checked="true"
                             android:text="@string/urbanMCA"
                             android:textSize="15sp" />
 
@@ -207,14 +219,14 @@
                             android:layout_marginTop="10dp"
                             android:backgroundTint="#228B22"
                             android:onClick="submitIt"
-                            android:text="@string/next"
+                            android:text="@string/calculateFee"
                             android:textColor="#fff" />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 

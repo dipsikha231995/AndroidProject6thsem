@@ -1,9 +1,6 @@
 package com.example.applicationformcv;
 
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +22,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.github.ybq.android.spinkit.style.Wave;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.aviran.cookiebar2.CookieBar;
 import org.json.JSONException;
@@ -32,6 +30,9 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class ViewStatus extends AppCompatActivity {
 
@@ -56,7 +57,7 @@ public class ViewStatus extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_status);
         setTitle(getString(R.string.view));
-        referenceNoLayout = findViewById(R.id.numberWrapper);
+        referenceNoLayout = findViewById(R.id.deptNumWrapper);
         refNo = findViewById(R.id.number);
         check = findViewById(R.id.btnCheck);
 
@@ -82,6 +83,7 @@ public class ViewStatus extends AppCompatActivity {
                 .setBackgroundColor(R.color.colorPrimary)
                 .setIcon(R.drawable.ic_icon)
                 .setEnableAutoDismiss(true)
+                .setDuration(5000)
                 .setCookiePosition(CookieBar.TOP)
                 .setSwipeToDismiss(true);
 
@@ -95,7 +97,7 @@ public class ViewStatus extends AppCompatActivity {
     public void checkStatus(View view) {
 
         if (refNo.getText().toString().isEmpty()) {
-            referenceNoLayout.setError("\t\t\t\t\tPlease enter this required field");
+            referenceNoLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
             return;
         } else {
 

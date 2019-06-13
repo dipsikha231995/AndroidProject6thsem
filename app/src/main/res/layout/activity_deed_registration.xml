@@ -14,7 +14,7 @@
         app:spb_currentStateDescriptionColor="#228B22"
         app:spb_currentStateNumber="one"
         app:spb_descriptionTopSpaceIncrementer="5dp"
-        app:spb_maxStateNumber="three"
+        app:spb_maxStateNumber="four"
         app:spb_stateBackgroundColor="#BDBDBD"
         app:spb_stateDescriptionColor="#808080"
         app:spb_stateForegroundColor="#228B22"
@@ -24,7 +24,7 @@
 
 
     <!-- The Heading -->
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/card1"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -45,7 +45,7 @@
             android:textColor="#fff"
             android:textSize="18sp" />
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 
     <ScrollView
@@ -60,7 +60,7 @@
             android:orientation="vertical">
 
             <!-- Appointment Form -->
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/appoint_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -73,11 +73,11 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="18dp"
                     android:layout_weight="0.5"
                     android:orientation="vertical">
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/applicantNamewrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -94,13 +94,14 @@
                             android:inputType="textCapWords"
                             android:textSize="16sp" />
 
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/usernameWrapper"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/emailWrapper"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:hint="@string/email">
 
                         <EditText
                             android:id="@+id/username"
@@ -108,18 +109,18 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="12dp"
                             android:drawableLeft="@drawable/ic_email"
-                            android:hint="@string/email"
                             android:inputType="textEmailAddress"
                             android:textSize="16sp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/numberWrapper"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/deptNumWrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:hint="@string/num"
                         app:errorEnabled="true">
 
                         <EditText
@@ -129,16 +130,16 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_phone"
-                            android:hint="@string/num"
                             android:inputType="phone"
                             android:textSize="16sp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/addressWrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:hint="@string/add"
                         app:errorEnabled="true">
 
                         <EditText
@@ -150,15 +151,15 @@
                             android:layout_weight="1"
                             android:drawableLeft="@drawable/ic_add_location"
                             android:ems="10"
-                            android:hint="@string/add"
-                            android:inputType="textMultiLine"
+                            android:inputType="textCapWords"
                             android:textSize="16sp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/cityNamewrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:hint="@string/city"
                         app:errorEnabled="true">
 
                         <EditText
@@ -168,15 +169,15 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_location_city"
-                            android:hint="@string/city"
                             android:inputType="textCapWords"
                             android:textSize="16sp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/postofficeNamewrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:hint="@string/post"
                         app:errorEnabled="true">
 
                         <EditText
@@ -186,15 +187,15 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_drafts"
-                            android:hint="@string/post"
                             android:inputType="textCapWords"
                             android:textSize="16sp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/districtNamewrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:hint="@string/dis"
                         app:errorEnabled="true">
 
                         <EditText
@@ -204,15 +205,15 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_home"
-                            android:hint="@string/dis"
                             android:inputType="textCapWords"
                             android:textSize="16sp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/pinWrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:hint="@string/pin"
                         app:errorEnabled="true">
 
                         <EditText
@@ -222,48 +223,96 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             android:drawableLeft="@drawable/ic_person_pin"
-                            android:hint="@string/pin"
                             android:inputType="number"
                             android:textSize="16sp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <Spinner
+                    <fr.ganfra.materialspinner.MaterialSpinner
                         android:id="@+id/spinner1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="10dp" />
+                        android:layout_marginEnd="8dp"
+                        app:ms_alignLabels="true"
+                        app:ms_arrowColor="@color/colorAccent"
+                        app:ms_arrowSize="14dp"
+                        app:ms_enableErrorLabel="true"
+                        app:ms_floatingLabelColor="@color/colorAccent"
+                        app:ms_hint="@string/apptypeSpinner" />
 
-                    <Spinner
+                    <!--<Spinner-->
+                    <!--android:id="@+id/spinner1"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginStart="8dp"-->
+                    <!--android:layout_marginTop="8dp"-->
+                    <!--android:layout_marginBottom="10dp" />-->
+
+                    <fr.ganfra.materialspinner.MaterialSpinner
                         android:id="@+id/spinnerDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginBottom="10dp" />
+                        android:layout_marginEnd="8dp"
+                        app:ms_alignLabels="true"
+                        app:ms_arrowColor="@color/colorAccent"
+                        app:ms_arrowSize="14dp"
+                        app:ms_enableErrorLabel="true"
+                        app:ms_floatingLabelColor="@color/colorAccent"
+                        app:ms_hint="@string/dateSpinner" />
 
-                    <Spinner
+                    <fr.ganfra.materialspinner.MaterialSpinner
                         android:id="@+id/spinner2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginBottom="10dp" />
+                        android:layout_marginEnd="8dp"
+                        app:ms_alignLabels="true"
+                        app:ms_arrowColor="@color/colorAccent"
+                        app:ms_arrowSize="14dp"
+                        app:ms_enableErrorLabel="true"
+                        app:ms_floatingLabelColor="@color/colorAccent"
+                        app:ms_hint="@string/sroSpinner" />
 
-
-                    <Spinner
+                    <fr.ganfra.materialspinner.MaterialSpinner
                         android:id="@+id/spinner3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginBottom="10dp" />
+                        android:layout_marginEnd="8dp"
+                        app:ms_alignLabels="true"
+                        app:ms_arrowColor="@color/colorAccent"
+                        app:ms_arrowSize="14dp"
+                        app:ms_enableErrorLabel="true"
+                        app:ms_floatingLabelColor="@color/colorAccent"
+                        app:ms_hint="@string/deedSpinner" />
 
+                    <!--<Spinner-->
+                    <!--android:id="@+id/spinner3"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginStart="8dp"-->
+                    <!--android:layout_marginBottom="10dp" />-->
 
-                    <Spinner
+                    <fr.ganfra.materialspinner.MaterialSpinner
                         android:id="@+id/spinner4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginBottom="10dp" />
+                        android:layout_marginEnd="8dp"
+                        app:ms_alignLabels="true"
+                        app:ms_arrowColor="@color/colorAccent"
+                        app:ms_arrowSize="14dp"
+                        app:ms_enableErrorLabel="true"
+                        app:ms_floatingLabelColor="@color/colorAccent"
+                        app:ms_hint="@string/subdeedSpinner" />
+
+                    <!--<Spinner-->
+                    <!--android:id="@+id/spinner4"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginStart="8dp"-->
+                    <!--android:layout_marginBottom="10dp" />-->
 
 
                     <TextView
@@ -273,11 +322,11 @@
                         android:layout_marginStart="6dp"
                         android:layout_marginTop="10dp"
                         android:text="@string/below"
-                        android:textColor="#D81B60"
+                        android:textColor="@color/colorAccent"
                         android:visibility="gone" />
 
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/considerationWrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -288,13 +337,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/edittext_border"
                             android:drawableLeft="@drawable/ic_monetization"
                             android:hint="@string/conAmt"
                             android:inputType="number"
                             android:text="0"
                             android:textSize="16sp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
                     <TextView
@@ -411,11 +459,11 @@
 
                 </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
 
             <!--Document Uploads-->
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/document_upload_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -433,12 +481,19 @@
                     android:layout_weight="0.5"
                     android:orientation="vertical">
 
-                    <Spinner
+                    <fr.ganfra.materialspinner.MaterialSpinner
                         android:id="@+id/spinner5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginBottom="10dp" />
+                        android:layout_marginEnd="8dp"
+                        app:ms_alignLabels="true"
+                        app:ms_arrowColor="@color/colorAccent"
+                        app:ms_arrowSize="14dp"
+                        app:ms_enableErrorLabel="true"
+                        app:ms_floatingLabelColor="@color/colorAccent"
+                        app:ms_hint="@string/select_doc" />
+
 
                     <TextView
                         android:id="@+id/address_proof_error"
@@ -573,11 +628,11 @@
 
                 </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
 
             <!--Summary Form -->
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/confirm_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -619,40 +674,203 @@
 
                 </LinearLayout>
 
-            </android.support.v7.widget.CardView>
-
-            <!--&lt;!&ndash;Payment gateway&ndash;&gt;-->
-
-            <!--<android.support.v7.widget.CardView-->
-            <!--android:id="@+id/payment_form"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:layout_marginEnd="8dp"-->
-            <!--android:visibility="gone">-->
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:gravity="center"-->
-            <!--android:orientation="vertical">-->
+            </androidx.cardview.widget.CardView>
 
 
-            <!--<Button-->
-            <!--android:id="@+id/btnPay"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="30dp"-->
-            <!--android:backgroundTint="#228B22"-->
-            <!--android:onClick="doPayment"-->
-            <!--android:text="Make Payment"-->
-            <!--android:textColor="#fff" />-->
+            <!--Make Payment-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/makePayment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone">
 
-            <!--</LinearLayout>-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical">
 
-            <!--</android.support.v7.widget.CardView>-->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/deptTaxIdWrapper"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/deptID">
 
+                        <EditText
+                            android:id="@+id/deptTaxId"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:drawableLeft="@drawable/ic_assignment"
+                            android:inputType="text"
+                            android:textSize="16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/Namewrapper"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/payment_name">
+
+                        <EditText
+                            android:id="@+id/name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:drawableLeft="@drawable/ic_person"
+                            android:inputType="text"
+                            android:textSize="16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/panWrapper"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/pan">
+
+                        <EditText
+                            android:id="@+id/pan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:drawableLeft="@drawable/ic_pan_card"
+                            android:inputType="text"
+                            android:textSize="16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/blockwrapper"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/block">
+
+                        <EditText
+                            android:id="@+id/block"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:drawableLeft="@drawable/ic_home"
+                            android:inputType="text"
+                            android:textSize="16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/localitywrapper"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/locality">
+
+                        <EditText
+                            android:id="@+id/locality"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:drawableLeft="@drawable/ic_person_pin"
+                            android:inputType="text"
+                            android:textSize="16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/areaWrapper"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/area">
+
+                        <EditText
+                            android:id="@+id/area"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:drawableLeft="@drawable/ic_location_city"
+                            android:inputType="text"
+                            android:textSize="16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/pinCodeWrapper"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/payment_pin">
+
+                        <EditText
+                            android:id="@+id/pinCode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:drawableLeft="@drawable/ic_fiber_pin"
+                            android:inputType="number"
+                            android:textSize="16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/mobileWrapper"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/num">
+
+                        <EditText
+                            android:id="@+id/mobile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:drawableLeft="@drawable/ic_phone"
+                            android:inputType="number"
+                            android:textSize="16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/remarksWrapper"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/remarks">
+
+                        <EditText
+                            android:id="@+id/remarks"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:drawableLeft="@drawable/ic_keyboard"
+                            android:inputType="textMultiLine"
+                            android:textSize="16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center|bottom"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/button5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:backgroundTint="#228B22"
+                            android:onClick="doSubmit"
+                            android:text="@string/pay"
+                            android:textColor="#ffff" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
 
 
 

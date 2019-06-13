@@ -2,7 +2,6 @@ package com.example.applicationformcv;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -17,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.core.content.ContextCompat;
+
 public class OnBoardingActivity extends AhoyOnboarderActivity {
 
     private static final String TAG = "MY-APP";
@@ -29,14 +30,16 @@ public class OnBoardingActivity extends AhoyOnboarderActivity {
         Log.d("Error", "Checking the working in OnBoard");
 
         AhoyOnboarderCard ahoyOnboarderCard1 = new AhoyOnboarderCard("e-Panjeeyan", "An android app for Revenue & Disaster Management, Govt of Assam.", R.drawable.goablue2);
-        AhoyOnboarderCard ahoyOnboarderCard2 = new AhoyOnboarderCard("Make registration", "Registration system which enables online deed registration and marriage registration.", R.drawable.iconregister);
-        AhoyOnboarderCard ahoyOnboarderCard3 = new AhoyOnboarderCard("Fee assessment", "Calculate the fee for registration.", R.drawable.fee);
-        AhoyOnboarderCard ahoyOnboarderCard4 = new AhoyOnboarderCard("View Status", "Check your appointment status after registration.", R.drawable.viewstatusicon);
+        AhoyOnboarderCard ahoyOnboarderCard2 = new AhoyOnboarderCard("Make Registration", "Registration system which enables online deed registration and marriage registration.", R.drawable.iconregister);
+        AhoyOnboarderCard ahoyOnboarderCard3 = new AhoyOnboarderCard("Fee Assessment", "Calculate the fee for registration.", R.drawable.fee);
+        AhoyOnboarderCard ahoyOnboarderCard4 = new AhoyOnboarderCard("Make Payment", "Payment of deed and marriage registration fee can be done.", R.drawable.makepayment);
+        AhoyOnboarderCard ahoyOnboarderCard5 = new AhoyOnboarderCard("View Status", "Check your appointment status after registration.", R.drawable.viewstatusicon);
 
         ahoyOnboarderCard1.setBackgroundColor(R.color.black_transparent);
         ahoyOnboarderCard2.setBackgroundColor(R.color.black_transparent);
         ahoyOnboarderCard3.setBackgroundColor(R.color.black_transparent);
         ahoyOnboarderCard4.setBackgroundColor(R.color.black_transparent);
+        ahoyOnboarderCard5.setBackgroundColor(R.color.black_transparent);
 
         List<AhoyOnboarderCard> pages = new ArrayList<>();
 
@@ -44,6 +47,7 @@ public class OnBoardingActivity extends AhoyOnboarderActivity {
         pages.add(ahoyOnboarderCard2);
         pages.add(ahoyOnboarderCard3);
         pages.add(ahoyOnboarderCard4);
+        pages.add(ahoyOnboarderCard5);
 
         for (AhoyOnboarderCard page : pages) {
             page.setTitleColor(R.color.white);

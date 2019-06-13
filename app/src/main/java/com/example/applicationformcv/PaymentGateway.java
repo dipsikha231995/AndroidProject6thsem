@@ -1,7 +1,6 @@
 package com.example.applicationformcv;
 
 import android.graphics.Bitmap;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +9,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import java.nio.charset.StandardCharsets;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class PaymentGateway extends AppCompatActivity {
 

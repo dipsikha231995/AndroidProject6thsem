@@ -1,10 +1,6 @@
 package com.example.applicationformcv;
 
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -30,6 +25,7 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.github.ybq.android.spinkit.style.Wave;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
@@ -43,6 +39,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class MakeAssessmentFee extends AppCompatActivity {
 
@@ -58,7 +60,7 @@ public class MakeAssessmentFee extends AppCompatActivity {
     TextView showAmount, showStampFee, showRegFee;
     TextView forSale, forSalePurchase, forLandFlat;
 
-    Spinner deedCategorySpinner, subDeedCategorySpinner;
+    MaterialSpinner deedCategorySpinner, subDeedCategorySpinner;
 
     List<DeedCategoryModel> deedlist = new ArrayList<>();
 
@@ -119,21 +121,21 @@ public class MakeAssessmentFee extends AppCompatActivity {
         setUpDeedCategorySpinner();
 
         List<String> temp = new ArrayList<>();
-        temp.add(getString(R.string.subdeedSpinner));
 
         subDeedAdapter = new ArrayAdapter<String>(this,
                 R.layout.spinner_item_text_colour, temp);
+
         subDeedAdapter.setDropDownViewResource(R.layout.spinner_item_text_colour);
         subDeedCategorySpinner.setAdapter(subDeedAdapter);
 
         deedCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String category = parent.getItemAtPosition(position).toString();
+                if (position >= 0) {
 
-                if (position > 0) {
+                    String category = parent.getItemAtPosition(position).toString();
 
-                    DeedCategoryModel obj = deedlist.get(position - 1); //getting the model from the deedlist & storing in obj
+                    DeedCategoryModel obj = deedlist.get(position); //getting the model from the deedlist & storing in obj
                     int code = obj.getCode(); //storing the code in variable code
 
                     params.put("Deedtype", String.valueOf(code));
@@ -150,7 +152,7 @@ public class MakeAssessmentFee extends AppCompatActivity {
                                         JSONArray array = new JSONArray(response);
 
                                         List<String> subDeed = new ArrayList<>();
-                                        subDeed.add(getString(R.string.subdeedSpinner));
+                                        //subDeed.add(getString(R.string.subdeedSpinner));
 
                                         //array list is populated from JSON array
                                         for (int i = 0; i < array.length(); i++) {
@@ -176,36 +178,34 @@ public class MakeAssessmentFee extends AppCompatActivity {
                     // Add request to the Request queue
                     MySingleton.getInstance(getApplicationContext())
                             .addToRequestQueue(stringRequest);
+
+
+                    if (category.equalsIgnoreCase("SALE") || category.equalsIgnoreCase("GIFT")) {
+                        forSale.setVisibility(View.VISIBLE);
+                        //amount.setVisibility(View.VISIBLE);
+
+                        findViewById(R.id.considerationWrapper).setVisibility(View.VISIBLE);
+
+                        forSalePurchase.setVisibility(View.VISIBLE);
+                        radioGroupPurchase.setVisibility(View.VISIBLE);
+                        forLandFlat.setVisibility(View.VISIBLE);
+                        radioGroupLocation.setVisibility(View.VISIBLE);
+                    } else {
+                        forSale.setVisibility(View.GONE);
+                        //amount.setVisibility(View.GONE);
+
+                        considerationAmt.setText("0");
+                        considerationAmt.setError(null);
+                        findViewById(R.id.considerationWrapper).setVisibility(View.GONE);
+
+                        //
+
+                        forSalePurchase.setVisibility(View.GONE);
+                        radioGroupPurchase.setVisibility(View.GONE);
+                        forLandFlat.setVisibility(View.GONE);
+                        radioGroupLocation.setVisibility(View.GONE);
+                    }
                 }
-
-
-                if (category.equalsIgnoreCase("SALE") || category.equalsIgnoreCase("GIFT")) {
-                    forSale.setVisibility(View.VISIBLE);
-                    //amount.setVisibility(View.VISIBLE);
-
-                    findViewById(R.id.considerationWrapper).setVisibility(View.VISIBLE);
-
-                    forSalePurchase.setVisibility(View.VISIBLE);
-                    radioGroupPurchase.setVisibility(View.VISIBLE);
-                    forLandFlat.setVisibility(View.VISIBLE);
-                    radioGroupLocation.setVisibility(View.VISIBLE);
-                } else {
-                    forSale.setVisibility(View.GONE);
-                    //amount.setVisibility(View.GONE);
-
-                    considerationAmt.setText("0");
-                    considerationAmt.setError(null);
-                    findViewById(R.id.considerationWrapper).setVisibility(View.GONE);
-
-                    //
-
-                    forSalePurchase.setVisibility(View.GONE);
-                    radioGroupPurchase.setVisibility(View.GONE);
-                    forLandFlat.setVisibility(View.GONE);
-                    radioGroupLocation.setVisibility(View.GONE);
-                }
-
-
             }
 
             @Override
@@ -298,7 +298,7 @@ public class MakeAssessmentFee extends AppCompatActivity {
 
                         // ArrayList of String which contains the category names
                         List<String> list = new ArrayList<>();
-                        list.add(getString(R.string.deedSpinner));
+//                        list.add(getString(R.string.deedSpinner));
 
                         for (int i = 0; i < deedlist.size(); i++) {
                             list.add(deedlist.get(i).getSection());
@@ -350,65 +350,98 @@ public class MakeAssessmentFee extends AppCompatActivity {
         return msg;
     }
 
-    public void submitIt(View view) {
 
-        if (considerationAmt.getText().toString().isEmpty()) {
+    public void submitIt(View view) {
+        boolean[] isOk = new boolean[3];
+
+        if (deedCategorySpinner.getSelectedItem() == null) {
+            isOk[0] = false;
+            deedCategorySpinner.setError(getString(R.string.spinnerError));
+        } else {
+            isOk[0] = true;
+            deedCategorySpinner.setError(null);
+        }
+
+        if (subDeedCategorySpinner.getSelectedItem() == null) {
+            isOk[1] = false;
+            subDeedCategorySpinner.setError(getString(R.string.spinnerError));
+        } else {
+            isOk[1] = true;
+            subDeedCategorySpinner.setError(null);
+        }
+
+
+        String amount = considerationAmt.getText().toString().trim();
+        if (!Pattern.matches("\\d+", amount)) {
+            isOk[2] = false;
             amountLayout.setError("\t\t\t\t\tPlease enter this required field");
             return;
         } else {
-
-            alertDialog.show();
-
-            params.put("ConsiderationAmt", considerationAmt.getText().toString());
-
-            Log.d(TAG, "submitIt: " + params.toString());
-
-            AndroidNetworking.post("http://192.168.43.210:8080/panjeeyanonline/enquiry_api_demo")
-                    .addBodyParameter(params)
-                    .setTag(TAG_FEE_ASSESSMENT)
-                    .setPriority(Priority.MEDIUM)
-                    .build()
-                    .getAsJSONObject(new JSONObjectRequestListener() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            if (alertDialog.isShowing()) {
-                                alertDialog.dismiss();
-                            }
-
-                            try {
-
-                                Log.d(TAG, "success: " + response.getInt("success"));
-
-                                JSONArray parentArray = response.getJSONArray("Result");  //Result array in json response
-
-                                JSONObject finalObj = parentArray.getJSONObject(0);  // The object in 0th position in Result
-
-                                int conAmount = finalObj.getInt("conAmount");
-                                int stampDuty = finalObj.getInt("stampDuty");
-                                int regFee = finalObj.getInt("regFee");
-
-                                showInputDialog(conAmount, stampDuty, regFee);
-
-                            } catch (JSONException e1) {
-                                Log.d(TAG, "onResponse: " + e1.getMessage());
-                            }
-
-                        }
-
-                        @Override
-                        public void onError(ANError error) {
-                            if (alertDialog.isShowing()) {
-                                alertDialog.dismiss();
-                            }
-
-                            cookieBar.setMessage(error.getMessage());
-                            cookieBar.show();
-
-                            Log.d(TAG, "onError: " + error.getErrorCode());
-                        }
-                    });
-
+            isOk[2] = true;
+            amountLayout.setErrorEnabled(false);
         }
+
+        // if any array item is false, then don't let the user submit
+        for (boolean item : isOk) {
+            if (!item) {
+                return;
+            }
+        }
+
+
+        alertDialog.show();
+
+        params.put("ConsiderationAmt", amount);
+
+        Log.d(TAG, "submitIt: " + params.toString());
+
+        AndroidNetworking.post("http://192.168.43.210:8080/panjeeyanonline/enquiry_api_demo")
+                .addBodyParameter(params)
+                .setTag(TAG_FEE_ASSESSMENT)
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        if (alertDialog.isShowing()) {
+                            alertDialog.dismiss();
+                        }
+
+                        try {
+
+                            Log.d(TAG, "success: " + response.getInt("success"));
+
+                            JSONArray parentArray = response.getJSONArray("Result");  //Result array in json response
+
+                            JSONObject finalObj = parentArray.getJSONObject(0);  // The object in 0th position in Result
+
+                            int conAmount = finalObj.getInt("conAmount");
+                            int stampDuty = finalObj.getInt("stampDuty");
+                            int regFee = finalObj.getInt("regFee");
+
+                            // remove the error
+                            amountLayout.setErrorEnabled(false);
+
+                            showInputDialog(conAmount, stampDuty, regFee);
+
+                        } catch (JSONException e1) {
+                            Log.d(TAG, "onResponse: " + e1.getMessage());
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        if (alertDialog.isShowing()) {
+                            alertDialog.dismiss();
+                        }
+
+                        cookieBar.setMessage(error.getMessage());
+                        cookieBar.show();
+
+                        Log.d(TAG, "onError: " + error.getErrorCode());
+                    }
+                });
 
     }
 

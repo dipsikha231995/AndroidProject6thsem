@@ -2,7 +2,6 @@
 package com.example.applicationformcv;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -12,8 +11,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
-import com.basgeekball.awesomevalidation.ValidationStyle;
-import com.google.common.collect.Range;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class Bridedetails extends AppCompatActivity {
 

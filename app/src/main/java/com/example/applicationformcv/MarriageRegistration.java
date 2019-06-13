@@ -1,12 +1,7 @@
 package com.example.applicationformcv;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -35,7 +28,9 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
 import com.github.ybq.android.spinkit.style.Wave;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.kofigyan.stateprogressbar.StateProgressBar;
@@ -52,26 +47,28 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class MarriageRegistration extends AppCompatActivity {
 
-    Map<String, String> params;
-
-    AlertDialog alertDialog;
-
-    CookieBar.Builder cookieBar;
-
     private static final String TAG = "MY_APP";
-
+    Map<String, String> params;
+    AlertDialog alertDialog;
+    CookieBar.Builder cookieBar;
     // Marriage details form fields
-    TextInputLayout nameLayout, mobileLayout;
+    TextInputLayout nameLayout, mobileLayout, emailLayout;
     EditText applicantName, email, mobile;
-    Spinner mySpinner1, mySpinner2, mySpinner3;
+    MaterialSpinner mySpinner1, mySpinner2, mySpinner3;
 
     // Bride details form fields
     TextInputLayout bridenameLayout, ageLayout, occupationLayout, fNameLayout;
     EditText name, age, occupation, fName;
-    Spinner mySpinner4;
+    MaterialSpinner mySpinner4;
 
     TextInputLayout eCityLayout, ePoliceLayout, ePostLayout, eDistrictLayout, eStateLayout, ePinLayout, perCityLayout,
             perPoliceLayout, perPostLayout, perDistrictLayout, perStateLayout, perPinLayout, lengthOfResidenceLayout;
@@ -82,7 +79,7 @@ public class MarriageRegistration extends AppCompatActivity {
     // Groom details form fields
     TextInputLayout groomnameLayout, ageLayout2, occupationLayout2, fNameLayout2;
     EditText name2, age2, occupation2, fName2;
-    Spinner mySpinner5;
+    MaterialSpinner mySpinner5;
 
     TextInputLayout eCityLayout2, ePoliceLayout2, ePostLayout2, eDistrictLayout2, eStateLayout2, ePinLayout2, perCityLayout2,
             perPoliceLayout2, perPostLayout2, perDistrictLayout2, perStateLayout2, perPinLayout2, lengthOfResidenceLayout2;
@@ -91,31 +88,23 @@ public class MarriageRegistration extends AppCompatActivity {
 
 
     CardView cardView;
-
-
-    //defining AwesomeValidation object
-    private AwesomeValidation awesomeValidation;
-    private AwesomeValidation awesomeValidation2;
-    private AwesomeValidation awesomeValidation3;
-
     StateProgressBar stateProgressBar;
-
     // all the four form layouts
     ViewGroup marriageDetailsForm;
     ViewGroup brideDetailsForm;
     ViewGroup groomDetailsForm;
     ViewGroup confirmForm;
-
+    ViewGroup paymentForm;
+    // the header textView
+    TextView header;
+    List<RegistrationOfficeModel> officeList = new ArrayList<>();
+    //defining AwesomeValidation object
+    private AwesomeValidation awesomeValidation;
+    private AwesomeValidation awesomeValidation2;
+    private AwesomeValidation awesomeValidation3;
     private boolean isMarriageFormCompleted = false;
     private boolean isBrideFormCompleted = false;
     private boolean isGroomFormCompleted = false;
-
-
-    // the header textView
-    TextView header;
-
-    List<RegistrationOfficeModel> officeList = new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,11 +128,11 @@ public class MarriageRegistration extends AppCompatActivity {
 
         //No internet coonection error
         cookieBar = CookieBar.build(MarriageRegistration.this)
-                .setTitle("Network Error")
                 .setTitleColor(android.R.color.white)
                 .setBackgroundColor(R.color.colorPrimary)
                 .setIcon(R.drawable.ic_icon)
                 .setEnableAutoDismiss(true)
+                .setDuration(5000)
                 .setCookiePosition(CookieBar.TOP)
                 .setSwipeToDismiss(true);
 
@@ -155,12 +144,14 @@ public class MarriageRegistration extends AppCompatActivity {
         brideDetailsForm = findViewById(R.id.bride_form);
         groomDetailsForm = findViewById(R.id.groom_form);
         confirmForm = findViewById(R.id.summary_form);
+        paymentForm = findViewById(R.id.makePayment);
+
         header = findViewById(R.id.header_textView);
 
         stateProgressBar = findViewById(R.id.state_progress_bar);
         // state progressbar description
         String[] descriptionData = {getString(R.string.marriageDet), getString(R.string.brideDet),
-                getString(R.string.groomDet), getString(R.string.confirm)};
+                getString(R.string.groomDet), getString(R.string.confirm), getString(R.string.payment)};
 
         stateProgressBar.setStateDescriptionData(descriptionData);
         stateProgressBar.setOnStateItemClickListener(new OnStateItemClickListener() {
@@ -178,7 +169,8 @@ public class MarriageRegistration extends AppCompatActivity {
         // marriage details views
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         nameLayout = findViewById(R.id.applicantNamewrapper);
-        mobileLayout = findViewById(R.id.numberWrapper);
+        mobileLayout = findViewById(R.id.deptNumWrapper);
+        emailLayout = findViewById(R.id.emailWrapper);
         mySpinner1 = findViewById(R.id.spinner11);    //appointment dates
         mySpinner2 = findViewById(R.id.spinner2);     //marriage type
         mySpinner3 = findViewById(R.id.spinner3);     //sro offices
@@ -286,18 +278,23 @@ public class MarriageRegistration extends AppCompatActivity {
                     perPin.setError(null);
 
                 } else {
-
                     perCity.setText("");
+                    perCityLayout.setErrorEnabled(false);
 
                     perPolice.setText("");
+                    perPoliceLayout.setErrorEnabled(false);
 
                     perPost.setText("");
+                    perPostLayout.setErrorEnabled(false);
 
                     perDistrict.setText("");
+                    perDistrictLayout.setErrorEnabled(false);
 
                     perState.setText("");
+                    perStateLayout.setErrorEnabled(false);
 
                     perPin.setText("");
+                    perPinLayout.setErrorEnabled(false);
                 }
             }
         });
@@ -479,9 +476,9 @@ public class MarriageRegistration extends AppCompatActivity {
         mySpinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position > 0) {
+                if (position >= 0) {
 
-                    RegistrationOfficeModel obj = officeList.get(position - 1); //getting the model from the list & storing in obj
+                    RegistrationOfficeModel obj = officeList.get(position); //getting the model from the list & storing in obj
                     int code = obj.getSroCode(); //storing the code in variable code
 
                     params.put("sro_office", String.valueOf(code));
@@ -524,6 +521,18 @@ public class MarriageRegistration extends AppCompatActivity {
         });
 
 
+        // Now, highlight the * mark
+        // add the bubble showcase
+        new BubbleShowCaseBuilder(this)
+                .title(getString(R.string.label_attention))
+                .description(getString(R.string.label_field_mandatory))
+                .targetView(nameLayout)
+                .backgroundColorResourceId(R.color.colorAccent)
+                .textColorResourceId(R.color.white)
+                .imageResourceId(R.drawable.ic_warn)
+                .show();
+
+
     }
 
     private void setUpOfficeSpinner() {
@@ -544,7 +553,6 @@ public class MarriageRegistration extends AppCompatActivity {
                         officeList = new Gson().fromJson(response, collectionType);
 
                         ArrayList<String> list = new ArrayList<>();
-                        list.add(getString(R.string.sroSpinner));
 
                         //array list is populated from JSON array
                         for (int i = 0; i < officeList.size(); i++) {
@@ -561,7 +569,7 @@ public class MarriageRegistration extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        showErrorMessage(getVolleyErrorMessage(error));
+                        showErrorMessage("Network Error", getVolleyErrorMessage(error));
                     }
                 });
 
@@ -592,7 +600,6 @@ public class MarriageRegistration extends AppCompatActivity {
 
                                 //empty list is declared which will hold the json array items
                                 List<String> dateList = new ArrayList<>();
-                                dateList.add(getString(R.string.dateSpinner));
 
                                 //array list is populated from JSON array
                                 for (int i = 0; i < array.length(); i++) {
@@ -609,7 +616,7 @@ public class MarriageRegistration extends AppCompatActivity {
                                 mySpinner1.setAdapter(dateAdapter);
                             } else {
                                 String msg = object.getString("msg");
-                                showErrorMessage(msg);
+                                showErrorMessage("Error", msg);
                             }
 
                         } catch (Exception e) {
@@ -619,7 +626,7 @@ public class MarriageRegistration extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        showErrorMessage(getVolleyErrorMessage(error));
+                        showErrorMessage("Network Error", getVolleyErrorMessage(error));
                     }
                 });
 
@@ -631,15 +638,11 @@ public class MarriageRegistration extends AppCompatActivity {
 
 
     private void showFrom(int curState, int nextState) {
-
-        Log.d(TAG, "" + curState + " : " + nextState);
-
-
         // hide the form associates with "curState"
         switch (curState) {
             case 1:
 
-                if (!validateMarriageDetails()) {
+                if (!validateStageOne()) {
                     return;
                 } else if (nextState == 4 && !completeAllStages()) {
                     return;
@@ -652,7 +655,7 @@ public class MarriageRegistration extends AppCompatActivity {
 
                 if (curState > nextState) {
                     brideDetailsForm.setVisibility(View.GONE);
-                } else if (!validateBrideDetails()) {
+                } else if (!validateStageTwo()) {
                     return;
                 } else if (nextState == 4 && !completeAllStages()) {
                     return;
@@ -666,7 +669,7 @@ public class MarriageRegistration extends AppCompatActivity {
 
                 if (curState > nextState) {
                     groomDetailsForm.setVisibility(View.GONE);
-                } else if (!validateGroomDetails()) {
+                } else if (!validateStageThree()) {
                     return;
                 } else if (nextState == 4 && !completeAllStages()) {
                     return;
@@ -708,6 +711,13 @@ public class MarriageRegistration extends AppCompatActivity {
                 stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.FOUR);
                 header.setText(R.string.confirmheading);
                 break;
+
+            case 5:
+                paymentForm.setVisibility(View.VISIBLE);
+                stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.FIVE);
+                header.setText(R.string.paymentheading);
+                break;
+
         }
     }
 
@@ -715,94 +725,25 @@ public class MarriageRegistration extends AppCompatActivity {
     private boolean completeAllStages() {
         // if all the previous stages are completed, then only
         if (!isMarriageFormCompleted || !isBrideFormCompleted || !isGroomFormCompleted) {
-            Toast.makeText(this, "Complete all the previous stages first", Toast.LENGTH_SHORT).show();
+
+            // add the bubble showcase
+            new BubbleShowCaseBuilder(this)
+                    .title(getString(R.string.label_attention))
+                    .description(getString(R.string.label_complete_all_stages))
+                    .targetView(stateProgressBar)
+                    .backgroundColorResourceId(R.color.colorAccent)
+                    .textColorResourceId(R.color.white)
+                    .imageResourceId(R.drawable.ic_warn)
+                    .show();
+
             return false;
         } else {
             return true;
         }
     }
 
-
-    private boolean validateSpinners() {
-
-        boolean result = true;
-
-        View selectedView = mySpinner1.getSelectedView();
-        View selectedView2 = mySpinner2.getSelectedView();
-        View selectedView3 = mySpinner3.getSelectedView();
-
-        if (selectedView instanceof TextView) {
-
-            TextView selectedTextView = (TextView) selectedView;
-
-            if ((selectedTextView.getText().toString().equalsIgnoreCase("Select Appointment Date *")) ||
-                    (selectedTextView.getText().toString().equalsIgnoreCase("अपॉइंटमेंट तिथि का चयन करें *"))) {
-                selectedTextView.setFocusable(true);
-                selectedTextView.setClickable(true);
-                selectedTextView.setFocusableInTouchMode(true);
-                selectedTextView.setError(getString(R.string.spinnerError));
-
-                result = false;
-
-                Log.d(TAG, "spinner 1");
-
-            }
-
-        }
-        if (selectedView2 instanceof TextView) {
-
-            TextView selectedTextView2 = (TextView) selectedView2;
-
-            if (selectedTextView2.getText().toString().equalsIgnoreCase("Select Marriage Type *")) {
-                selectedTextView2.setFocusable(true);
-                selectedTextView2.setClickable(true);
-                selectedTextView2.setFocusableInTouchMode(true);
-                selectedTextView2.setError(getString(R.string.spinnerError));
-
-                result = false;
-
-                Log.d(TAG, "spinner 2");
-
-            }
-
-        }
-        if (selectedView3 instanceof TextView) {
-
-            TextView selectedTextView3 = (TextView) selectedView3;
-
-            if (selectedTextView3.getText().toString().equalsIgnoreCase("Select Office for Registration *")) {
-                selectedTextView3.setFocusable(true);
-                selectedTextView3.setClickable(true);
-                selectedTextView3.setFocusableInTouchMode(true);
-                selectedTextView3.setError(getString(R.string.spinnerError));
-
-                result = false;
-
-                Log.d(TAG, "spinner 3");
-            }
-
-        }
-
-        Log.d(TAG, "result of spinner val: " + result);
-
-        return result;
-    }
-
-
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     public void showNextForm(View view) {
-
-        if (applicantName.getText().toString().isEmpty()) {
-            nameLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            nameLayout.setError(null);
-        }
-
-        if (mobile.getText().toString().isEmpty()) {
-            mobileLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            mobileLayout.setError(null);
-        }
 
         // get the current state number
         int curState = stateProgressBar.getCurrentStateNumber();
@@ -813,118 +754,10 @@ public class MarriageRegistration extends AppCompatActivity {
     ////////////// BRIDE FORM///////////////////
     public void goToNextForm(View view) {
 
-        if (name.getText().toString().isEmpty()) {
-            bridenameLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            bridenameLayout.setError(null);
-        }
-
-        if (age.getText().toString().isEmpty()) {
-            ageLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            ageLayout.setError(null);
-        }
-
-        if (occupation.getText().toString().isEmpty()) {
-            occupationLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            occupationLayout.setError(null);
-        }
-
-        if (fName.getText().toString().isEmpty()) {
-            fNameLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            fNameLayout.setError(null);
-        }
-
-//        present address
-
-        if (eCity.getText().toString().isEmpty()) {
-            eCityLayout.setError("\t\t\t\tPlease enter this required field");
-        } else {
-            eCityLayout.setError(null);
-        }
-
-        if (ePolice.getText().toString().isEmpty()) {
-            ePoliceLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            ePoliceLayout.setError(null);
-        }
-
-        if (ePost.getText().toString().isEmpty()) {
-            ePostLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            ePostLayout.setError(null);
-        }
-
-        if (eDistrict.getText().toString().isEmpty()) {
-            eDistrictLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            eDistrictLayout.setError(null);
-        }
-
-        if (eState.getText().toString().isEmpty()) {
-            eStateLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            eStateLayout.setError(null);
-        }
-
-        if (ePin.getText().toString().isEmpty()) {
-            ePinLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            ePinLayout.setError(null);
-        }
-
-        if (lengthOfResidence.getText().toString().isEmpty()) {
-            lengthOfResidenceLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            lengthOfResidenceLayout.setError(null);
-        }
-
-//        permanent address
-
-        if (perCity.getText().toString().isEmpty()) {
-            perCityLayout.setError("\t\t\t\tPlease enter this required field");
-        } else {
-            perCityLayout.setError(null);
-        }
-
-        if (perPolice.getText().toString().isEmpty()) {
-            perPoliceLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            perPoliceLayout.setError(null);
-        }
-
-        if (perPost.getText().toString().isEmpty()) {
-            perPostLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            perPostLayout.setError(null);
-        }
-
-        if (perDistrict.getText().toString().isEmpty()) {
-            perDistrictLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            perDistrictLayout.setError(null);
-        }
-
-        if (perState.getText().toString().isEmpty()) {
-            perStateLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            perStateLayout.setError(null);
-        }
-
-        if (perPin.getText().toString().isEmpty()) {
-            perPinLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            perPinLayout.setError(null);
-        }
-
-
         // get the current state number
         int curState = stateProgressBar.getCurrentStateNumber();
 
         showFrom(curState, curState + 1);
-
 
     }
 
@@ -932,114 +765,6 @@ public class MarriageRegistration extends AppCompatActivity {
     /////////////GROOM FORM/////////////////////////
     public void clickNext(View view) {
 
-        if (name2.getText().toString().isEmpty()) {
-            groomnameLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            groomnameLayout.setError(null);
-        }
-
-        if (age2.getText().toString().isEmpty()) {
-            ageLayout2.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            ageLayout2.setError(null);
-        }
-
-        if (occupation2.getText().toString().isEmpty()) {
-            occupationLayout2.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            occupationLayout2.setError(null);
-        }
-
-        if (fName2.getText().toString().isEmpty()) {
-            fNameLayout2.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            fNameLayout2.setError(null);
-        }
-
-
-        //        present address
-
-        if (eCity2.getText().toString().isEmpty()) {
-            eCityLayout2.setError("\t\t\t\tPlease enter this required field");
-        } else {
-            eCityLayout2.setError(null);
-        }
-
-        if (ePolice2.getText().toString().isEmpty()) {
-            ePoliceLayout2.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            ePoliceLayout2.setError(null);
-        }
-
-        if (ePost2.getText().toString().isEmpty()) {
-            ePostLayout2.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            ePostLayout2.setError(null);
-        }
-
-        if (eDistrict2.getText().toString().isEmpty()) {
-            eDistrictLayout2.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            eDistrictLayout2.setError(null);
-        }
-
-        if (eState2.getText().toString().isEmpty()) {
-            eStateLayout2.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            eStateLayout2.setError(null);
-        }
-
-        if (ePin2.getText().toString().isEmpty()) {
-            ePinLayout2.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            ePinLayout2.setError(null);
-        }
-
-        if (lengthOfResidence2.getText().toString().isEmpty()) {
-            lengthOfResidenceLayout2.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            lengthOfResidenceLayout2.setError(null);
-        }
-
-//        permanent address
-
-        if (perCity2.getText().toString().isEmpty()) {
-            perCityLayout2.setError("\t\t\t\tPlease enter this required field");
-        } else {
-            perCityLayout2.setError(null);
-        }
-
-        if (perPolice2.getText().toString().isEmpty()) {
-            perPoliceLayout2.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            perPoliceLayout2.setError(null);
-        }
-
-        if (perPost2.getText().toString().isEmpty()) {
-            perPostLayout2.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            perPostLayout2.setError(null);
-        }
-
-        if (perDistrict2.getText().toString().isEmpty()) {
-            perDistrictLayout2.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            perDistrictLayout2.setError(null);
-        }
-
-        if (perState2.getText().toString().isEmpty()) {
-            perStateLayout2.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            perStateLayout2.setError(null);
-        }
-
-        if (perPin2.getText().toString().isEmpty()) {
-            perPinLayout2.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            perPinLayout2.setError(null);
-        }
-
-
         // get the current state number
         int curState = stateProgressBar.getCurrentStateNumber();
 
@@ -1047,78 +772,474 @@ public class MarriageRegistration extends AppCompatActivity {
     }
 
 
-    private boolean validateGroomDetails() {
-        boolean a = awesomeValidation3.validate();
-        boolean b = true;
+    private boolean validateStageThree() {
 
-        View selectedView = mySpinner5.getSelectedView();
+        boolean[] isOk = new boolean[18];
 
-        if (selectedView instanceof TextView) {
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", groomnameLayout.getEditText().getText().toString().trim())) {
+            isOk[0] = false;
+            groomnameLayout.setErrorEnabled(true);
+            groomnameLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[0] = true;
+            groomnameLayout.setErrorEnabled(false);
+        }
 
-            TextView selectedTextView = (TextView) selectedView;
+        try {
+            int age = Integer.parseInt(this.age2.getText().toString().trim());
 
-            if (selectedTextView.getText().toString().equalsIgnoreCase("Select Marital Status *")) {
-                selectedTextView.setFocusable(true);
-                selectedTextView.setClickable(true);
-                selectedTextView.setFocusableInTouchMode(true);
-                selectedTextView.setError(getString(R.string.spinnerError));
+            if (age >= 21 && age <= 80) {
+                isOk[1] = true;
+                ageLayout2.setErrorEnabled(false);
+            } else {
+                isOk[1] = false;
+                ageLayout2.setErrorEnabled(true);
+                ageLayout2.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+            }
+        } catch (Exception e) {
+            isOk[1] = false;
+            ageLayout2.setErrorEnabled(true);
+            ageLayout2.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        }
 
-                b = false;
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", occupationLayout2.getEditText().getText().toString().trim())) {
+            isOk[2] = false;
+            occupationLayout2.setErrorEnabled(true);
+            occupationLayout2.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[2] = true;
+            occupationLayout2.setErrorEnabled(false);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", fNameLayout2.getEditText().getText().toString().trim())) {
+            isOk[3] = false;
+            fNameLayout2.setErrorEnabled(true);
+            fNameLayout2.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[3] = true;
+            fNameLayout2.setErrorEnabled(false);
+        }
+
+
+        if (mySpinner5.getSelectedItem() == null) {
+            isOk[4] = false;
+            mySpinner5.setError(getString(R.string.spinnerError));
+        } else {
+            isOk[4] = true;
+            mySpinner5.setError(null);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", eCityLayout2.getEditText().getText().toString().trim())) {
+            isOk[5] = false;
+            eCityLayout2.setErrorEnabled(true);
+            eCityLayout2.setError("\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[5] = true;
+            eCityLayout2.setErrorEnabled(false);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", ePoliceLayout2.getEditText().getText().toString().trim())) {
+            isOk[6] = false;
+            ePoliceLayout2.setErrorEnabled(true);
+            ePoliceLayout2.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[6] = true;
+            ePoliceLayout2.setErrorEnabled(false);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", ePostLayout2.getEditText().getText().toString().trim())) {
+            isOk[7] = false;
+            ePostLayout2.setErrorEnabled(true);
+            ePostLayout2.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[7] = true;
+            ePostLayout2.setErrorEnabled(false);
+        }
+
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", eDistrictLayout2.getEditText().getText().toString().trim())) {
+            isOk[8] = false;
+            eDistrictLayout2.setErrorEnabled(true);
+            eDistrictLayout2.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[8] = true;
+            eDistrictLayout2.setErrorEnabled(false);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", eStateLayout2.getEditText().getText().toString().trim())) {
+            isOk[9] = false;
+            eStateLayout2.setErrorEnabled(true);
+            eStateLayout2.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[9] = true;
+            eStateLayout2.setErrorEnabled(false);
+        }
+
+
+        if (!Pattern.matches("^([1-9])([0-9]){5}$", ePinLayout2.getEditText().getText().toString().trim())) {
+            isOk[10] = false;
+            ePinLayout2.setErrorEnabled(true);
+            ePinLayout2.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[10] = true;
+            ePinLayout2.setErrorEnabled(false);
+        }
+
+
+        if (!Pattern.matches("\\d", lengthOfResidenceLayout2.getEditText().getText().toString().trim())) {
+            isOk[11] = false;
+            lengthOfResidenceLayout2.setErrorEnabled(true);
+            lengthOfResidenceLayout2.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[11] = true;
+            lengthOfResidenceLayout2.setErrorEnabled(false);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", perCityLayout2.getEditText().getText().toString().trim())) {
+            isOk[12] = false;
+            perCityLayout2.setErrorEnabled(true);
+            perCityLayout2.setError("\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[12] = true;
+            perCityLayout2.setErrorEnabled(false);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", perPoliceLayout2.getEditText().getText().toString().trim())) {
+            isOk[13] = false;
+            perPoliceLayout2.setErrorEnabled(true);
+            perPoliceLayout2.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[13] = true;
+            perPoliceLayout2.setErrorEnabled(false);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", perPostLayout2.getEditText().getText().toString().trim())) {
+            isOk[14] = false;
+            perPostLayout2.setErrorEnabled(true);
+            perPostLayout2.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[14] = true;
+            perPostLayout2.setErrorEnabled(false);
+        }
+
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", perDistrictLayout2.getEditText().getText().toString().trim())) {
+            isOk[15] = false;
+            perDistrictLayout2.setErrorEnabled(true);
+            perDistrictLayout2.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[15] = true;
+            perDistrictLayout2.setErrorEnabled(false);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", perStateLayout2.getEditText().getText().toString().trim())) {
+            isOk[16] = false;
+            perStateLayout2.setErrorEnabled(true);
+            perStateLayout2.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[16] = true;
+            perStateLayout2.setErrorEnabled(false);
+        }
+
+
+        if (!Pattern.matches("^([1-9])([0-9]){5}$", perPinLayout2.getEditText().getText().toString().trim())) {
+            isOk[17] = false;
+            perPinLayout2.setErrorEnabled(true);
+            perPinLayout2.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[17] = true;
+            perPinLayout2.setErrorEnabled(false);
+        }
+
+
+        // if any of the array item is false, then return false
+        // else, return true
+
+        for (boolean item : isOk) {
+            if (!item) {
+                // mark this stage incomplete
+                isGroomFormCompleted = false;
+                return false;
             }
         }
 
-        if (a && b) {
-            isGroomFormCompleted = true;
-            return true;
-        } else {
-            return false;
-        }
+        // mark this stage complete
+        isGroomFormCompleted = true;
+        return true;
+
     }
 
 
-    private boolean validateBrideDetails() {
-        boolean a = awesomeValidation2.validate();
-        boolean b = true;
+    private boolean validateStageTwo() {
 
-        View selectedView = mySpinner4.getSelectedView();
+        boolean[] isOk = new boolean[18];
 
-        if (selectedView instanceof TextView) {
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", bridenameLayout.getEditText().getText().toString().trim())) {
+            isOk[0] = false;
+            bridenameLayout.setErrorEnabled(true);
+            bridenameLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[0] = true;
+            bridenameLayout.setErrorEnabled(false);
+        }
 
-            TextView selectedTextView = (TextView) selectedView;
 
-            if (selectedTextView.getText().toString().equalsIgnoreCase("Select Marital Status *")) {
-                selectedTextView.setFocusable(true);
-                selectedTextView.setClickable(true);
-                selectedTextView.setFocusableInTouchMode(true);
-                selectedTextView.setError(getString(R.string.spinnerError));
+        try {
+            int age = Integer.parseInt(this.age.getText().toString().trim());
 
-                b = false;
+            if (age >= 18 && age <= 80) {
+                isOk[1] = true;
+                ageLayout.setErrorEnabled(false);
+            } else {
+                isOk[1] = false;
+                ageLayout.setErrorEnabled(true);
+                ageLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+            }
+        } catch (Exception e) {
+            isOk[1] = false;
+            ageLayout.setErrorEnabled(true);
+            ageLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        }
+
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", occupationLayout.getEditText().getText().toString().trim())) {
+            isOk[2] = false;
+            occupationLayout.setErrorEnabled(true);
+            occupationLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[2] = true;
+            occupationLayout.setErrorEnabled(false);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", fNameLayout.getEditText().getText().toString().trim())) {
+            isOk[3] = false;
+            fNameLayout.setErrorEnabled(true);
+            fNameLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[3] = true;
+            fNameLayout.setErrorEnabled(false);
+        }
+
+
+        if (mySpinner4.getSelectedItem() == null) {
+            isOk[4] = false;
+            mySpinner4.setError(getString(R.string.spinnerError));
+        } else {
+            isOk[4] = true;
+            mySpinner4.setError(null);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", eCityLayout.getEditText().getText().toString().trim())) {
+            isOk[5] = false;
+            eCityLayout.setErrorEnabled(true);
+            eCityLayout.setError("\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[5] = true;
+            eCityLayout.setErrorEnabled(false);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", ePoliceLayout.getEditText().getText().toString().trim())) {
+            isOk[6] = false;
+            ePoliceLayout.setErrorEnabled(true);
+            ePoliceLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[6] = true;
+            ePoliceLayout.setErrorEnabled(false);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", ePostLayout.getEditText().getText().toString().trim())) {
+            isOk[7] = false;
+            ePostLayout.setErrorEnabled(true);
+            ePostLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[7] = true;
+            ePostLayout.setErrorEnabled(false);
+        }
+
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", eDistrictLayout.getEditText().getText().toString().trim())) {
+            isOk[8] = false;
+            eDistrictLayout.setErrorEnabled(true);
+            eDistrictLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[8] = true;
+            eDistrictLayout.setErrorEnabled(false);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", eStateLayout.getEditText().getText().toString().trim())) {
+            isOk[9] = false;
+            eStateLayout.setErrorEnabled(true);
+            eStateLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[9] = true;
+            eStateLayout.setErrorEnabled(false);
+        }
+
+
+        if (!Pattern.matches("^([1-9])([0-9]){5}$", ePinLayout.getEditText().getText().toString().trim())) {
+            isOk[10] = false;
+            ePinLayout.setErrorEnabled(true);
+            ePinLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[10] = true;
+            ePinLayout.setErrorEnabled(false);
+        }
+
+
+        if (!Pattern.matches("\\d", lengthOfResidenceLayout.getEditText().getText().toString().trim())) {
+            isOk[11] = false;
+            lengthOfResidenceLayout.setErrorEnabled(true);
+            lengthOfResidenceLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[11] = true;
+            lengthOfResidenceLayout.setErrorEnabled(false);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", perCityLayout.getEditText().getText().toString().trim())) {
+            isOk[12] = false;
+            perCityLayout.setErrorEnabled(true);
+            perCityLayout.setError("\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[12] = true;
+            perCityLayout.setErrorEnabled(false);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", perPoliceLayout.getEditText().getText().toString().trim())) {
+            isOk[13] = false;
+            perPoliceLayout.setErrorEnabled(true);
+            perPoliceLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[13] = true;
+            perPoliceLayout.setErrorEnabled(false);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", perPostLayout.getEditText().getText().toString().trim())) {
+            isOk[14] = false;
+            perPostLayout.setErrorEnabled(true);
+            perPostLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[14] = true;
+            perPostLayout.setErrorEnabled(false);
+        }
+
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", perDistrictLayout.getEditText().getText().toString().trim())) {
+            isOk[15] = false;
+            perDistrictLayout.setErrorEnabled(true);
+            perDistrictLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[15] = true;
+            perDistrictLayout.setErrorEnabled(false);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", perStateLayout.getEditText().getText().toString().trim())) {
+            isOk[16] = false;
+            perStateLayout.setErrorEnabled(true);
+            perStateLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[16] = true;
+            perStateLayout.setErrorEnabled(false);
+        }
+
+
+        if (!Pattern.matches("^([1-9])([0-9]){5}$", perPinLayout.getEditText().getText().toString().trim())) {
+            isOk[17] = false;
+            perPinLayout.setErrorEnabled(true);
+            perPinLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[17] = true;
+            perPinLayout.setErrorEnabled(false);
+        }
+
+
+        // if any of the array item is false, then return false
+        // else, return true
+
+        for (boolean item : isOk) {
+            if (!item) {
+                // mark this stage incomplete
+                isBrideFormCompleted = false;
+                return false;
             }
         }
 
-
-        if (a && b) {
-            isBrideFormCompleted = true;
-            return true;
-        } else {
-            return false;
-        }
+        // mark this stage complete
+        isBrideFormCompleted = true;
+        return true;
     }
 
 
-    private boolean validateMarriageDetails() {
-        boolean a = awesomeValidation.validate();
-        boolean b = validateSpinners();
+    private boolean validateStageOne() {
+        boolean[] isOk = new boolean[6];
 
-        Log.d(TAG, "awesome: " + a + " spinners: " + b);
-
-
-        if (a && b) {
-            isMarriageFormCompleted = true;
-            return true;
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", nameLayout.getEditText().getText().toString().trim())) {
+            isOk[0] = false;
+            nameLayout.setErrorEnabled(true);
+            nameLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
         } else {
-            return false;
+            isOk[0] = true;
+            nameLayout.setErrorEnabled(false);
         }
+
+        if (!Pattern.matches("(^$|^.*@.*\\..*$)", emailLayout.getEditText().getText().toString().trim())) {
+            isOk[1] = false;
+            emailLayout.setErrorEnabled(true);
+            emailLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[1] = true;
+            emailLayout.setErrorEnabled(false);
+        }
+
+        if (!Pattern.matches("^[0-9]{2}[0-9]{8}$", mobileLayout.getEditText().getText().toString().trim())) {
+            isOk[2] = false;
+            mobileLayout.setErrorEnabled(true);
+            mobileLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[2] = true;
+            mobileLayout.setErrorEnabled(false);
+        }
+
+
+        if (mySpinner1.getSelectedItem() == null) {
+            isOk[3] = false;
+            mySpinner1.setError(getString(R.string.spinnerError));
+        } else {
+            isOk[3] = true;
+            mySpinner1.setError(null);
+        }
+
+        if (mySpinner2.getSelectedItem() == null) {
+            isOk[4] = false;
+            mySpinner2.setError(getString(R.string.spinnerError));
+        } else {
+            isOk[4] = true;
+            mySpinner2.setError(null);
+        }
+
+
+        if (mySpinner3.getSelectedItem() == null) {
+            isOk[5] = false;
+            mySpinner3.setError(getString(R.string.spinnerError));
+        } else {
+            isOk[5] = true;
+            mySpinner3.setError(null);
+        }
+
+
+        // if any of the array item is false, then return false
+        // else, return true
+
+        for (boolean item : isOk) {
+            if (!item) {
+                // mark this stage incomplete
+                isMarriageFormCompleted = false;
+                return false;
+            }
+        }
+
+        // mark this stage complete
+        isMarriageFormCompleted = true;
+        return true;
     }
 
 
@@ -1304,12 +1425,7 @@ public class MarriageRegistration extends AppCompatActivity {
                             alertDialog.dismiss();
                         }
 
-                        cookieBar.setMessage(error.getMessage());
-                        cookieBar.show();
-
-                        Log.d(TAG, "onError: " + error.getErrorCode());
-                        Log.d(TAG, "onError: " + error.getMessage());
-
+                        showErrorMessage("Network Error", error.getMessage());
                     }
                 });
 
@@ -1347,9 +1463,9 @@ public class MarriageRegistration extends AppCompatActivity {
                 .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(MarriageRegistration.this, PaymentActivity.class);
-                        startActivity(intent);
-                        finish();
+                        confirmForm.setVisibility(View.GONE);
+                        header.setText(R.string.paymentheading);
+                        paymentForm.setVisibility(View.VISIBLE);
                     }
                 });
 
@@ -1359,11 +1475,12 @@ public class MarriageRegistration extends AppCompatActivity {
 
     }
 
-    private void showErrorMessage(String msg) {
+    private void showErrorMessage(String title, String msg) {
         if (alertDialog.isShowing()) {
             alertDialog.dismiss();
         }
 
+        cookieBar.setTitle(title);
         cookieBar.setMessage(msg);
         cookieBar.show();
     }

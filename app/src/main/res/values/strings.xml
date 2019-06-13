@@ -19,12 +19,14 @@
 
     <string name="appointform">Appointment\nForm</string>
     <string name="upload">Upload\nDocuments</string>
-    <string name="confirm">Confirm\nSubmission</string>
+    <string name="confirm">Confirm\nSubmit</string>
+    <string name="payment">Make\nPayment</string>
 
 
     <string name="appoint">Form for Taking an Appointment</string>
     <string name="uploadheading">Upload Documents</string>
     <string name="confirmheading">Confirm Submission</string>
+    <string name="paymentheading">Make your Payment</string>
 
     <string name="name">\tApplicant Name *</string>
 
@@ -65,8 +67,21 @@
     <string name="iconfirm">Are you sure you want to submit?\n\n*Forms cannot be edited after the final submit is done.*\n</string>
     <string name="conSubmit">Confirm Submit</string>
 
+    <string name="deptID">\tDepartment Tax ID *</string>
+    <string name="payment_name">\tName *</string>
+    <string name="pan">\tPAN</string>
+    <string name="block">\tBlock No/Premises</string>
+    <string name="locality">\tLocality/Road</string>
+    <string name="area">\tArea/City</string>
+    <string name="payment_pin">\tPIN</string>
+    <string name="remarks">\tRemarks</string>
+
+    <string name="pay">Pay</string>
+
+
     <!--Make Assessment-->
     <string name="assessment">Form for Assessment of Stamp Duty and Registration Fee</string>
+    <string name="calculateFee">Calculate Fee</string>
     <string name="Rs" translatable="false">\u20B9</string>
     <string name="cons_amnt">Consideration Amount</string>
     <string name="stmp_duty">Stamp Duty Amount</string>
@@ -124,31 +139,28 @@
     <string name="select_doc">Select Image Document Type *</string>
 
     <string-array name="doc_type">
-        <item>@string/select_doc</item>
         <item>@string/address</item>
         <item>@string/age</item>
         <item>@string/identity</item>
     </string-array>
 
     <string name="marr_type">Select Marriage Type *</string>
-    <string name="intended_marr">Intended Marriage</string>
-    <string name="marriage_type">Marriage</string>
+    <string name="intended_marr" translatable="false">Intended Marriage</string>
+    <string name="marriage_type" translatable="false">Marriage</string>
 
     <string-array name="marriageType">
-        <item>@string/marr_type</item>
         <item>@string/intended_marr</item>
-        <item>@string/marr</item>
+        <item>@string/marriage_type</item>
     </string-array>
 
-    <string name="marrStaus">Select Marital Status *</string>
-    <string name="unmarried">Unmarried</string>
-    <string name="widower">Widower</string>
-    <string name="widow">Widow</string>
-    <string name="divorcee">Divorcee</string>
-    <string name="married">Married</string>
+    <string name="marrStatus">Select Marital Status *</string>
+    <string name="unmarried" translatable="false">Unmarried</string>
+    <string name="widower" translatable="false">Widower</string>
+    <string name="widow" translatable="false">Widow</string>
+    <string name="divorcee" translatable="false">Divorcee</string>
+    <string name="married" translatable="false">Married</string>
 
     <string-array name="maritalStatus">
-        <item>@string/marrStaus</item>
         <item>@string/unmarried</item>
         <item>@string/widower</item>
         <item>@string/widow</item>
@@ -169,7 +181,16 @@
 
 
     <!--Spinner error message-->
-    <string name="spinnerError" translatable="false">Choose an item</string>
+    <string name="spinnerError">Please, select an option</string>
+
+    <!--EditText error message-->
+    <string name="editTextError">Please, enter a valid input</string>
+
+    <string name="addressDocError">Address Proof not selected, Please select one!\n</string>
+    <string name="ageDocError">Age Proof not selected, Please select one!\n</string>
+    <string name="identityDocError">Identity Proof not selected, Please select one!</string>
+
+    <string name="pswderror">\tPlease, enter a valid password</string>
 
 
     <!--&lt;!&ndash;validation&ndash;&gt;-->
@@ -210,6 +231,11 @@
     <!--Title of action bar-->
     <string name="title_profile_epanjeeyan">My Profile</string>
     <string name="title_check_fee">Fee assessment</string>
+
+    <!--Warnings-->
+    <string name="label_attention">Attention!</string>
+    <string name="label_field_mandatory">Fields marked with \"*\" are mandatory</string>
+    <string name="label_complete_all_stages">Complete all the stages first</string>
 
 
 </resources>

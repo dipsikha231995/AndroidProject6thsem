@@ -1,11 +1,6 @@
 package com.example.applicationformcv;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +16,7 @@ import android.widget.Toast;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,6 +27,11 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import org.aviran.cookiebar2.CookieBar;
 
 import java.util.concurrent.TimeUnit;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 public class myProfile extends AppCompatActivity {
 
@@ -300,8 +301,8 @@ public class myProfile extends AppCompatActivity {
         String c_pwd = cpswd.getText().toString().trim();
 
         if (pwd.isEmpty() || c_pwd.isEmpty() || !pwd.equals(c_pwd)) {
-            newPswdlayout.setError("Enter a valid password");
-            confirmPswdlayout.setError("Enter a valid password");
+            newPswdlayout.setError("\t" + getString(R.string.pswderror));
+            confirmPswdlayout.setError("\t" + getString(R.string.pswderror));
             return;
         }
 
@@ -319,7 +320,7 @@ public class myProfile extends AppCompatActivity {
                         }
                         if (task.isSuccessful()) {
                             //updateUI();
-                            Log.d(TAG, "password updated");
+                            Toast.makeText(myProfile.this, "Password updated!", Toast.LENGTH_SHORT).show();
                         } else {
                             cookieBar.setMessage(task.getException().getMessage());
                             cookieBar.show();

@@ -3,16 +3,10 @@ package com.example.applicationformcv;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,9 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -43,10 +35,10 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.androidnetworking.interfaces.UploadProgressListener;
-import com.basgeekball.awesomevalidation.AwesomeValidation;
-import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.bumptech.glide.Glide;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
 import com.github.ybq.android.spinkit.style.Wave;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.kofigyan.stateprogressbar.StateProgressBar;
@@ -65,7 +57,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import fr.ganfra.materialspinner.MaterialSpinner;
 import id.zelory.compressor.Compressor;
 
 public class DeedRegistration extends AppCompatActivity {
@@ -75,12 +73,9 @@ public class DeedRegistration extends AppCompatActivity {
     AlertDialog alertDialog;
 
     public static final String TAG = "MY-APP";
-    public static final String Date_array = "Date";
-    public static final String JSON_ARRAY = "result";
     CookieBar.Builder cookieBar;
-    private JSONArray result;
 
-    Spinner mySpinnerDate;
+    MaterialSpinner mySpinnerDate;
 
     private final int ADDRESS_PROOF_REQUEST = 1;
     private final int AGE_PROOF_REQUEST = 10;
@@ -96,12 +91,8 @@ public class DeedRegistration extends AppCompatActivity {
     private boolean addressProofSelected = false;
     private boolean identityProofSelected = false;
 
-
-    //defining AwesomeValidation object
-    private AwesomeValidation awesomeValidation;
-
     //for validation
-    TextInputLayout nameLayout, mobileLayout, addressLayout, cityLayout, poLayout, districtLayout, pinLayout;
+    TextInputLayout nameLayout, mobileLayout, addressLayout, cityLayout, poLayout, districtLayout, pinLayout, emailLayout;
     private EditText name, email, mobile, address, city, po, district, pin;
     private Button submit;
 
@@ -110,23 +101,17 @@ public class DeedRegistration extends AppCompatActivity {
     RadioGroup radioGroupMaleFemale;
     RadioGroup radioUrbanRural;
 
-    Spinner mySpinner1;
-    Spinner mySpinner2, mySpinner3, mySpinner4;
-    Spinner mySpinner5;
-    ArrayAdapter<String> myAdapter5;
+    MaterialSpinner mySpinner1, mySpinner2, mySpinner3, mySpinner4;
+    MaterialSpinner mySpinner5;
     ArrayAdapter<String> subDeedAdapter;
-
-    private Bitmap bitmap;
-
-    private List<String> list;
-    ArrayAdapter<String> myAdapter4;
 
     StateProgressBar stateProgressBar;
 
-    // all the three form layouts
+    // all the four form layouts
     ViewGroup appointmentForm;
     ViewGroup uploadDocumentsForm;
     ViewGroup confirmForm;
+    ViewGroup paymentForm;
 
     // header textView
     TextView header;
@@ -142,7 +127,6 @@ public class DeedRegistration extends AppCompatActivity {
     List<ApplicantTypeModel> applicantList = new ArrayList<>();
     List<RegistrationOfficeModel> officeList = new ArrayList<>();
 
-    TextView show_appointmenID, show_appointmentDetails;
     TextView appointmentID, showID, details;
 
     @Override
@@ -169,19 +153,19 @@ public class DeedRegistration extends AppCompatActivity {
 
         //No internet connection error
         cookieBar = CookieBar.build(DeedRegistration.this)
-                .setTitle("Network Error")
                 .setTitleColor(android.R.color.white)
                 .setBackgroundColor(R.color.colorPrimary)
                 .setIcon(R.drawable.ic_icon)
                 .setEnableAutoDismiss(true)
+                .setDuration(5000)                      // 5 seconds
                 .setCookiePosition(CookieBar.TOP)
                 .setSwipeToDismiss(true);
-
 
         setTitle(getString(R.string.deed));
         appointmentForm = findViewById(R.id.appoint_form);
         uploadDocumentsForm = findViewById(R.id.document_upload_form);
         confirmForm = findViewById(R.id.confirm_form);
+        paymentForm = findViewById(R.id.makePayment);
         header = findViewById(R.id.header_text2);
 
         mySpinner1 = findViewById(R.id.spinner1);               // applicant type spinner
@@ -191,7 +175,6 @@ public class DeedRegistration extends AppCompatActivity {
         mySpinner4 = findViewById(R.id.spinner4);               // sub deed category spinner
 
         List<String> temp = new ArrayList<>();
-        temp.add(getString(R.string.subdeedSpinner));
 
         subDeedAdapter = new ArrayAdapter<String>(this,
                 R.layout.spinner_item_text_colour, temp);
@@ -210,24 +193,27 @@ public class DeedRegistration extends AppCompatActivity {
 
         // select document spinner
         mySpinner5 = findViewById(R.id.spinner5);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item_text_colour,
+                getResources().getStringArray(R.array.doc_type));
+        adapter.setDropDownViewResource(R.layout.spinner_item_text_colour);
+
+        mySpinner5.setAdapter(adapter);
         mySpinner5.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                Log.d(TAG, "" + position);
-
                 switch (position) {
-                    case 1:
+                    case 0:
                         // select address proof
                         chooseImageOrPDF(ADDRESS_PROOF_REQUEST);
                         break;
 
-                    case 2:
+                    case 1:
                         // select age proof
                         chooseImageOrPDF(AGE_PROOF_REQUEST);
                         break;
 
-                    case 3:
+                    case 2:
                         // select id proof
                         chooseImageOrPDF(IDENTITY_PROOF_REQUEST);
                         break;
@@ -244,9 +230,9 @@ public class DeedRegistration extends AppCompatActivity {
         mySpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position > 0) {
+                if (position >= 0) {
 
-                    ApplicantTypeModel obj = applicantList.get(position - 1); //getting the model from the list & storing in obj
+                    ApplicantTypeModel obj = applicantList.get(position); //getting the model from the list & storing in obj
                     int code = obj.getExempted(); //storing the code in variable code
 
                     params.put("applicant_type", String.valueOf(code));
@@ -264,9 +250,9 @@ public class DeedRegistration extends AppCompatActivity {
         mySpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position > 0) {
+                if (position >= 0) {
 
-                    RegistrationOfficeModel obj = officeList.get(position - 1); //getting the model from the list & storing in obj
+                    RegistrationOfficeModel obj = officeList.get(position); //getting the model from the list & storing in obj
                     int code = obj.getSroCode(); //storing the code in variable code
 
                     params.put("sro_office", String.valueOf(code));
@@ -314,22 +300,15 @@ public class DeedRegistration extends AppCompatActivity {
         forLandFlat = findViewById(R.id.landFlat);
         radioUrbanRural = findViewById(R.id.radioGroup2);
 
-
-//        ArrayAdapter<String> myAdapter2 = new ArrayAdapter<String>(this, R.layout.spinner_item_text_colour,
-//                getResources().getStringArray(R.array.selectOffice));
-//        myAdapter2.setDropDownViewResource(R.layout.spinner_item_text_colour);
-//        mySpinner2.setAdapter(myAdapter2);
-
-
         mySpinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String category = parent.getItemAtPosition(position).toString();
 
-                if (position > 0) {
-                    Log.d(TAG, deedlist.get(position - 1).toString()); //model list and category list are not in same order
+                if (position >= 0) {
+                    Log.d(TAG, deedlist.get(position).toString()); //model list and category list are not in same order
 
-                    DeedCategoryModel obj = deedlist.get(position - 1); //getting the model from the deedlist & storing in obj
+                    DeedCategoryModel obj = deedlist.get(position); //getting the model from the deedlist & storing in obj
                     int code = obj.getCode(); //storing the code in variable code
 
                     params.put("Deedtype", String.valueOf(code));
@@ -347,7 +326,6 @@ public class DeedRegistration extends AppCompatActivity {
                                         JSONArray array = new JSONArray(response);
 
                                         List<String> subDeed = new ArrayList<>();
-                                        subDeed.add(getString(R.string.subdeedSpinner));
 
                                         //array list is populated from JSON array
                                         for (int i = 0; i < array.length(); i++) {
@@ -424,28 +402,9 @@ public class DeedRegistration extends AppCompatActivity {
             }
         });
 
-        myAdapter5 = new ArrayAdapter<String>(this, R.layout.spinner_item_text_colour,
-                getResources().getStringArray(R.array.doc_type));
-        myAdapter5.setDropDownViewResource(R.layout.spinner_item_text_colour);
-        mySpinner5.setAdapter(myAdapter5);
-
-        //validation
-        awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
-
-//        //adding validation to edittexts
-//        awesomeValidation.addValidation(this, R.id.applicantName, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.nameerror);
-//        awesomeValidation.addValidation(this, R.id.number, "^[0-9]{2}[0-9]{8}$", R.string.mobileerror);
-//        awesomeValidation.addValidation(this, R.id.addressText, "[a-zA-Z0-9\\s\\.\\-]+", R.string.addresserror);
-//        awesomeValidation.addValidation(this, R.id.city, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.cityerror);
-//        awesomeValidation.addValidation(this, R.id.postofficeName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.poerror);
-//        awesomeValidation.addValidation(this, R.id.districtName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.districterror);
-//        awesomeValidation.addValidation(this, R.id.pin, "(\\d{6})", R.string.pinerror);
-//
-//        awesomeValidation.addValidation(this, R.id.username, "(^$|^.*@.*\\..*$)", R.string.emailerror);
-
-
         stateProgressBar = findViewById(R.id.state_progress_bar);
-        String[] descriptionData = {getString(R.string.appointform), getString(R.string.upload), getString(R.string.confirm)};
+        String[] descriptionData = {getString(R.string.appointform), getString(R.string.upload), getString(R.string.confirm),
+                getString(R.string.payment)};
         stateProgressBar.setStateDescriptionData(descriptionData);
         stateProgressBar.setOnStateItemClickListener(new OnStateItemClickListener() {
             @Override
@@ -457,6 +416,18 @@ public class DeedRegistration extends AppCompatActivity {
                 }
             }
         });
+
+
+        // Now, highlight the * mark
+        // add the bubble showcase
+        new BubbleShowCaseBuilder(this)
+                .title(getString(R.string.label_attention))
+                .description(getString(R.string.label_field_mandatory))
+                .targetView(nameLayout)
+                .backgroundColorResourceId(R.color.colorAccent)
+                .textColorResourceId(R.color.white)
+                .imageResourceId(R.drawable.ic_warn)
+                .show();
     }
 
 
@@ -477,7 +448,6 @@ public class DeedRegistration extends AppCompatActivity {
 
         Uri path = data.getData();          // get the file's content uri; content://
 
-
         if (requestCode == ADDRESS_PROOF_REQUEST && resultCode == RESULT_OK && data != null) {
 
             decideFileType(path, ADDRESS_PROOF_REQUEST);
@@ -488,13 +458,7 @@ public class DeedRegistration extends AppCompatActivity {
         } else if (requestCode == IDENTITY_PROOF_REQUEST && resultCode == RESULT_OK && data != null) {
 
             decideFileType(path, IDENTITY_PROOF_REQUEST);
-
         }
-
-        //
-        mySpinner5.setAdapter(null);
-        mySpinner5.setAdapter(myAdapter5);
-        mySpinner5.setVisibility(View.VISIBLE);
     }
 
 
@@ -667,16 +631,12 @@ public class DeedRegistration extends AppCompatActivity {
 
                         addressimageView.setImageResource(R.drawable.pdf);
                         addressProofSelected = true;
-                        //addressimgError.setText(displayName);
-                        //addressimgError.setVisibility(View.VISIBLE);
                         address_name.setText(displayName);
 
                         addressimgError.setError(null);
                     } else if (doc_type == AGE_PROOF_REQUEST) {
                         ageImageView.setImageResource(R.drawable.pdf);
                         ageProofSelected = true;
-                        //ageimgError.setText(displayName);
-                        //ageimgError.setVisibility(View.VISIBLE);
                         age_name.setText(displayName);
 
                         ageimgError.setError(null);
@@ -684,8 +644,6 @@ public class DeedRegistration extends AppCompatActivity {
 
                         idImageView.setImageResource(R.drawable.pdf);
                         identityProofSelected = true;
-                        //idimgError.setText(displayName);
-                        // idimgError.setVisibility(View.VISIBLE);
                         id_name.setText(displayName);
 
                         idimgError.setError(null);
@@ -722,7 +680,6 @@ public class DeedRegistration extends AppCompatActivity {
 
                                 //empty list is declared which will hold the json array items
                                 List<String> dateList = new ArrayList<>();
-                                dateList.add(getString(R.string.dateSpinner));
 
                                 //array list is populated from JSON array
                                 for (int i = 0; i < array.length(); i++) {
@@ -739,7 +696,7 @@ public class DeedRegistration extends AppCompatActivity {
                                 mySpinnerDate.setAdapter(dateAdapter);
                             } else {
                                 String msg = object.getString("msg");
-                                showErrorMessage(msg);
+                                showErrorMessage("Network Error", msg);
                             }
 
                         } catch (Exception e) {
@@ -749,7 +706,7 @@ public class DeedRegistration extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        showErrorMessage(getVolleyErrorMessage(error));
+                        showErrorMessage("Network Error", getVolleyErrorMessage(error));
                     }
                 });
 
@@ -775,7 +732,6 @@ public class DeedRegistration extends AppCompatActivity {
                         applicantList = new Gson().fromJson(response, collectionType);
 
                         ArrayList<String> typeList = new ArrayList<>();
-                        typeList.add(getString(R.string.apptypeSpinner));
 
                         //array list is populated from JSON array
                         for (int i = 0; i < applicantList.size(); i++) {
@@ -793,7 +749,7 @@ public class DeedRegistration extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        showErrorMessage(getVolleyErrorMessage(error));
+                        showErrorMessage("Network Error", getVolleyErrorMessage(error));
                     }
                 });
 
@@ -818,7 +774,6 @@ public class DeedRegistration extends AppCompatActivity {
                         officeList = new Gson().fromJson(response, collectionType);
 
                         ArrayList<String> list = new ArrayList<>();
-                        list.add(getString(R.string.sroSpinner));
 
                         //array list is populated from JSON array
                         for (int i = 0; i < officeList.size(); i++) {
@@ -836,7 +791,7 @@ public class DeedRegistration extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        showErrorMessage(getVolleyErrorMessage(error));
+                        showErrorMessage("Network Error", getVolleyErrorMessage(error));
                     }
                 });
 
@@ -847,13 +802,14 @@ public class DeedRegistration extends AppCompatActivity {
     }
 
 
-    private void showErrorMessage(String msg) {
+    private void showErrorMessage(String title, String msg) {
         Log.d(TAG, "showErrorMessage");
 
         if (alertDialog.isShowing()) {
             alertDialog.dismiss();
         }
 
+        cookieBar.setTitle(title);
         cookieBar.setMessage(msg);
         cookieBar.show();
     }
@@ -892,7 +848,6 @@ public class DeedRegistration extends AppCompatActivity {
 
                         // ArrayList of String which contains the category names
                         List<String> list = new ArrayList<>();
-                        list.add(getString(R.string.deedSpinner));
 
                         Iterator<DeedCategoryModel> iterator = deedlist.iterator();
 
@@ -912,7 +867,7 @@ public class DeedRegistration extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        showErrorMessage(getVolleyErrorMessage(error));
+                        showErrorMessage("Network Error", getVolleyErrorMessage(error));
                     }
                 });
 
@@ -923,121 +878,15 @@ public class DeedRegistration extends AppCompatActivity {
     }
 
 
-    private boolean validateSpinners() {
-
-        boolean result = true;
-
-        View selectedView = mySpinner1.getSelectedView();
-        View selectedView2 = mySpinner2.getSelectedView();
-        View selectedView3 = mySpinner3.getSelectedView();
-        View selectedView4 = mySpinner4.getSelectedView();
-        View selectedView5 = mySpinnerDate.getSelectedView();
-
-
-        if (selectedView instanceof TextView) {
-
-            TextView selectedTextView = (TextView) selectedView;
-
-            if ((selectedTextView.getText().toString().equalsIgnoreCase("Select Applicant Type *")) ||
-                    (selectedTextView.getText().toString().equalsIgnoreCase("आवेदक प्रकार का चयन करें *"))) {
-                selectedTextView.setFocusable(true);
-                selectedTextView.setClickable(true);
-                selectedTextView.setFocusableInTouchMode(true);
-                selectedTextView.setError(getString(R.string.spinnerError));
-
-                result = false;
-            }
-        }
-
-
-        if (selectedView2 instanceof TextView) {
-
-            TextView selectedTextView2 = (TextView) selectedView2;
-
-            if ((selectedTextView2.getText().toString().equalsIgnoreCase("Select Office for Registration *")) ||
-                    (selectedTextView2.getText().toString().equalsIgnoreCase(""))) {
-                selectedTextView2.setFocusable(true);
-                selectedTextView2.setClickable(true);
-                selectedTextView2.setFocusableInTouchMode(true);
-                selectedTextView2.setError(getString(R.string.spinnerError));
-
-                result = false;
-            }
-        }
-
-
-        if (selectedView3 instanceof TextView) {
-
-            TextView selectedTextView3 = (TextView) selectedView3;
-
-            if ((selectedTextView3.getText().toString().equalsIgnoreCase("Select Deed Category *")) ||
-                    (selectedTextView3.getText().toString().equalsIgnoreCase("डीड श्रेणी का चयन करें *"))) {
-                selectedTextView3.setFocusable(true);
-                selectedTextView3.setClickable(true);
-                selectedTextView3.setFocusableInTouchMode(true);
-                selectedTextView3.setError(getString(R.string.spinnerError));
-
-                result = false;
-            }
-        }
-
-        if (selectedView4 instanceof TextView) {
-
-            TextView selectedTextView4 = (TextView) selectedView4;
-
-            if ((selectedTextView4.getText().toString().equalsIgnoreCase("Select Deed Sub Category *")) ||
-                    (selectedTextView4.getText().toString().equalsIgnoreCase("सब डीड श्रेणी का चयन करें *"))) {
-                selectedTextView4.setFocusable(true);
-                selectedTextView4.setClickable(true);
-                selectedTextView4.setFocusableInTouchMode(true);
-                selectedTextView4.setError(getString(R.string.spinnerError));
-
-                //
-                result = false;
-            }
-        }
-
-        if (selectedView5 instanceof TextView) {
-
-            TextView selectedTextView5 = (TextView) selectedView5;
-
-            if ((selectedTextView5.getText().toString().equalsIgnoreCase("Select Appointment Date *")) ||
-                    (selectedTextView5.getText().toString().equalsIgnoreCase("अपॉइंटमेंट तिथि का चयन करें *"))) {
-                selectedTextView5.setFocusable(true);
-                selectedTextView5.setClickable(true);
-                selectedTextView5.setFocusableInTouchMode(true);
-                selectedTextView5.setError(getString(R.string.spinnerError));
-
-                result = false;
-            }
-        }
-
-        return result;
-    }
-
-
-    private boolean validateConsiderationAmount() {
-        if (findViewById(R.id.considerationWrapper).getVisibility() == View.VISIBLE) {
-            if (amount.length() == 0) {
-                amount.setError("Enter an amount");
-
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     private void initializeValidation() {
-
-
         nameLayout = findViewById(R.id.applicantNamewrapper);
-        mobileLayout = findViewById(R.id.numberWrapper);
+        mobileLayout = findViewById(R.id.deptNumWrapper);
         addressLayout = findViewById(R.id.addressWrapper);
         cityLayout = findViewById(R.id.cityNamewrapper);
         poLayout = findViewById(R.id.postofficeNamewrapper);
         districtLayout = findViewById(R.id.districtNamewrapper);
         pinLayout = findViewById(R.id.pinWrapper);
+        emailLayout = findViewById(R.id.emailWrapper);
 
         name = findViewById(R.id.applicantName);
         email = findViewById(R.id.username);
@@ -1051,14 +900,13 @@ public class DeedRegistration extends AppCompatActivity {
         submit = findViewById(R.id.btnSubmit);
     }
 
-    private void showFrom(int curState, int nextState) {
-        Log.d(TAG, "" + curState + " : " + nextState);
 
+    private void showFrom(int curState, int nextState) {
         // hide the form associates with "curState"
         switch (curState) {
             case 1:
 
-                if (!validateAppointmentForm()) {
+                if (!validateStageOne()) {
                     return;
                 } else if (nextState == 3 && !completeAllStages()) {
                     return;
@@ -1071,7 +919,7 @@ public class DeedRegistration extends AppCompatActivity {
 
                 if (curState > nextState) {
                     uploadDocumentsForm.setVisibility(View.GONE);
-                } else if (!validateUploadDocumentsForm()) {
+                } else if (!validateStageTwo()) {
                     return;
                 } else if (nextState == 3 && !completeAllStages()) {
                     return;
@@ -1093,7 +941,7 @@ public class DeedRegistration extends AppCompatActivity {
             case 1:
                 appointmentForm.setVisibility(View.VISIBLE);
                 stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.ONE);
-                header.setText(R.string.appointform);
+                header.setText(R.string.appoint);
                 break;
 
             case 2:
@@ -1107,106 +955,200 @@ public class DeedRegistration extends AppCompatActivity {
                 stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.THREE);
                 header.setText(R.string.confirmheading);
                 break;
+
+            case 4:
+                paymentForm.setVisibility(View.VISIBLE);
+                stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.FOUR);
+                header.setText(R.string.paymentheading);
+                break;
+
         }
     }
 
 
-    private boolean validateUploadDocumentsForm() {
-        if (addressProofSelected && ageProofSelected && identityProofSelected) {
-            uploadDocumentsCompleted = true;
-            return true;
+    private boolean validateStageOne() {
+        boolean[] isOk = new boolean[13];
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", nameLayout.getEditText().getText().toString().trim())) {
+            isOk[0] = false;
+            nameLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[0] = true;
+            nameLayout.setError(null);
         }
+
+
+        if (!Pattern.matches("(^$|^.*@.*\\..*$)", emailLayout.getEditText().getText().toString().trim())) {
+            isOk[12] = false;
+            emailLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[12] = true;
+            emailLayout.setError(null);
+        }
+
+
+        if (!Pattern.matches("^[0-9]{10,10}$", mobileLayout.getEditText().getText().toString().trim())) {
+            isOk[1] = false;
+            mobileLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[1] = true;
+            mobileLayout.setError(null);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", addressLayout.getEditText().getText().toString().trim())) {
+            isOk[2] = false;
+            addressLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[2] = true;
+            addressLayout.setError(null);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", cityLayout.getEditText().getText().toString().trim())) {
+            isOk[3] = false;
+            cityLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[3] = true;
+            cityLayout.setError(null);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", poLayout.getEditText().getText().toString().trim())) {
+            isOk[4] = false;
+            poLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[4] = true;
+            poLayout.setError(null);
+        }
+
+        if (!Pattern.matches("^([a-zA-Z +0-9~%.,:_\\-@&()]+)$", districtLayout.getEditText().getText().toString().trim())) {
+            isOk[5] = false;
+            districtLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[5] = true;
+            districtLayout.setError(null);
+        }
+
+
+        if (!Pattern.matches("^([1-9])([0-9]){5}$", pinLayout.getEditText().getText().toString().trim())) {
+            isOk[6] = false;
+            pinLayout.setError("\t\t\t\t\t" + getString(R.string.editTextError));
+        } else {
+            isOk[6] = true;
+            pinLayout.setError(null);
+        }
+
+
+        if (mySpinner1.getSelectedItem() == null) {
+            isOk[7] = false;
+            mySpinner1.setError(getString(R.string.spinnerError));
+        } else {
+            isOk[7] = true;
+            mySpinner1.setError(null);
+        }
+
+        if (mySpinnerDate.getSelectedItem() == null) {
+            isOk[10] = false;
+            mySpinnerDate.setError(getString(R.string.spinnerError));
+        } else {
+            isOk[10] = true;
+            mySpinnerDate.setError(null);
+        }
+
+
+        if (mySpinner2.getSelectedItem() == null) {
+            isOk[8] = false;
+            mySpinner2.setError(getString(R.string.spinnerError));
+        } else {
+            isOk[8] = true;
+            mySpinner2.setError(null);
+        }
+
+
+        if (mySpinner3.getSelectedItem() == null) {
+            isOk[9] = false;
+            mySpinner3.setError(getString(R.string.spinnerError));
+        } else {
+            isOk[9] = true;
+            mySpinner3.setError(null);
+        }
+
+        if (mySpinner4.getSelectedItem() == null) {
+            isOk[11] = false;
+            mySpinner4.setError(getString(R.string.spinnerError));
+        } else {
+            isOk[11] = true;
+            mySpinner4.setError(null);
+        }
+
+        for (boolean item : isOk) {
+            if (!item) {
+                // mark this stage incomplete
+                appointmentFormCompleted = false;
+                return false;
+            }
+        }
+
+        // mark this stage complete
+        appointmentFormCompleted = true;
+        return true;
+    }
+
+
+    private boolean validateStageTwo() {
+        String errorMsg = "";
 
         if (!addressProofSelected) {
-            addressimgError.setError("Address Proof not selected, Please select one!");
+            errorMsg += getString(R.string.addressDocError);
         }
         if (!ageProofSelected) {
-            ageimgError.setError("Age Proof not selected, Please select one!");
+            errorMsg += getString(R.string.ageDocError);
         }
-        if (identityProofSelected == false) {
-            idimgError.setError("Identity Proof not selected, Please select one!");
+        if (!identityProofSelected) {
+            errorMsg += getString(R.string.identityDocError);
         }
 
-        return false;
+
+        if (addressProofSelected && ageProofSelected && identityProofSelected) {
+            uploadDocumentsCompleted = true;
+            mySpinner5.setError(null);
+            return true;
+        } else {
+            mySpinner5.setError(errorMsg);
+            uploadDocumentsCompleted = false;
+            return false;
+        }
+
     }
 
 
     private boolean completeAllStages() {
         // if all the previous stages are completed, then only
         if (!appointmentFormCompleted || !uploadDocumentsCompleted) {
-            Toast.makeText(this, "Complete all the previous stages first", Toast.LENGTH_SHORT).show();
+
+            // add the bubble showcase
+            new BubbleShowCaseBuilder(this)
+                    .title(getString(R.string.label_attention))
+                    .description(getString(R.string.label_complete_all_stages))
+                    .targetView(stateProgressBar)
+                    .backgroundColorResourceId(R.color.colorAccent)
+                    .textColorResourceId(R.color.white)
+                    .imageResourceId(R.drawable.ic_warn)
+                    .show();
+
             return false;
         } else {
             return true;
         }
     }
 
-
-    private boolean validateAppointmentForm() {
-        boolean a = awesomeValidation.validate();
-        boolean b = validateSpinners();
-        boolean c = validateConsiderationAmount();
-
-        if (a && b && c) {
-            appointmentFormCompleted = true;            // mark appointment form complete
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     // go to the next form
     public void submitIt(View view) {
-
-        if (name.getText().toString().isEmpty()) {
-            nameLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            nameLayout.setError(null);
-        }
-
-        if (mobile.getText().toString().isEmpty()) {
-            mobileLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            mobileLayout.setError(null);
-        }
-
-        if (address.getText().toString().isEmpty()) {
-            addressLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            addressLayout.setError(null);
-        }
-
-        if (city.getText().toString().isEmpty()) {
-            cityLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            cityLayout.setError(null);
-        }
-
-        if (po.getText().toString().isEmpty()) {
-            poLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            poLayout.setError(null);
-        }
-
-        if (district.getText().toString().isEmpty()) {
-            districtLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            districtLayout.setError(null);
-        }
-
-        if (pin.getText().toString().isEmpty()) {
-            pinLayout.setError("\t\t\t\t\tPlease enter this required field");
-        } else {
-            pinLayout.setError(null);
-        }
-
         // get the current state number
         int curState = stateProgressBar.getCurrentStateNumber();
 
         showFrom(curState, curState + 1);
-
-
     }
+
 
     public void submitData(View view) {
 
@@ -1245,12 +1187,9 @@ public class DeedRegistration extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
 
                         try {
-
                             if (alertDialog.isShowing()) {
                                 alertDialog.dismiss();
                             }
-
-                            Log.d(TAG, "onResponse: " + response);
 
                             if (response.getBoolean("success")) {
 
@@ -1266,10 +1205,15 @@ public class DeedRegistration extends AppCompatActivity {
                                         date_and_time, registration_fee, stamp_duty);
 
                                 uploadFiles();
-
-
                             } else {
-                                showErrorMessage(response.getString("msg"));
+                                StringBuilder stringBuilder = new StringBuilder();
+                                JSONArray jsonArray = response.getJSONArray("errormsg");
+
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    stringBuilder.append(jsonArray.get(i));
+                                }
+
+                                showErrorMessage("Error", stringBuilder.toString());
                             }
 
                         } catch (JSONException e) {
@@ -1282,10 +1226,7 @@ public class DeedRegistration extends AppCompatActivity {
                             alertDialog.dismiss();
                         }
 
-                        cookieBar.setMessage(error.getMessage());
-                        cookieBar.show();
-
-                        Log.d(TAG, "onError: " + error.getErrorCode());
+                        showErrorMessage("Network Error", error.getMessage());
                     }
                 });
     }
@@ -1319,9 +1260,9 @@ public class DeedRegistration extends AppCompatActivity {
                 .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(DeedRegistration.this, PaymentActivity.class);
-                        startActivity(intent);
-                        finish();
+                        confirmForm.setVisibility(View.GONE);
+                        paymentForm.setVisibility(View.VISIBLE);
+                        header.setText(R.string.paymentheading);
                     }
                 });
 
