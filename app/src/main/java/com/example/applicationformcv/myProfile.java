@@ -27,6 +27,7 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import org.aviran.cookiebar2.CookieBar;
 
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -51,7 +52,7 @@ public class myProfile extends AppCompatActivity {
 
     ImageButton usernameUpdate, emailUpdate, phoneUpdate;
 
-    TextInputLayout newPswdlayout, confirmPswdlayout;
+    TextInputLayout usernameLayout, emailLayout, phoneLayout, newPswdlayout, confirmPswdlayout;
 
 
     @Override
@@ -89,6 +90,9 @@ public class myProfile extends AppCompatActivity {
         emailUpdate = findViewById(R.id.update_email_button);
         phoneUpdate = findViewById(R.id.update_num_button);
 
+        usernameLayout = findViewById(R.id.usernameWrapper);
+        emailLayout = findViewById(R.id.emailWrapper);
+        phoneLayout = findViewById(R.id.NumWrapper);
         newPswdlayout = findViewById(R.id.npasswordWrapper);
         confirmPswdlayout = findViewById(R.id.cpasswordWrapper);
 
@@ -168,8 +172,16 @@ public class myProfile extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String name = uname.getText().toString();
 
-        // show the dialogSheet
-        //dialog.show();
+        if (!Pattern.matches("^[a-zA-Z][\\w ]*$", name)) {
+
+            if (alertDialog.isShowing()) {
+                alertDialog.dismiss();
+            }
+
+            usernameLayout.setErrorEnabled(true);
+            usernameLayout.setError(getString(R.string.error_user_name));
+            return;
+        }
 
         // update display name
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
@@ -183,11 +195,10 @@ public class myProfile extends AppCompatActivity {
                             alertDialog.dismiss();
                         }
 
-
                         if (task.isSuccessful()) {
-                            Log.d(TAG, "Name updated");
+                            usernameLayout.setErrorEnabled(false);
                             usernameUpdate.setImageResource(R.drawable.ic_done);
-                            Toast.makeText(myProfile.this, "Username updated!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(myProfile.this, getString(R.string.uname_updated), Toast.LENGTH_SHORT).show();
 
                             //updateUI();
                         } else {
@@ -206,11 +217,22 @@ public class myProfile extends AppCompatActivity {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         String phoneNumber = number.getText().toString().trim();
+
+        if (!Pattern.matches("^(\\+91)?\\d{10}$", phoneNumber)) {
+
+            if (alertDialog.isShowing()) {
+                alertDialog.dismiss();
+            }
+
+            phoneLayout.setErrorEnabled(true);
+            phoneLayout.setError(getString(R.string.error_phone));
+            return;
+        }
+
         if (!phoneNumber.startsWith("+91")) {
             phoneNumber = "+91" + phoneNumber;
         }
 
-        // show the dialogSheet
 
         // authenticate the new phone number
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
@@ -236,7 +258,9 @@ public class myProfile extends AppCompatActivity {
                                         if (task.isSuccessful()) {
                                             // successfully updated
                                             phoneUpdate.setImageResource(R.drawable.ic_done);
-                                            Toast.makeText(myProfile.this, "Mobile number updated!", Toast.LENGTH_SHORT).show();
+                                            phoneLayout.setErrorEnabled(false);
+
+                                            Toast.makeText(myProfile.this, getString(R.string.mobilenum_updated), Toast.LENGTH_SHORT).show();
                                         } else {
 
                                             if (alertDialog.isShowing()) {
@@ -271,7 +295,16 @@ public class myProfile extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String emailString = email.getText().toString();
 
-        // show the dialogSheet
+        if (!Pattern.matches("^[\\w.+-]+@\\w+\\.\\w+$", emailString)) {
+
+            if (alertDialog.isShowing()) {
+                alertDialog.dismiss();
+            }
+
+            emailLayout.setErrorEnabled(true);
+            emailLayout.setError(getString(R.string.error_email));
+            return;
+        }
 
         // update email
         user.updateEmail(emailString)
@@ -283,8 +316,9 @@ public class myProfile extends AppCompatActivity {
                         }
                         if (task.isSuccessful()) {
                             //updateUI();
+                            emailLayout.setErrorEnabled(false);
                             emailUpdate.setImageResource(R.drawable.ic_done);
-                            Toast.makeText(myProfile.this, "Email updated!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(myProfile.this, getString(R.string.email_updated), Toast.LENGTH_SHORT).show();
 
                         } else {
                             cookieBar.setMessage(task.getException().getMessage());
@@ -300,11 +334,23 @@ public class myProfile extends AppCompatActivity {
         String pwd = npswd.getText().toString().trim();
         String c_pwd = cpswd.getText().toString().trim();
 
-        if (pwd.isEmpty() || c_pwd.isEmpty() || !pwd.equals(c_pwd)) {
+//        if (pwd.isEmpty() || c_pwd.isEmpty() || !pwd.equals(c_pwd)) {
+//            newPswdlayout.setError("\t" + getString(R.string.pswderror));
+//            confirmPswdlayout.setError("\t" + getString(R.string.pswderror));
+//            return;
+        if (!validatePassword(pwd)) {
+            newPswdlayout.setErrorEnabled(true);
             newPswdlayout.setError("\t" + getString(R.string.pswderror));
-            confirmPswdlayout.setError("\t" + getString(R.string.pswderror));
             return;
         }
+
+        // check if both passwords are the same
+        if (!pwd.equals(c_pwd)) {
+            confirmPswdlayout.setErrorEnabled(true);
+            confirmPswdlayout.setError(getString(R.string.error_pwds_not_match));
+            return;
+        }
+
 
         // show the dialogSheet
         alertDialog.show();
@@ -319,8 +365,18 @@ public class myProfile extends AppCompatActivity {
                             alertDialog.dismiss();
                         }
                         if (task.isSuccessful()) {
+
+                            newPswdlayout.setErrorEnabled(false);
+                            confirmPswdlayout.setErrorEnabled(false);
+
+                            // clear the passwords
+                            newPswdlayout.getEditText().setText("");
+                            confirmPswdlayout.getEditText().setText("");
+
                             //updateUI();
-                            Toast.makeText(myProfile.this, "Password updated!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(myProfile.this, getString(R.string.pswd_updated
+                            ), Toast.LENGTH_SHORT).show();
+
                         } else {
                             cookieBar.setMessage(task.getException().getMessage());
                             cookieBar.show();
@@ -329,6 +385,21 @@ public class myProfile extends AppCompatActivity {
                 });
 
     }
+
+    private boolean validatePassword(String password) {
+        /* ^\p{Alpha}{6,}$
+         * ^\d{6,}$
+         *  ^\s{6,}$
+         *  ^\p{Punct}{6,}$
+         * */
+
+        return password.length() >= 6 &&
+                !Pattern.matches("^\\p{Alpha}{6,}$", password) &&
+                !Pattern.matches("^\\d{6,}$", password) &&
+                !Pattern.matches("^\\s{6,}$", password) &&
+                !Pattern.matches("^\\p{Punct}{6,}$", password);
+    }
+
 
 
     public void editProfile(View view) {

@@ -190,7 +190,17 @@
     <string name="ageDocError">Age Proof not selected, Please select one!\n</string>
     <string name="identityDocError">Identity Proof not selected, Please select one!</string>
 
+    <string name="error_user_name">\tPlease, enter a valid username</string>
+    <string name="error_email">\tPlease, enter a valid email address</string>
+    <string name="error_phone">\tPlease, enter a valid phone number</string>
     <string name="pswderror">\tPlease, enter a valid password</string>
+    <string name="error_pwds_not_match">\tBoth the passwords didn\'t match. Try again! </string>
+
+    <!--Toast messages-->
+    <string name="uname_updated">Username updated!</string>
+    <string name="mobilenum_updated">Mobile number updated!</string>
+    <string name="email_updated">Email updated!</string>
+    <string name="pswd_updated">Password updated!</string>
 
 
     <!--&lt;!&ndash;validation&ndash;&gt;-->
@@ -236,6 +246,9 @@
     <string name="label_attention">Attention!</string>
     <string name="label_field_mandatory">Fields marked with \"*\" are mandatory</string>
     <string name="label_complete_all_stages">Complete all the stages first</string>
+
+    <!--Dialog box-->
+    <string name="loading">Loading</string>
 
 
 </resources>
