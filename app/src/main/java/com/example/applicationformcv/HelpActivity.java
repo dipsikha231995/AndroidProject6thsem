@@ -54,7 +54,7 @@ public class HelpActivity extends AppCompatActivity {
         webView.getSettings().setDisplayZoomControls(false); // disable the default zoom controls on the page
 
         // load the help page
-        webView.loadUrl("https://www.tutorialspoint.com/");
+        webView.loadUrl("http://192.168.43.210:800/ePanjeeyan/user_manual/");
     }
 
     @Override

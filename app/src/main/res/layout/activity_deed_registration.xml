@@ -862,7 +862,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:backgroundTint="#228B22"
-                            android:onClick="doSubmit"
+                            android:onClick="doPay"
                             android:text="@string/pay"
                             android:textColor="#ffff" />
 

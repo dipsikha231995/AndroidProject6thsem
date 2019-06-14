@@ -129,6 +129,13 @@ public class DeedRegistration extends AppCompatActivity {
 
     TextView appointmentID, showID, details;
 
+    // Payment Form
+    TextInputLayout deptID, payerName, pan, block, locality, area, payerPin, payerPhone, remarks;
+
+    // this is the amount to be paid for...
+    int registrationFee;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,6 +157,18 @@ public class DeedRegistration extends AppCompatActivity {
                 .setView(view)
                 .create();
         alertDialog.show();
+
+        /// Payment form
+        deptID = findViewById(R.id.deptTaxIdWrapper);
+        payerName = findViewById(R.id.Namewrapper);
+        pan = findViewById(R.id.panWrapper);
+        block = findViewById(R.id.blockwrapper);
+        locality = findViewById(R.id.localitywrapper);
+        area = findViewById(R.id.areaWrapper);
+        payerPin = findViewById(R.id.pinCodeWrapper);
+        payerPhone = findViewById(R.id.mobileWrapper);
+        remarks = findViewById(R.id.remarksWrapper);
+
 
         //No internet connection error
         cookieBar = CookieBar.build(DeedRegistration.this)
@@ -902,6 +921,11 @@ public class DeedRegistration extends AppCompatActivity {
 
 
     private void showFrom(int curState, int nextState) {
+
+        if (nextState == 4) {
+            return;
+        }
+
         // hide the form associates with "curState"
         switch (curState) {
             case 1:
@@ -955,13 +979,6 @@ public class DeedRegistration extends AppCompatActivity {
                 stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.THREE);
                 header.setText(R.string.confirmheading);
                 break;
-
-            case 4:
-                paymentForm.setVisibility(View.VISIBLE);
-                stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.FOUR);
-                header.setText(R.string.paymentheading);
-                break;
-
         }
     }
 
@@ -1153,7 +1170,9 @@ public class DeedRegistration extends AppCompatActivity {
     public void submitData(View view) {
 
         // mark all the states "done"
-        stateProgressBar.setAllStatesCompleted(true);
+        //stateProgressBar.setAllStatesCompleted(true);
+
+        stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.THREE);
 
         // make them unclickable
         stateProgressBar.setOnStateItemClickListener(null);
@@ -1198,6 +1217,13 @@ public class DeedRegistration extends AppCompatActivity {
                                 String consideration_amount = response.getString("Consideration Amount");
                                 String date_and_time = response.getString("Appointment Date and time");
                                 String registration_fee = response.getString("Registration Fee");
+
+                                try {
+                                    registrationFee = Integer.parseInt(registration_fee);
+                                } catch (Exception ex) {
+                                }
+
+
                                 String stamp_duty = response.getString("Stamp Duty");
 
 
@@ -1231,7 +1257,7 @@ public class DeedRegistration extends AppCompatActivity {
                 });
     }
 
-    private void showInputDialog(String appointment_id, String officer_assigned, String consideration_amount,
+    private void showInputDialog(final String appointment_id, String officer_assigned, String consideration_amount,
                                  String date_and_time, String registration_fee, String stamp_duty) {
 
         // layout of fee Dialog
@@ -1250,7 +1276,7 @@ public class DeedRegistration extends AppCompatActivity {
                 String.valueOf(registration_fee) + " and a stamp duty of " + getResources().getString(R.string.Rs) +
                 String.valueOf(stamp_duty) + " is to be paid.");
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeedRegistration.this);
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeedRegistration.this);
         alertDialogBuilder.setView(view);
 
         // setup a dialog window
@@ -1260,9 +1286,16 @@ public class DeedRegistration extends AppCompatActivity {
                 .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // go to stage 4: Payment page
                         confirmForm.setVisibility(View.GONE);
-                        paymentForm.setVisibility(View.VISIBLE);
-                        header.setText(R.string.paymentheading);
+
+                        if (registrationFee > 0) {
+                            stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.FOUR);
+                            paymentForm.setVisibility(View.VISIBLE);
+                            header.setText(R.string.paymentheading);
+                        } else {
+                            confirmAppointment(appointment_id);
+                        }
                     }
                 });
 
@@ -1271,6 +1304,48 @@ public class DeedRegistration extends AppCompatActivity {
         alert.show();
 
     }
+
+
+    private void confirmAppointment(String appointment_id) {
+        alertDialog.show();
+
+        AndroidNetworking.post("http://192.168.43.210:8080/panjeeyanonline/confirmAppointment")
+                .addBodyParameter("appointment_id", appointment_id.trim())
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        Log.d(TAG, "onResponse: " + response);
+
+                        if (alertDialog.isShowing()) {
+                            alertDialog.dismiss();
+                        }
+
+                        try {
+                            if (response.getBoolean("success") && response.getInt("update") > 0) {
+                                // appointment confirmed
+                                stateProgressBar.setAllStatesCompleted(true);
+                                header.setText("Appointment Confirmed");
+                            } else {
+                                /// error
+                            }
+                        } catch (Exception ex) {
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        if (alertDialog.isShowing()) {
+                            alertDialog.dismiss();
+                        }
+
+                        showErrorMessage("Network Error", error.getMessage());
+                    }
+                });
+    }
+
 
     private void uploadFiles() {
 
@@ -1319,6 +1394,64 @@ public class DeedRegistration extends AppCompatActivity {
                         cookieBar.show();
                     }
                 });
+    }
 
+
+    public void doPay(View view) {
+        Map<String, Object> parametersMap = new HashMap<>();
+
+        String tax = deptID.getEditText().getText().toString().trim();
+        String name = payerName.getEditText().getText().toString().trim();
+        String pan_no = pan.getEditText().getText().toString().trim();
+        String add1 = block.getEditText().getText().toString().trim();
+        String add2 = locality.getEditText().getText().toString().trim();
+        String add3 = area.getEditText().getText().toString().trim();
+        String pin = payerPin.getEditText().getText().toString().trim();
+        String phone = payerPhone.getEditText().getText().toString().trim();
+        String rem = remarks.getEditText().getText().toString().trim();
+
+        // validate input
+
+        parametersMap.put("TAX_ID", tax);
+        parametersMap.put("PARTY_NAME", name);
+        parametersMap.put("PAN_NO", pan_no);
+        parametersMap.put("ADDRESS1", add1);
+        parametersMap.put("ADDRESS2", add2);
+        parametersMap.put("ADDRESS3", add3);
+        parametersMap.put("PIN_NO", pin);
+        parametersMap.put("MOBILE_NO", phone);
+        parametersMap.put("REMARKS", rem);
+        // amount
+        parametersMap.put("AMOUNT1", String.valueOf(registrationFee));
+        parametersMap.put("CHALLAN_AMOUNT", String.valueOf(registrationFee));
+
+
+        // POST data to my backend
+        AndroidNetworking.post("http://192.168.43.210:8080/panjeeyanonline/paymentservlet")
+                .addBodyParameter(parametersMap)
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        Log.d(TAG, "onResponse: " + response);
+
+                        if (alertDialog.isShowing()) {
+                            alertDialog.dismiss();
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        if (alertDialog.isShowing()) {
+                            alertDialog.dismiss();
+                        }
+
+                        showErrorMessage("Network Error", error.getMessage());
+                    }
+                });
     }
 }
