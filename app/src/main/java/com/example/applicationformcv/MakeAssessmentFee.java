@@ -140,7 +140,7 @@ public class MakeAssessmentFee extends AppCompatActivity {
 
                     params.put("Deedtype", String.valueOf(code));
 
-                    final String url = "http://192.168.43.210:8080/e-Panjeeyan/getsubdeed?codeVal=" + code;
+                    final String url = MyFileUtil.TOMCAT_URL + "e-Panjeeyan/getsubdeed?codeVal=" + code;
 
                     StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                             new Response.Listener<String>() {
@@ -282,7 +282,7 @@ public class MakeAssessmentFee extends AppCompatActivity {
 
 
     private void setUpDeedCategorySpinner() {
-        final String url = "http://192.168.43.210:8080/e-Panjeeyan/getdeedcategory";
+        final String url = MyFileUtil.TOMCAT_URL + "e-Panjeeyan/getdeedcategory";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -395,7 +395,7 @@ public class MakeAssessmentFee extends AppCompatActivity {
 
         Log.d(TAG, "submitIt: " + params.toString());
 
-        AndroidNetworking.post("http://192.168.43.210:8080/panjeeyanonline/enquiry_api_demo")
+        AndroidNetworking.post(MyFileUtil.TOMCAT_URL + "panjeeyanonline/enquiry_api_demo")
                 .addBodyParameter(params)
                 .setTag(TAG_FEE_ASSESSMENT)
                 .setPriority(Priority.MEDIUM)

@@ -74,7 +74,13 @@
     <string name="locality">\tLocality/Road</string>
     <string name="area">\tArea/City</string>
     <string name="payment_pin">\tPIN</string>
+    <string name="marr_reg_fee">\tRegistration Fee *</string>
     <string name="remarks">\tRemarks</string>
+
+    <string name="success_msg" translatable="false">Registration successful!!
+        <!--No payment to be made.-->
+        <!--Please report in the previous mentioned date and time for further processing.-->
+    </string>
 
     <string name="pay">Pay</string>
 

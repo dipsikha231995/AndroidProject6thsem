@@ -1243,6 +1243,23 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/reg_feeWrapper"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/marr_reg_fee">
+
+                        <EditText
+                            android:id="@+id/reg_fee"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:drawableLeft="@drawable/ic_monetization"
+                            android:inputType="number"
+                            android:textSize="16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/remarksWrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1271,7 +1288,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:backgroundTint="#228B22"
-                            android:onClick="doSubmit"
+                            android:onClick="doPay"
                             android:text="@string/pay"
                             android:textColor="#ffff" />
 

@@ -112,11 +112,14 @@ public class DeedRegistration extends AppCompatActivity {
     ViewGroup uploadDocumentsForm;
     ViewGroup confirmForm;
     ViewGroup paymentForm;
+    ViewGroup success_message;
 
     // header textView
     TextView header;
 
     CardView cardView;
+
+//    CardView cardView2;
 
     private boolean appointmentFormCompleted = false;
     private boolean uploadDocumentsCompleted = false;
@@ -134,7 +137,7 @@ public class DeedRegistration extends AppCompatActivity {
 
     // this is the amount to be paid for...
     int registrationFee;
-
+    String appointment_ID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,6 +189,7 @@ public class DeedRegistration extends AppCompatActivity {
         confirmForm = findViewById(R.id.confirm_form);
         paymentForm = findViewById(R.id.makePayment);
         header = findViewById(R.id.header_text2);
+        success_message = findViewById(R.id.card2);
 
         mySpinner1 = findViewById(R.id.spinner1);               // applicant type spinner
         mySpinner2 = findViewById(R.id.spinner2);               // office registration spinner
@@ -209,6 +213,9 @@ public class DeedRegistration extends AppCompatActivity {
 
 
         cardView = findViewById(R.id.card1);
+
+//        cardView2 = findViewById(R.id.card2);
+
 
         // select document spinner
         mySpinner5 = findViewById(R.id.spinner5);
@@ -332,7 +339,7 @@ public class DeedRegistration extends AppCompatActivity {
 
                     params.put("Deedtype", String.valueOf(code));
 
-                    final String url = "http://192.168.43.210:8080/e-Panjeeyan/getsubdeed?codeVal=" + code;
+                    final String url = MyFileUtil.TOMCAT_URL + "e-Panjeeyan/getsubdeed?codeVal=" + code;
 
 
                     StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -680,7 +687,7 @@ public class DeedRegistration extends AppCompatActivity {
 
 
     private void getHolidays() {
-        final String url = "http://192.168.43.210:8080/panjeeyanonline/getAppointmentDates";
+        final String url = MyFileUtil.TOMCAT_URL + "panjeeyanonline/getAppointmentDates";
         final ArrayList<String> dateList = new ArrayList<>();
 
         // get the holidays from the database
@@ -738,7 +745,7 @@ public class DeedRegistration extends AppCompatActivity {
 
 
     private void setUpApplicantSpinner() {
-        final String url = "http://192.168.43.210:8080/e-Panjeeyan/getapplicanttype";
+        final String url = MyFileUtil.TOMCAT_URL + "e-Panjeeyan/getapplicanttype";
 
         // get the applicantType from the database
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -780,7 +787,7 @@ public class DeedRegistration extends AppCompatActivity {
 
     private void setUpOfficeSpinner() {
 
-        final String url = "http://192.168.43.210:8080/e-Panjeeyan/registrationoffice";
+        final String url = MyFileUtil.TOMCAT_URL + "e-Panjeeyan/registrationoffice";
 
         // get the registration office from the database
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -836,6 +843,8 @@ public class DeedRegistration extends AppCompatActivity {
     private String getVolleyErrorMessage(VolleyError error) {
         String msg = "";
 
+        Log.d(TAG, "msg: " + error.getMessage());
+
         if (error instanceof TimeoutError || error instanceof NoConnectionError || error instanceof NetworkError) {
             //This indicates that the request has either time out or there is no connection
             msg = "Please, check your network connection else the Server is not reachable at this moment.";
@@ -850,7 +859,7 @@ public class DeedRegistration extends AppCompatActivity {
 
 
     private void setUpDeedCategorySpinner() {
-        final String url = "http://192.168.43.210:8080/e-Panjeeyan/getdeedcategory";
+        final String url = MyFileUtil.TOMCAT_URL + "e-Panjeeyan/getdeedcategory";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -1197,7 +1206,7 @@ public class DeedRegistration extends AppCompatActivity {
         params.put("applicant_pin", pin.getText().toString());
 
 
-        AndroidNetworking.post("http://192.168.43.210:8080/panjeeyanonline/create_appointment")
+        AndroidNetworking.post(MyFileUtil.TOMCAT_URL + "panjeeyanonline/create_appointment")
                 .addBodyParameter(params)
                 .setPriority(Priority.MEDIUM)
                 .build()
@@ -1220,6 +1229,8 @@ public class DeedRegistration extends AppCompatActivity {
 
                                 try {
                                     registrationFee = Integer.parseInt(registration_fee);
+                                    appointment_ID = appointment_id;
+
                                 } catch (Exception ex) {
                                 }
 
@@ -1280,7 +1291,7 @@ public class DeedRegistration extends AppCompatActivity {
         alertDialogBuilder.setView(view);
 
         // setup a dialog window
-        alertDialogBuilder.setTitle("View Appointment Status");
+        alertDialogBuilder.setTitle(getString(R.string.deed));
         alertDialogBuilder.setCancelable(false)
                 .setView(view)
                 .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
@@ -1309,7 +1320,7 @@ public class DeedRegistration extends AppCompatActivity {
     private void confirmAppointment(String appointment_id) {
         alertDialog.show();
 
-        AndroidNetworking.post("http://192.168.43.210:8080/panjeeyanonline/confirmAppointment")
+        AndroidNetworking.post(MyFileUtil.TOMCAT_URL + "panjeeyanonline/confirmAppointment")
                 .addBodyParameter("appointment_id", appointment_id.trim())
                 .setPriority(Priority.MEDIUM)
                 .build()
@@ -1327,8 +1338,12 @@ public class DeedRegistration extends AppCompatActivity {
                             if (response.getBoolean("success") && response.getInt("update") > 0) {
                                 // appointment confirmed
                                 stateProgressBar.setAllStatesCompleted(true);
-                                header.setText("Appointment Confirmed");
+                                header.setText(getString(R.string.success_msg));
+                                success_message.setVisibility(View.VISIBLE);
+
+
                             } else {
+                                Log.d(TAG, "error: " + response.getInt("update"));
                                 /// error
                             }
                         } catch (Exception ex) {
@@ -1360,7 +1375,7 @@ public class DeedRegistration extends AppCompatActivity {
         Log.d(TAG, "File names: " + fileNames.toString());
 
 
-        AndroidNetworking.upload("http://192.168.43.210:8080/panjeeyanonline/fileupload")
+        AndroidNetworking.upload(MyFileUtil.TOMCAT_URL + "panjeeyanonline/fileupload")
                 .addMultipartFile("id", idProofFile)
                 .addMultipartFile("age", ageProofFile)
                 .addMultipartFile("address", addressProofFile)
@@ -1421,27 +1436,39 @@ public class DeedRegistration extends AppCompatActivity {
         parametersMap.put("PIN_NO", pin);
         parametersMap.put("MOBILE_NO", phone);
         parametersMap.put("REMARKS", rem);
+
         // amount
         parametersMap.put("AMOUNT1", String.valueOf(registrationFee));
         parametersMap.put("CHALLAN_AMOUNT", String.valueOf(registrationFee));
 
+        // appointment id
+        parametersMap.put("appointment_id", appointment_ID);
+
 
         // POST data to my backend
-        AndroidNetworking.post("http://192.168.43.210:8080/panjeeyanonline/paymentservlet")
+        AndroidNetworking.post(MyFileUtil.UWAMP_URL + "submit_payment.php")
                 .addBodyParameter(parametersMap)
                 .setPriority(Priority.MEDIUM)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
-
                         Log.d(TAG, "onResponse: " + response);
-
                         if (alertDialog.isShowing()) {
                             alertDialog.dismiss();
                         }
 
+                        try {
+                            if (response.getBoolean("success")) {
+                                Intent intent = new Intent(getApplicationContext(), PaymentGateway.class);
+                                intent.putExtra("url", response.getString("url"));
+                                intent.putExtra("bundle", response.getString("data"));
+                                startActivity(intent);
 
+                                finish();
+                            }
+                        } catch (Exception ex) {
+                        }
                     }
 
                     @Override

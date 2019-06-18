@@ -107,7 +107,7 @@ public class ViewStatus extends AppCompatActivity {
 
 //        if (awesomeValidation.validate()) { }
 
-            AndroidNetworking.post("http://192.168.43.210:8080/panjeeyanonline/appointment_status")
+            AndroidNetworking.post(MyFileUtil.TOMCAT_URL + "panjeeyanonline/appointment_status")
                     .addBodyParameter(params)
                     .setPriority(Priority.MEDIUM)
                     .build()

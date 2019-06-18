@@ -1,6 +1,7 @@
 package com.example.applicationformcv;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -86,6 +87,7 @@ public class MarriageRegistration extends AppCompatActivity {
     EditText eCity2, ePolice2, ePost2, eDistrict2, eState2, ePin2, perCity2, perPolice2, perPost2, perDistrict2, perState2, perPin2, lengthOfResidence2;
     CheckBox cBox2;
 
+    TextInputLayout deptID, payerName, pan, block, locality, area, payerPin, payerPhone, reg_fee, remarks;
 
     CardView cardView;
     StateProgressBar stateProgressBar;
@@ -106,6 +108,10 @@ public class MarriageRegistration extends AppCompatActivity {
     private boolean isBrideFormCompleted = false;
     private boolean isGroomFormCompleted = false;
 
+
+    String appointment_id;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,6 +131,19 @@ public class MarriageRegistration extends AppCompatActivity {
                 .setView(view)
                 .create();
         alertDialog.show();
+
+        /// Payment form
+        deptID = findViewById(R.id.deptTaxIdWrapper);
+        payerName = findViewById(R.id.Namewrapper);
+        pan = findViewById(R.id.panWrapper);
+        block = findViewById(R.id.blockwrapper);
+        locality = findViewById(R.id.localitywrapper);
+        area = findViewById(R.id.areaWrapper);
+        payerPin = findViewById(R.id.pinCodeWrapper);
+        payerPhone = findViewById(R.id.mobileWrapper);
+        reg_fee = findViewById(R.id.reg_feeWrapper);
+        remarks = findViewById(R.id.remarksWrapper);
+
 
         //No internet coonection error
         cookieBar = CookieBar.build(MarriageRegistration.this)
@@ -536,7 +555,7 @@ public class MarriageRegistration extends AppCompatActivity {
     }
 
     private void setUpOfficeSpinner() {
-        final String url = "http://192.168.43.210:8080/e-Panjeeyan/registrationoffice";
+        final String url = MyFileUtil.TOMCAT_URL + "e-Panjeeyan/registrationoffice";
 
         // get the registration office from the database
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -581,7 +600,7 @@ public class MarriageRegistration extends AppCompatActivity {
 
     private void getDates() {
 
-        final String url = "http://192.168.43.210:8080/panjeeyanonline/getmarriagedates";
+        final String url = MyFileUtil.TOMCAT_URL + "panjeeyanonline/getmarriagedates";
         final ArrayList<String> dateList = new ArrayList<>();
 
         // get the holidays from the database
@@ -638,6 +657,11 @@ public class MarriageRegistration extends AppCompatActivity {
 
 
     private void showFrom(int curState, int nextState) {
+
+        if (nextState == 5) {
+            return;
+        }
+
         // hide the form associates with "curState"
         switch (curState) {
             case 1:
@@ -711,13 +735,6 @@ public class MarriageRegistration extends AppCompatActivity {
                 stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.FOUR);
                 header.setText(R.string.confirmheading);
                 break;
-
-            case 5:
-                paymentForm.setVisibility(View.VISIBLE);
-                stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.FIVE);
-                header.setText(R.string.paymentheading);
-                break;
-
         }
     }
 
@@ -1244,105 +1261,6 @@ public class MarriageRegistration extends AppCompatActivity {
 
 
     public void submitData(View view) {
-        /*
-        appointment_date : 25-05-2019
-        MarriageType : Intended Marriage
-        ApplicantName : Dipsikha Phukan
-        sro_office : 1
-        email : dipsikhaphukan09@gmail.com
-        mobile : 9706672004
-
-        BrideName : Dipsikha Phukan
-        BrideAge : 19
-        BrideMarriageCondition : Unmarried
-        BrideOccupation : service
-        BrideFathersName : Dipsikha Phukan
-
-        BrideVillage : JORHAT
-        BridePoliceStation : jorhat
-        BridePostOffice : Jorhat
-        BrideDistrict : jorhat
-        BrideState : Assam
-        BridePincode : 785001
-
-        BridePermanentVillage : JORHAT
-        BridePermanentPS : jorhat
-        BridePermanentPO : Jorhat
-        BridePermanentDistrict : jorhat
-        BridePermanentState : Assam
-        BridePermanentPincode : 785001
-        BrideLengthOfResidence : 9
-
-        GroomName : Dipsikha Phukan
-        GroomAge : 22
-        GroomMarriageCondition : Widower
-        GroomOccupation : grg
-        GroomFathersName : D hjk
-
-        GroomVillage : JORHAT
-        GroomPoliceStation : ghy
-        GroomPostOffice : hijggy
-        GroomDistrict : ghy
-        GroomState : Assam
-        GroomPincode : 785001
-
-        GroomPermanentVillage : JORHAT
-        GroomPermanentPO : ghy
-        GroomPermanentPS : hijggy
-        GroomPermanentDistrict : ghy
-        GroomPermanentState : Assam
-        GroomPermanentPincode : 785001
-        gLengthOfResidence : 8
-           */
-
-
-//        appointment_date : 27-05-2019
-//        MarriageType : Intended Marriage
-//        ApplicantName : John
-//        sro_office : 1
-//        email : john@gmail.com
-//        mobile : 9706672004
-//        BrideName : Rekha
-//        BrideAge : 25
-//        BrideMarriageCondition : Married
-//        BrideOccupation : service
-//        BrideFathersName : Raj
-//        BrideVillage : Ghy
-//        BridePoliceStation : Ghy
-//        BridePostOffice : Ghy
-//        BrideDistrict : Ghy
-//        BrideState : Assam
-//        BridePincode : 781005
-//        IfPresentPermanentBride : 0
-//        BridePermanentVillage : Ghy
-//        BridePermanentPS : Ghy
-//        BridePermanentPO : Ghy
-//        BridePermanentDistrict : Ghy
-//        BridePermanentState : Assam
-//        BridePermanentPincode : 781005
-//        BrideLengthOfResidence : 2
-//        GroomName : Kaku
-//        GroomAge : 43
-//        GroomMarriageCondition : Widow
-//        GroomOccupation : IT
-//        GroomFathersName : Kaki
-//        GroomVillage : Jorhat
-//        GroomPoliceStation : Jorhat
-//        GroomPostOffice : Jorhat
-//        GroomDistrict : Jorhat
-//        GroomState : Assam
-//        GroomPincode : 781002
-//        IfPresentPermanentGroom : 1
-//        GroomPermanentVillage : Jorhat
-//        GroomPermanentPO : Jorhat
-//        GroomPermanentPS : Jorhat
-//        GroomPermanentDistrict : Jorhat
-//        GroomPermanentState : Assam
-//        GroomPermanentPincode : 781002
-//        gLengthOfResidence : 2
-//
-
-
         params.put("ApplicantName", applicantName.getText().toString());
         params.put("email", email.getText().toString());
         params.put("mobile", mobile.getText().toString());
@@ -1388,7 +1306,10 @@ public class MarriageRegistration extends AppCompatActivity {
         params.put("gLengthOfResidence", lengthOfResidence2.getText().toString());
 
 
-        AndroidNetworking.post("http://192.168.43.210:8080/panjeeyanonline/addmarriagedetails")
+        stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.FOUR);
+        stateProgressBar.setOnStateItemClickListener(null);
+
+        AndroidNetworking.post(MyFileUtil.TOMCAT_URL + "panjeeyanonline/addmarriagedetails")
                 .addBodyParameter(params)
                 .setPriority(Priority.MEDIUM)
                 .build()
@@ -1405,7 +1326,7 @@ public class MarriageRegistration extends AppCompatActivity {
 
                             if (response.getBoolean("success")) {
 
-                                String appointment_id = response.getString("appointment_id");
+                                appointment_id = response.getString("appointment_id");
 
                                 showInputDialog(appointment_id);
 
@@ -1430,18 +1351,14 @@ public class MarriageRegistration extends AppCompatActivity {
                 });
 
 
-        // mark all the states "done"
-        stateProgressBar.setAllStatesCompleted(true);
 
-        // make them unclickable
-        stateProgressBar.setOnStateItemClickListener(null);
 
         // network call to write info in the database and then payment activity is started
     }
 
     private void showInputDialog(String appointment_id) {
 
-        TextView appointmentID, showID;
+        TextView appointmentID, showID, details;
 
         // layout of fee Dialog
         LayoutInflater layoutInflater = getLayoutInflater();
@@ -1449,20 +1366,28 @@ public class MarriageRegistration extends AppCompatActivity {
 
         appointmentID = view.findViewById(R.id.your_appointment_id);
         showID = view.findViewById(R.id.showid);
+        details = view.findViewById(R.id.allDetails);
 
         appointmentID.setText("Your appointment id is :");
         showID.setText(appointment_id);
+
+        // show the appointment_date too
+        details.setText("You are requested to report 15 minutes before the mentioned date and time i.e., on " +
+                params.get("appointment_date") + " 10:00 AM.");
+
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MarriageRegistration.this);
         alertDialogBuilder.setView(view);
 
         // setup a dialog window
-        alertDialogBuilder.setTitle("Marriage Registration");
+        alertDialogBuilder.setTitle(getString(R.string.marr));
         alertDialogBuilder.setCancelable(false)
                 .setView(view)
                 .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.FIVE);
+
                         confirmForm.setVisibility(View.GONE);
                         header.setText(R.string.paymentheading);
                         paymentForm.setVisibility(View.VISIBLE);
@@ -1474,6 +1399,81 @@ public class MarriageRegistration extends AppCompatActivity {
         alert.show();
 
     }
+
+
+    public void doPay(View view) {
+        Map<String, Object> parametersMap = new HashMap<>();
+
+        String tax = deptID.getEditText().getText().toString().trim();
+        String name = payerName.getEditText().getText().toString().trim();
+        String pan_no = pan.getEditText().getText().toString().trim();
+        String add1 = block.getEditText().getText().toString().trim();
+        String add2 = locality.getEditText().getText().toString().trim();
+        String add3 = area.getEditText().getText().toString().trim();
+        String pin = payerPin.getEditText().getText().toString().trim();
+        String phone = payerPhone.getEditText().getText().toString().trim();
+        String amount = reg_fee.getEditText().getText().toString().trim();
+        String rem = remarks.getEditText().getText().toString().trim();
+
+        // validate input
+
+        parametersMap.put("TAX_ID", tax);
+        parametersMap.put("PARTY_NAME", name);
+        parametersMap.put("PAN_NO", pan_no);
+        parametersMap.put("ADDRESS1", add1);
+        parametersMap.put("ADDRESS2", add2);
+        parametersMap.put("ADDRESS3", add3);
+        parametersMap.put("PIN_NO", pin);
+        parametersMap.put("MOBILE_NO", phone);
+        parametersMap.put("REMARKS", rem);
+
+        // amount
+        parametersMap.put("AMOUNT1", String.valueOf(amount));
+        parametersMap.put("CHALLAN_AMOUNT", String.valueOf(amount));
+
+        // appointment id
+        parametersMap.put("appointment_id", appointment_id);
+
+
+        // POST data to my backend
+        AndroidNetworking.post(MyFileUtil.UWAMP_URL + "submit_payment.php")
+                .addBodyParameter(parametersMap)
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, "onResponse: " + response);
+                        if (alertDialog.isShowing()) {
+                            alertDialog.dismiss();
+                        }
+
+                        try {
+                            if (response.getBoolean("success")) {
+                                Intent intent = new Intent(getApplicationContext(), PaymentGateway.class);
+                                intent.putExtra("url", response.getString("url"));
+                                intent.putExtra("bundle", response.getString("data"));
+                                startActivity(intent);
+
+                                finish();
+                            }
+                        } catch (Exception ex) {
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        if (alertDialog.isShowing()) {
+                            alertDialog.dismiss();
+                        }
+
+                        showErrorMessage("Network Error", error.getMessage());
+                    }
+                });
+    }
+
+
+
 
     private void showErrorMessage(String title, String msg) {
         if (alertDialog.isShowing()) {

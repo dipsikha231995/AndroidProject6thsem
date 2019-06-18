@@ -3,16 +3,23 @@ package com.example.applicationformcv;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
+
+import com.github.ybq.android.spinkit.style.Wave;
 
 import java.nio.charset.StandardCharsets;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class PaymentGateway extends AppCompatActivity {
+
+    AlertDialog alertDialog;
 
     private static final String TAG = "MY-APP";
 
@@ -20,6 +27,18 @@ public class PaymentGateway extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_gateway);
+
+        //Loading spin kit
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.layout_loading_dialog, null);
+        ProgressBar progressBar = view.findViewById(R.id.spin_kit);
+        Wave wave = new Wave();
+        progressBar.setIndeterminateDrawable(wave);
+
+        alertDialog = new AlertDialog.Builder(this)
+                .setCancelable(false)
+                .setView(view)
+                .create();
 
         String url = getIntent().getStringExtra("url");
         String data = getIntent().getStringExtra("bundle");
@@ -39,6 +58,7 @@ public class PaymentGateway extends AppCompatActivity {
                 super.onPageStarted(view, url, favicon);
 
                 // Display the progress dialog
+                alertDialog.show();
 
             }
 
@@ -47,6 +67,9 @@ public class PaymentGateway extends AppCompatActivity {
                 super.onPageFinished(view, url);
 
                 //  close progress dialog
+                if (alertDialog.isShowing()) {
+                    alertDialog.dismiss();
+                }
             }
         });
 
