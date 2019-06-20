@@ -77,9 +77,7 @@
     <string name="marr_reg_fee">\tRegistration Fee *</string>
     <string name="remarks">\tRemarks</string>
 
-    <string name="success_msg" translatable="false">Registration successful!!
-        <!--No payment to be made.-->
-        <!--Please report in the previous mentioned date and time for further processing.-->
+    <string name="success_msg">\nRegistration successful!!\nNo payment to be made for now.\nPlease report in the previous mentioned date and time for further processing.
     </string>
 
     <string name="pay">Pay</string>
@@ -202,6 +200,14 @@
     <string name="pswderror">\tPlease, enter a valid password</string>
     <string name="error_pwds_not_match">\tBoth the passwords didn\'t match. Try again! </string>
 
+    <!--Cookiebar error messages-->
+    <string name="net_err">Network Error</string>
+    <string name="err">Error</string>
+    <string name="net_server_err">Please, check your network connection else the Server is not reachable at this moment.</string>
+    <string name="unauthorized_access">Unauthorized access denied.</string>
+    <string name="server_err">Server temporarily out of service.</string>
+
+
     <!--Toast messages-->
     <string name="uname_updated">Username updated!</string>
     <string name="mobilenum_updated">Mobile number updated!</string>
@@ -252,6 +258,18 @@
     <string name="label_attention">Attention!</string>
     <string name="label_field_mandatory">Fields marked with \"*\" are mandatory</string>
     <string name="label_complete_all_stages">Complete all the stages first</string>
+
+    <!--Successful appointment-->
+    <string name="appointment_id_msg">Your appointment id is :</string>
+    <string name="details1">You are requested to report 15 minutes before the mentioned date and time i.e., on</string>
+    <string name="details2"> . </string>
+    <string name="details3"> Under the </string>
+    <string name="details4"> sub registrar office, a consideration amount of  </string>
+    <string name="details5"> , </string>
+    <string name="details6"> a registration fee </string>
+    <string name="details7"> and a stamp duty of </string>
+    <string name="details8"> is to be paid. </string>
+
 
     <!--Dialog box-->
     <string name="loading">Loading</string>

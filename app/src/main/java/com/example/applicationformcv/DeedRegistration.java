@@ -114,12 +114,12 @@ public class DeedRegistration extends AppCompatActivity {
     ViewGroup paymentForm;
     ViewGroup success_message;
 
+
     // header textView
     TextView header;
 
-    CardView cardView;
+    CardView headerCard;
 
-//    CardView cardView2;
 
     private boolean appointmentFormCompleted = false;
     private boolean uploadDocumentsCompleted = false;
@@ -212,9 +212,8 @@ public class DeedRegistration extends AppCompatActivity {
         getHolidays();
 
 
-        cardView = findViewById(R.id.card1);
+        headerCard = findViewById(R.id.card1);
 
-//        cardView2 = findViewById(R.id.card2);
 
 
         // select document spinner
@@ -722,7 +721,7 @@ public class DeedRegistration extends AppCompatActivity {
                                 mySpinnerDate.setAdapter(dateAdapter);
                             } else {
                                 String msg = object.getString("msg");
-                                showErrorMessage("Network Error", msg);
+                                showErrorMessage(getString(R.string.net_err), msg);
                             }
 
                         } catch (Exception e) {
@@ -732,7 +731,7 @@ public class DeedRegistration extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        showErrorMessage("Network Error", getVolleyErrorMessage(error));
+                        showErrorMessage(getString(R.string.net_err), getVolleyErrorMessage(error));
                     }
                 });
 
@@ -775,7 +774,7 @@ public class DeedRegistration extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        showErrorMessage("Network Error", getVolleyErrorMessage(error));
+                        showErrorMessage(getString(R.string.net_err), getVolleyErrorMessage(error));
                     }
                 });
 
@@ -817,7 +816,7 @@ public class DeedRegistration extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        showErrorMessage("Network Error", getVolleyErrorMessage(error));
+                        showErrorMessage(getString(R.string.net_err), getVolleyErrorMessage(error));
                     }
                 });
 
@@ -847,11 +846,11 @@ public class DeedRegistration extends AppCompatActivity {
 
         if (error instanceof TimeoutError || error instanceof NoConnectionError || error instanceof NetworkError) {
             //This indicates that the request has either time out or there is no connection
-            msg = "Please, check your network connection else the Server is not reachable at this moment.";
+            msg = getString(R.string.net_server_err);
         } else if (error instanceof AuthFailureError) {
-            msg = "Unauthorized access denied. ";
+            msg = getString(R.string.unauthorized_access);
         } else if (error instanceof ServerError) {
-            msg = "Server temporarily out of service.";
+            msg = getString(R.string.server_err);
         }
 
         return msg;
@@ -895,7 +894,7 @@ public class DeedRegistration extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        showErrorMessage("Network Error", getVolleyErrorMessage(error));
+                        showErrorMessage(getString(R.string.net_err), getVolleyErrorMessage(error));
                     }
                 });
 
@@ -1250,7 +1249,7 @@ public class DeedRegistration extends AppCompatActivity {
                                     stringBuilder.append(jsonArray.get(i));
                                 }
 
-                                showErrorMessage("Error", stringBuilder.toString());
+                                showErrorMessage(getString(R.string.err), stringBuilder.toString());
                             }
 
                         } catch (JSONException e) {
@@ -1263,7 +1262,7 @@ public class DeedRegistration extends AppCompatActivity {
                             alertDialog.dismiss();
                         }
 
-                        showErrorMessage("Network Error", error.getMessage());
+                        showErrorMessage(getString(R.string.net_err), error.getMessage());
                     }
                 });
     }
@@ -1279,13 +1278,13 @@ public class DeedRegistration extends AppCompatActivity {
         showID = view.findViewById(R.id.showid);
         details = view.findViewById(R.id.allDetails);
 
-        appointmentID.setText("Your appointment id is :");
+        appointmentID.setText(getString(R.string.appointment_id_msg));
         showID.setText(appointment_id);
-        details.setText("You are requested to report 15 minutes before the mentioned date and time i.e., on " + date_and_time + "." +
-                " Under the " + "sub registrar office, a consideration amount of " + getResources().getString(R.string.Rs) +
-                String.valueOf(consideration_amount) + "," + " a registration fee of " + getResources().getString(R.string.Rs) +
-                String.valueOf(registration_fee) + " and a stamp duty of " + getResources().getString(R.string.Rs) +
-                String.valueOf(stamp_duty) + " is to be paid.");
+        details.setText(getString(R.string.details1) + " " + date_and_time + " " + getString(R.string.details2) + " " +
+                getString(R.string.details3) + " " + getString(R.string.details4) + " " + getResources().getString(R.string.Rs) +
+                String.valueOf(consideration_amount) + getString(R.string.details5) + " " + getString(R.string.details6) + " " +
+                getResources().getString(R.string.Rs) + String.valueOf(registration_fee) + " " + getString(R.string.details7) + " "
+                + getResources().getString(R.string.Rs) + String.valueOf(stamp_duty) + " " + getString(R.string.details8));
 
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeedRegistration.this);
         alertDialogBuilder.setView(view);
@@ -1294,7 +1293,7 @@ public class DeedRegistration extends AppCompatActivity {
         alertDialogBuilder.setTitle(getString(R.string.deed));
         alertDialogBuilder.setCancelable(false)
                 .setView(view)
-                .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.done), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // go to stage 4: Payment page
@@ -1338,7 +1337,7 @@ public class DeedRegistration extends AppCompatActivity {
                             if (response.getBoolean("success") && response.getInt("update") > 0) {
                                 // appointment confirmed
                                 stateProgressBar.setAllStatesCompleted(true);
-                                header.setText(getString(R.string.success_msg));
+                                headerCard.setVisibility(View.GONE);
                                 success_message.setVisibility(View.VISIBLE);
 
 
@@ -1356,7 +1355,7 @@ public class DeedRegistration extends AppCompatActivity {
                             alertDialog.dismiss();
                         }
 
-                        showErrorMessage("Network Error", error.getMessage());
+                        showErrorMessage(getString(R.string.net_err), error.getMessage());
                     }
                 });
     }
@@ -1477,7 +1476,7 @@ public class DeedRegistration extends AppCompatActivity {
                             alertDialog.dismiss();
                         }
 
-                        showErrorMessage("Network Error", error.getMessage());
+                        showErrorMessage(getString(R.string.net_err), error.getMessage());
                     }
                 });
     }

@@ -16,12 +16,12 @@ public class MyFileUtil {
     private static final String TAG = "MY-APP";
 
     // NIC
-    public static final String TOMCAT_URL = "http://10.177.15.95:8080/";
-    public static final String UWAMP_URL = "http://10.177.15.95:800/egras_app/";
+//    public static final String TOMCAT_URL = "http://10.177.15.95:8080/";
+//    public static final String UWAMP_URL = "http://10.177.15.95:80/egras_app/";
 
     // HOME
-//    public static final String TOMCAT_URL = "http://192.168.43.210:8080/";
-//    public static final String UWAMP_URL = "http://192.168.43.210:800/egras_app/";
+    public static final String TOMCAT_URL = "http://192.168.43.210:8080/";
+    public static final String UWAMP_URL = "http://192.168.43.210:80/egras_app/";
 
 
 
