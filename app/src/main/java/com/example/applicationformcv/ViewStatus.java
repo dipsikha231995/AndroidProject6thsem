@@ -19,8 +19,6 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.basgeekball.awesomevalidation.AwesomeValidation;
-import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -48,8 +46,6 @@ public class ViewStatus extends AppCompatActivity {
 
     Button check;
 
-    //defining AwesomeValidation object
-    private AwesomeValidation awesomeValidation;
     TextView appointmentID, showID, details;
 
     @Override
@@ -86,12 +82,6 @@ public class ViewStatus extends AppCompatActivity {
                 .setDuration(5000)
                 .setCookiePosition(CookieBar.TOP)
                 .setSwipeToDismiss(true);
-
-        //validation
-        awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
-
-//        awesomeValidation.addValidation(this, R.id.number, "\\d+", R.string.refNumber);
-
     }
 
     public void checkStatus(View view) {

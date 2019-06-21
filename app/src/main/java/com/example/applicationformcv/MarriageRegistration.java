@@ -27,13 +27,11 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.basgeekball.awesomevalidation.AwesomeValidation;
-import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kofigyan.stateprogressbar.StateProgressBar;
 import com.kofigyan.stateprogressbar.components.StateItem;
 import com.kofigyan.stateprogressbar.listeners.OnStateItemClickListener;
@@ -100,10 +98,7 @@ public class MarriageRegistration extends AppCompatActivity {
     // the header textView
     TextView header;
     List<RegistrationOfficeModel> officeList = new ArrayList<>();
-    //defining AwesomeValidation object
-    private AwesomeValidation awesomeValidation;
-    private AwesomeValidation awesomeValidation2;
-    private AwesomeValidation awesomeValidation3;
+
     private boolean isMarriageFormCompleted = false;
     private boolean isBrideFormCompleted = false;
     private boolean isGroomFormCompleted = false;
@@ -203,15 +198,6 @@ public class MarriageRegistration extends AppCompatActivity {
                 getResources().getStringArray(R.array.marriageType));
         myAdapter2.setDropDownViewResource(R.layout.spinner_item_text_colour);
         mySpinner2.setAdapter(myAdapter2);
-
-
-        //validation
-        awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
-
-//        //adding validation to edittexts
-//        awesomeValidation.addValidation(this, R.id.applicantName, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.nameerror);
-//        awesomeValidation.addValidation(this, R.id.username, "(^$|^.*@.*\\..*$)", R.string.emailerror);
-//        awesomeValidation.addValidation(this, R.id.number, "^[0-9]{2}[0-9]{8}$", R.string.mobileerror);
 
 
         // bride details views
@@ -318,30 +304,6 @@ public class MarriageRegistration extends AppCompatActivity {
             }
         });
 
-        //validation for bride details
-        awesomeValidation2 = new AwesomeValidation(ValidationStyle.BASIC);
-
-//        //adding validation to editTexts
-//        awesomeValidation2.addValidation(this, R.id.Name, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.nameerror);
-//        awesomeValidation2.addValidation(this, R.id.Age, Range.closed(18, 60), R.string.ageerror);
-//        awesomeValidation2.addValidation(this, R.id.Occupation, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.occerror);
-//        awesomeValidation2.addValidation(this, R.id.FName, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.fNameerror);
-//
-//        awesomeValidation2.addValidation(this, R.id.city, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.cityerror);
-//        awesomeValidation2.addValidation(this, R.id.policeStation, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.policeerror);
-//        awesomeValidation2.addValidation(this, R.id.postofficeName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.poerror);
-//        awesomeValidation2.addValidation(this, R.id.districtName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.districterror);
-//        awesomeValidation2.addValidation(this, R.id.stateName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.stateerror);
-//        awesomeValidation2.addValidation(this, R.id.pin, "(\\d{6})", R.string.pinerror);
-//        awesomeValidation2.addValidation(this, R.id.lengthResidence, "(\\d+)", R.string.lengtherror);
-//
-//        awesomeValidation2.addValidation(this, R.id.per_city, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.cityerror);
-//        awesomeValidation2.addValidation(this, R.id.per_policeStation, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.policeerror);
-//        awesomeValidation2.addValidation(this, R.id.per_postofficeName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.poerror);
-//        awesomeValidation2.addValidation(this, R.id.per_districtName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.districterror);
-//        awesomeValidation2.addValidation(this, R.id.per_stateName, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.stateerror);
-//        awesomeValidation2.addValidation(this, R.id.per_pin, "(\\d{6})", R.string.pinerror);
-
 
         // groom details views
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -438,29 +400,6 @@ public class MarriageRegistration extends AppCompatActivity {
             }
         });
 
-        //validation
-        awesomeValidation3 = new AwesomeValidation(ValidationStyle.BASIC);
-
-//        //adding validation to editTexts
-//        awesomeValidation3.addValidation(this, R.id.Name2, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.nameerror);
-//        awesomeValidation3.addValidation(this, R.id.Age2, Range.closed(21, 60), R.string.ageGroomerr);
-//        awesomeValidation3.addValidation(this, R.id.Occupation2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.occerror);
-//        awesomeValidation3.addValidation(this, R.id.FName2, "^[A-Za-z]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.fNameerror);
-//
-//        awesomeValidation3.addValidation(this, R.id.city2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.cityerror);
-//        awesomeValidation3.addValidation(this, R.id.policeStation2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.policeerror);
-//        awesomeValidation3.addValidation(this, R.id.postofficeName2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.poerror);
-//        awesomeValidation3.addValidation(this, R.id.districtName2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.districterror);
-//        awesomeValidation3.addValidation(this, R.id.stateName2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.stateerror);
-//        awesomeValidation3.addValidation(this, R.id.pin2, "(\\d{6})", R.string.pinerror);
-//        awesomeValidation3.addValidation(this, R.id.lengthResidence2, "(\\d+)", R.string.lengtherror);
-//
-//        awesomeValidation3.addValidation(this, R.id.per_city2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.cityerror);
-//        awesomeValidation3.addValidation(this, R.id.per_policeStation2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.policeerror);
-//        awesomeValidation3.addValidation(this, R.id.per_postofficeName2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.poerror);
-//        awesomeValidation3.addValidation(this, R.id.per_districtName2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.districterror);
-//        awesomeValidation3.addValidation(this, R.id.per_stateName2, "[A-Za-z]{1,}[A-Za-z\\s]{0,}$", R.string.stateerror);
-//        awesomeValidation3.addValidation(this, R.id.per_pin2, "(\\d{6})", R.string.pinerror);
 
         //populate date spinner
         getDates();

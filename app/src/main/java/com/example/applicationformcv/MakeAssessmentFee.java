@@ -26,8 +26,8 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.aviran.cookiebar2.CookieBar;
 import org.json.JSONArray;

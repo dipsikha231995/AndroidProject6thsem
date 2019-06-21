@@ -56,14 +56,6 @@
             android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".Groomdetails"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".Bridedetails" />
-        <activity
-            android:name=".Bridedetails"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".MarriageRegistration" />
-        <activity
             android:name=".MarriageRegistration"
             android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity" />
