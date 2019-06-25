@@ -273,6 +273,7 @@
 
     <!--Dialog box-->
     <string name="loading">Loading</string>
+    <string name="error_no_internet" translatable="false">No internet connection. Try again…</string>
 
 
 </resources>

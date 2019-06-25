@@ -113,7 +113,6 @@ public class OnBoardingActivity extends AhoyOnboarderActivity {
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
-                // verify token at the backend
 
                 signInUser();
             } else {

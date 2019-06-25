@@ -55,7 +55,6 @@ public class SplashActivity extends AppCompatActivity {
 
         if (user != null) {
             // User is already signed in
-            // verify token at the backend
 
             signInUser();
         } else {

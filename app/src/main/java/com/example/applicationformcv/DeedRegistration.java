@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -113,6 +114,8 @@ public class DeedRegistration extends AppCompatActivity {
     ViewGroup confirmForm;
     ViewGroup paymentForm;
     ViewGroup success_message;
+    ViewGroup noInternetView;
+    ScrollView myScrollView;
 
 
     // header textView
@@ -211,10 +214,9 @@ public class DeedRegistration extends AppCompatActivity {
         setUpOfficeSpinner();
         getHolidays();
 
-
         headerCard = findViewById(R.id.card1);
-
-
+        noInternetView = findViewById(R.id.no_internet_view);
+        myScrollView = findViewById(R.id.my_scroll_view);
 
         // select document spinner
         mySpinner5 = findViewById(R.id.spinner5);
@@ -441,18 +443,6 @@ public class DeedRegistration extends AppCompatActivity {
                 }
             }
         });
-
-
-        // Now, highlight the * mark
-        // add the bubble showcase
-        new BubbleShowCaseBuilder(this)
-                .title(getString(R.string.label_attention))
-                .description(getString(R.string.label_field_mandatory))
-                .targetView(nameLayout)
-                .backgroundColorResourceId(R.color.colorAccent)
-                .textColorResourceId(R.color.white)
-                .imageResourceId(R.drawable.ic_warn)
-                .show();
     }
 
 
@@ -719,6 +709,24 @@ public class DeedRegistration extends AppCompatActivity {
                                 );
                                 dateAdapter.setDropDownViewResource(R.layout.spinner_item_text_colour);
                                 mySpinnerDate.setAdapter(dateAdapter);
+
+                                // hide no_internet_error view
+                                noInternetView.setVisibility(View.GONE);
+                                stateProgressBar.setVisibility(View.VISIBLE);
+                                headerCard.setVisibility(View.VISIBLE);
+                                myScrollView.setVisibility(View.VISIBLE);
+
+                                // Now, highlight the * mark
+                                // add the bubble showcase
+                                new BubbleShowCaseBuilder(DeedRegistration.this)
+                                        .title(getString(R.string.label_attention))
+                                        .description(getString(R.string.label_field_mandatory))
+                                        .targetView(nameLayout)
+                                        .backgroundColorResourceId(R.color.colorAccent)
+                                        .textColorResourceId(R.color.white)
+                                        .imageResourceId(R.drawable.ic_warn)
+                                        .show();
+
                             } else {
                                 String msg = object.getString("msg");
                                 showErrorMessage(getString(R.string.net_err), msg);
@@ -1479,5 +1487,13 @@ public class DeedRegistration extends AppCompatActivity {
                         showErrorMessage(getString(R.string.net_err), error.getMessage());
                     }
                 });
+    }
+
+
+    public void reloadData(View view) {
+        setUpApplicantSpinner();
+        setUpDeedCategorySpinner();
+        setUpOfficeSpinner();
+        getHolidays();
     }
 }

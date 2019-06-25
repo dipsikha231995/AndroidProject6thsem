@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
+        android:visibility="invisible"
         app:spb_checkStateCompleted="true"
         app:spb_currentStateDescriptionColor="#228B22"
         app:spb_currentStateNumber="one"
@@ -30,6 +31,7 @@
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:visibility="invisible"
         android:backgroundTint="#4169E1">
 
         <TextView
@@ -46,8 +48,46 @@
 
     </androidx.cardview.widget.CardView>
 
+    <!-- No-Internet View -->
+    <LinearLayout
+        android:id="@+id/no_internet_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/no_internet_imageView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_no_internet" />
+
+        <TextView
+            android:id="@+id/no_internet_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:drawableEnd="@drawable/ic_reload"
+            android:onClick="reloadData"
+            android:padding="8dp"
+            android:text="@string/error_no_internet"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/about_item_text_color" />
+
+    </LinearLayout>
+
+    <!-- All the Forms -->
 
     <ScrollView
+        android:id="@+id/scrollView2"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbarThumbVertical="@null">

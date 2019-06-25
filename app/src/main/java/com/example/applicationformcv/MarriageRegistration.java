@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -95,6 +96,8 @@ public class MarriageRegistration extends AppCompatActivity {
     ViewGroup groomDetailsForm;
     ViewGroup confirmForm;
     ViewGroup paymentForm;
+    ViewGroup noInternetView;
+    ScrollView myScrollView;
     // the header textView
     TextView header;
     List<RegistrationOfficeModel> officeList = new ArrayList<>();
@@ -159,6 +162,8 @@ public class MarriageRegistration extends AppCompatActivity {
         groomDetailsForm = findViewById(R.id.groom_form);
         confirmForm = findViewById(R.id.summary_form);
         paymentForm = findViewById(R.id.makePayment);
+        noInternetView = findViewById(R.id.no_internet_view);
+        myScrollView = findViewById(R.id.scrollView2);
 
         header = findViewById(R.id.header_textView);
 
@@ -478,19 +483,6 @@ public class MarriageRegistration extends AppCompatActivity {
             }
         });
 
-
-        // Now, highlight the * mark
-        // add the bubble showcase
-        new BubbleShowCaseBuilder(this)
-                .title(getString(R.string.label_attention))
-                .description(getString(R.string.label_field_mandatory))
-                .targetView(nameLayout)
-                .backgroundColorResourceId(R.color.colorAccent)
-                .textColorResourceId(R.color.white)
-                .imageResourceId(R.drawable.ic_warn)
-                .show();
-
-
     }
 
     private void setUpOfficeSpinner() {
@@ -572,6 +564,25 @@ public class MarriageRegistration extends AppCompatActivity {
                                 );
                                 dateAdapter.setDropDownViewResource(R.layout.spinner_item_text_colour);
                                 mySpinner1.setAdapter(dateAdapter);
+
+
+                                noInternetView.setVisibility(View.GONE);
+                                stateProgressBar.setVisibility(View.VISIBLE);
+                                cardView.setVisibility(View.VISIBLE);
+                                myScrollView.setVisibility(View.VISIBLE);
+
+                                // Now, highlight the * mark
+                                // add the bubble showcase
+                                new BubbleShowCaseBuilder(MarriageRegistration.this)
+                                        .title(getString(R.string.label_attention))
+                                        .description(getString(R.string.label_field_mandatory))
+                                        .targetView(nameLayout)
+                                        .backgroundColorResourceId(R.color.colorAccent)
+                                        .textColorResourceId(R.color.white)
+                                        .imageResourceId(R.drawable.ic_warn)
+                                        .show();
+
+
                             } else {
                                 String msg = object.getString("msg");
                                 showErrorMessage("Error", msg);
@@ -1440,4 +1451,8 @@ public class MarriageRegistration extends AppCompatActivity {
         return msg;
     }
 
+
+    public void reloadData(View view) {
+        getDates();
+    }
 }
